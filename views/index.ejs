@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MY APP</title>
+</head>
+<body>
+  <ul class="monsters">
+  <% for(var i=0; i<monsters.length; i++) {%>
+    <li class="monster">
+      <span><%= monsters[i].name %></span>
+      <span><%= monsters[i].special %></span>
+    </li>
+  <% } %>
+</ul>
+
+<form action="/monsters" method="POST">
+  <input type="text" placeholder="name" name="name">
+  <input type="text" placeholder="special" name="special">
+  <button type="submit">Submit</button>
+</form>
+<div>
+  <h2>Replace last monster with a Goblin!</h2>
+  <button id="update"> Goblins rise up! </button>
+</div>
+<div>
+  <h2>Delete first goblin</h2>
+  <button id="delete"> Delete first goblin </button>
+</div>
+<div>
+  <h2>Update All Validators</h2>
+  <button id="validatorUpdate"> Update All Validators </button>
+</div>
+<script src="main.js"></script>
+</body>
+</html>
