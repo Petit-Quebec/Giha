@@ -1,13 +1,14 @@
+const User = require('../../db/User.js');
 const log = require('../../util/util.js').log;
 
 module.exports.help = {
-	name: 'test',
-	description: 'a test function used as a template'
+	name: 'listUsers',
+	description: 'admin command for checking all Users'
 }
 
 module.exports.permissions = {
 	userPermissions: {
-		admin: false,
+		admin: true,
 		dm: false,
 		player: false
 	},
@@ -20,5 +21,6 @@ module.exports.permissions = {
 }
 
 module.exports.run = async(bot, message, args) => {
-	let guilds = bot.guilds;
+	let txt = await User.listUsers();
+	let msg = await message.channel.send(txt);
 }

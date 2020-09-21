@@ -17,16 +17,21 @@
   },
   "homepage": "https://github.com/ngrayson/loom#readme",
   "dependencies": {
-    "body-parser": "^1.19.0",
-    "discord.js": "^11.6.4",
+    "discord.js": "^11.5.1",
     "dotenv": "^8.2.0",
-    "ejs": "^2.7.4",
-    "express": "^4.17.1",
-    "mongodb": "^3.6.2",
-    "mongoose": "^5.10.6",
-    "validate": "^5.1.0"
+    "mongodb": "^3.5.3",
+    "mongoose": "^5.9.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
+  },
+  "nodemonConfig": {
+    "comment": "chatbot/cmds/*.js",
+    "ignore": [
+      "chatbot/cmds/*.js",
+      ".git",
+      "node_modules/**/node_modules"
+    ],
+    "verbose": true
   }
 }

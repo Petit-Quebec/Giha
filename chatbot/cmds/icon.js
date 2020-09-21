@@ -2,7 +2,7 @@
 module.exports.run = async(bot, message, args) => {
 	let msg = await message.channel.send("generating server icon...")
 
-	if(!message.guild.iconURL) return msg.edit('This server has no icon')
+	if(!message.guild.iconURL) return msg.edit('This server has no icon');
 
 	await message.channel.send({files: [
 		{
