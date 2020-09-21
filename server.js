@@ -1,6 +1,5 @@
 // start with npm run dev to run in development mode (refresh on save)
 require('dotenv').config()
-const express = require('express');
 
 const util = require('./util/util.js');
 const log = require('./util/util.js').log;
@@ -16,12 +15,12 @@ log(' Starting Loom...\n',true);
 
 const db = require('./db/db.js');
 const chatbot = require('./chatbot/botserver.js');
-const webserver = require('./webserver/webserver.js');
+// const webserver = require('./webserver/webserver.js');
 
 let serverState = 0;
 
 bootMonitor();
-webserver.run();
+// webserver.run();
 chatbot.run();
 util.logBar(1,true);
 

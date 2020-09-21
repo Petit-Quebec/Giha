@@ -2,36 +2,29 @@ const util = require('../util/util.js');
 const log = util.log;
 
 const User = require('../db/User.js')
+const Character = require('../db/Character.js')
 const db = require('../db/db.js');
 
 
 // getUser
-function getUser(id){
-	return new Promise((resolve, reject) => {
-		let filter =
-			{ 
-				name: {
-					// discord: {
-						// discord_id: id
-					// }
-				}
-			};
-		log('filter:')
-		log(filter);
-		User.where('connections.discord.discord_id',id).exec((err, res) => {
-		// User.find(filter, (err, res) => {
-			if (err) {
-				log(`error getting user with id ${id}`,true)
-				log (err,true)
-				reject(`no user found with id ${id}`)
-			}
-			log(res) 
-			if (res.length == 0) resolve (false);
-			else {
-				resolve(res);
-			}
-		})
-	});
+async function getUserByDiscordId(id){
+	log('getting user by discord ID..')
+	let user = await User.fromDiscordId(id);
+	log(user)
+	return user;
+}
+
+async function newUser(handle, connection) {
+	
+	if(typeof handle != 'string') throw `userManager.newUser Error: handle must be of type string, not ${typeof handle}`
+	if(connection.discord && connection.discord.discordId) {}
+	else if(false) {}
+	else throw `no valid connections found, users must be connected to something`
+	let newUser = await User.newUser({
+		handle: handle,
+		connections: connection
+	})
+	return newUser;
 }
 
 function initializeUser(newUser){
@@ -60,12 +53,12 @@ function initializeUser(newUser){
 					connections:{
 						discord: {
 							discord_handle: 'discordHandle' in newUser ? newUser.discordHandle : 'null',
-							discord_id: newUser.discordId
+							discordId: newUser.discordId
 						}
 					},
 					is_active: true
 				})
-
+				
 				newUserDoc.save((err, user) => {
 					if(err){
 						log(err,true);
@@ -78,10 +71,11 @@ function initializeUser(newUser){
 						resolve(user);
 					}
 				})
-			}	
+			}
 		})
 	})
 }
+
 
 async function updateUserNameById(id, name){
 	let UserSearch = await db.getElementIn({discordId: id} ,'Users') 
@@ -92,6 +86,7 @@ async function updateUserNameById(id, name){
 		db.editEntry('Users', {discordId: id}, { $set: {discordHandle: name}})
 	}
 }
+
 
 // updates a User's permissions where the permissions Object is of format
 // permissions: {
@@ -134,6 +129,7 @@ async function permissions(id){
 }
 
 module.exports = {
-	getUser,
-	initializeUser
+	getUserByDiscordId,
+	initializeUser,
+	newUser
 }

@@ -1,7 +1,5 @@
 const log = require('../util/util.js').log;
-const validators = require('./db_validators.js');
 const mongoose = require('mongoose');
-const Schema = require('validate');
 
 
 require('dotenv').config()
@@ -17,7 +15,7 @@ const mongoUrl =
 	MONGO_PW + 
 	'@loom-nsyqv.azure.mongodb.net/loom?retryWrites=true&w=majority';
 
-mongoose.connect(mongoUrl, {useNewUrlParser: true}).catch(err => {
+mongoose.connect(mongoUrl, {useNewUrlParser: true, useUnifiedTopology: true}).catch(err => {
 	log("Error with mongoose connecting!",true);
 	throw err;
 });
@@ -77,7 +75,8 @@ function addEntry(newObj,collection) {
 				log(`ERROR adding entry to ${collection}, collection error`, true)
 				return log(err, true);
 			}
-			let check = validators[collection].validate(newObj);
+			throw "Nick needs to remove validaiton code here, should be handled by 'the mongoose'"
+			let check = 0;
 			if(check.length == 0){
 				col.insertOne(newObj, (err, result) => {
 					if (err) {
@@ -227,6 +226,7 @@ function validateCollection(coll) {
 
 module.exports = {
 	databaseReady,
+	mongoose,
 	getMonsterArray,
 	addEntry,
 	editEntry,
@@ -234,6 +234,5 @@ module.exports = {
 	runCommand,
 	newColl,
 	getFullCollectionArray,
-	getElementIn,
-	mongoose
+	getElementIn
 }
