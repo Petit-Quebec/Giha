@@ -87,6 +87,7 @@ function message(bot, msg) {
 				return true
 			}
 
+			/*
 			if (!user) {
 				log('command sent by a non-user, ignoring them', true)
 				msg.author.createDM().then((channel) => {
@@ -96,9 +97,9 @@ function message(bot, msg) {
 				})
 				return false
 			}
-
+			
 			let hasPermission = checkMsgPermissions(cmd, user)
-
+			*/ let hasPermission = true
 			if (hasPermission) {
 				// if you get an error here, make sure the run function in the cmd file is async
 				log(`${msg.content} was ran by ${util.name(msg.member)}`, true)
