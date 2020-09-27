@@ -2,13 +2,13 @@ const log = require('../../util/util.js').log
 const util = require('../../util/util.js')
 const heroManager = require('../../Giha/heroManager.js')
 
-let name = `stats`
+let name = `rise`
 
 module.exports.help = {
 	name: name,
-	description: 'gives you the stats you so crave',
-	format: `!${name} <heroName (optional)>`,
-	note: 'uses first hero if none are specified',
+	description: 'a new Hero rises from the world of Redault!',
+	format: `!${name} <heroName>`,
+	note: 'be brave, child',
 }
 
 module.exports.permissions = {
@@ -30,11 +30,20 @@ module.exports.run = async (bot, message, args) => {
 
 	// parse args and test them
 	try {
+		if (args.length < 1)
+			throw `rise requires a hero name (you provided ${args.length})`
+
+		let heroName = args[0]
 		let id = message.author.id
-		let hero = heroManager.getHeroById(id)
+
+		let hero = heroManager.newHero(id, heroName)
 
 		// update reply and log it
-		let txt = hero.statsBlob()
+		let txt = `${
+			hero.name
+		} rises! Huzzah! They are a powerful level ${hero.getLevel()} ${
+			hero.class
+		}!`
 		msg.edit(txt)
 		log(txt, true)
 	} catch (err) {

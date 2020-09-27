@@ -1,4 +1,7 @@
 //characterManager.js
+
+// unused by Giha
+
 // all functions and logic pertaining to the set of characters
 
 const util = require('../util/util.js')

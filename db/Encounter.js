@@ -11,14 +11,14 @@ let theTragus = new Monster('Tragus Ultra', 34, 5, 30, 'Spacetime Enema')
 let bun = new Monster('Diminunitive Bun', 3, 1, 2, 'Schnuzzle')
 
 let Encounter = class Encounter {
-	constructor(heroName) {
-		this.hero = heroName
+	constructor(hero) {
+		this.hero = hero
 		this.monster = Math.random() > 0.8 ? theTragus : bun
-		this.playerHealth = 40
 		this.enemyHealth = this.monster.health
 		this.enemySpeed = this.monster.speed
 		this.enemyDamage = this.monster.damage
 		this.encounterActive = true
+		this.playerExp = 0
 	}
 
 	attack(dmg) {
@@ -26,8 +26,9 @@ let Encounter = class Encounter {
 			throw 'The time for fighting has passed! This encounter is no longer active'
 		let killedEnemy = false
 		let died = false
-		let enemyAttack = 0
+		let enemyDamage = 0
 		this.enemyHealth = this.enemyHealth - dmg
+		this.playerExp += dmg
 		if (this.enemyHealth < 1) {
 			killedEnemy = true
 			this.encounterActive = false
@@ -36,17 +37,21 @@ let Encounter = class Encounter {
 			let strikeChance = 1 / this.enemySpeed
 			let enemyRoll = Math.random()
 			if (enemyRoll <= strikeChance) {
-				enemyAttack = this.enemyDamage
-				this.playerHealth -= this.enemyDamage
-				if (this.playerHealth < 1) {
+				console.log('IT STRIKE!!!')
+				enemyDamage = this.enemyDamage
+				this.hero.stamina -= this.enemyDamage
+				if (this.hero.stamina < 1) {
 					died = true
+					this.encounterActive = false
 				}
 			}
 		}
 		let result = {
 			killedEnemy: killedEnemy,
 			died: died,
-			enemyAttack: enemyAttack,
+			enemyDamage: enemyDamage,
+			enemyAttackName: this.monster.attackName,
+			playerExp: this.playerExp,
 		}
 		return result
 	}
