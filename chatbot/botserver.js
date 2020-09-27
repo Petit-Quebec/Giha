@@ -18,6 +18,7 @@ let chatbotReady = false;
 const bot = new Discord.Client({disableEveryone: true});
 bot.commands = new Discord.Collection();
 reloadBotCommands(bot);
+const timeManager = require('./timeManager.js')
 
 // initialize commands
 
@@ -37,6 +38,7 @@ function run() {
 			chatbotReady = true;
 			log('bot.commands:');
 			log(bot.commands);
+			timeManager()
 		});
 
 		bot.on('message', async msg => {

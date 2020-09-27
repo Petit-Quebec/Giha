@@ -99,6 +99,16 @@ let Hero = class Hero {
 		})
 		return lvl
 	}
+
+	increaseStamina() {
+		let maxStamina = this.getMaxStamina()
+		if(this.stamina<maxStamina) {
+			return this.stamina++
+		}
+		else {
+			return this.stamina
+		}
+	}
 }
 
 module.exports = Hero
