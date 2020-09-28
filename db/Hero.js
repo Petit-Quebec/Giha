@@ -1,4 +1,4 @@
-let skillLevelExpThresholds = [10, 20, 30, 40, 50]
+let abilityLevelExpThresholds = [0, 10, 20, 30, 40, 50]
 
 let Hero = class Hero {
 	constructor(userDiscordId, heroName) {
@@ -38,7 +38,7 @@ let Hero = class Hero {
 		this.abilities.forEach((ability) => {
 			txt += `|lv ${ability.lvl}  ${ability.name}\n`
 			txt += `|  xp: ${ability.exp}/${
-				skillLevelExpThresholds[ability.lvl - 1]
+				abilityLevelExpThresholds[ability.lvl]
 			}\n`
 		})
 		txt += `|exp to spend : ${this.exp}\n\n`
@@ -61,34 +61,36 @@ let Hero = class Hero {
 		return this.exp
 	}
 
-	levelSkill(exp, skillName) {
+	levelAbility(exp, abilityName) {
 		// this definitely doesntg work because now abilities are stored in an array instead of a weird dumb object
 		// pretty sure this breaks if they level multiple times in one command
-		if (this.exp < 1) throw `you have no exp to level a skill`
+		if (this.exp < 1) throw `you have no exp to level a ability`
 		if (exp < 1 || exp > this.exp) {
-			throw `invalid exp entered, you must enter a value between 1 and ${this.exp}`
+			throw `invalid exp entered, you only have ${this.exp} exp to spend! Try battling more to gain more exp!`
 			return false
 		}
 		let res = {
 			timesLeveled: 0,
 			expToLevel: 0,
 		}
-		if (this.abilities[skillName]) {
-			this.abilities[skillName].exp += exp
-			this.exp -= exp
-			let lvlThreshold =
-				skillLevelExpThresholds[this.abilities[skillName].lvl - 1]
-			if (this.abilities[skillName].exp > lvlThreshold) {
-				// level up!
-				this.abilities[skillName].exp -= lvlThreshold
-				this.abilities[skillName].lvl += 1
-				res.timesLeveled++
-			}
-			lvlThreshold =
-				skillLevelExpThresholds[this.abilities[skillName].lvl - 1]
-			res.expToLevel = lvlThreshold - this.abilities[skillName].exp
-			return res
-		} else throw `you have no skill named ${skillName}`
+		let ability = this.abilities.find(ability => ability.name === abilityName)
+		if (!ability) {
+			throw `you have no ability named ${abilityName}`
+		}
+
+		ability.exp += exp
+		this.exp -= exp
+		let lvlThreshold =
+			abilityLevelExpThresholds[ability.lvl]	
+		while (ability.exp >= lvlThreshold) {
+			// level up!
+			ability.exp -= lvlThreshold
+			ability.lvl += 1
+			res.timesLeveled++
+			lvlThreshold = abilityLevelExpThresholds[ability.lvl]
+		}
+		res.expToLevel = lvlThreshold - ability.exp
+		return res
 	}
 
 	getLevel() {
