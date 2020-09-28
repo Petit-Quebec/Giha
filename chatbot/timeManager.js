@@ -26,7 +26,7 @@ const updateTimeEvents = () => {
 	}
 }
 
-function globalIncreaseStam(numTicks) {
+const globalIncreaseStam = (numTicks) => {
 	// to do
 	let heroes = heroManager.getHeroes()
 	for(let i=0;i<heroes.length;i++){
