@@ -13,6 +13,7 @@ const mongoUrl =
 	':' +
 	MONGO_PW +
 	'@gihacluster.jf7zh.gcp.mongodb.net/giha?retryWrites=true&w=majority'
+// the above cluster location should be in env
 
 mongoose
 	.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
