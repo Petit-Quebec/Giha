@@ -2,6 +2,8 @@ const log = require('../../util/util.js').log
 const util = require('../../util/util.js')
 const encounterManager = require('../../Giha/encounterManager.js')
 const heroManager = require('../../Giha/heroManager.js')
+const encounterAscii = require('../../imgGen/ascii/encounterAscii')
+const Encounter = require('../../db/Encounter.js')
 
 let name = `battle`
 
@@ -53,9 +55,9 @@ module.exports.run = async (bot, message, args) => {
 		}
 		if (!activeEncounter && hero.stamina > 0) {
 			activeEncounter = encounterManager.newEncounter(hero)
-			txt += `${heroName} encountered a wild ${activeEncounter.monster.name}!`
+			txt += `${heroName} encountered a wild ${activeEncounter.enemy.name}!`
 		} else {
-			let monster = activeEncounter.monster.name
+			let monster = activeEncounter.enemy.name
 			let dmg = Math.ceil(Math.random() * 9)
 			let res = activeEncounter.attack(dmg)
 			txt += `${heroName} attacked the ${monster} for ${dmg}`
@@ -72,6 +74,7 @@ module.exports.run = async (bot, message, args) => {
 			txt += `\nyou have ${hero.stamina} fighting spirit remaining`
 		}
 		txt += '```'
+		txt += `\n\n` + encounterAscii.encounterTextBlob(activeEncounter, 6)
 		msg.edit(txt)
 		log(txt, true)
 	} catch (err) {

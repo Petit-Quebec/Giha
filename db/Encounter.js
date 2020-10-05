@@ -11,14 +11,16 @@ let theTragus = new Monster('Tragus Ultra', 34, 5, 30, 'Spacetime Enema')
 let bun = new Monster('Diminunitive Bun', 3, 1, 2, 'Schnuzzle')
 
 let Encounter = class Encounter {
-	constructor(hero) {
+	constructor(hero, id) {
 		this.hero = hero
-		this.monster = Math.random() > 0.8 ? theTragus : bun
-		this.enemyHealth = this.monster.health
-		this.enemySpeed = this.monster.speed
-		this.enemyDamage = this.monster.damage
+		this.id = id
+		this.enemy = Math.random() > 0.8 ? theTragus : bun
+		this.enemyHealth = this.enemy.health
+		this.enemySpeed = this.enemy.speed
+		this.enemyDamage = this.enemy.damage
 		this.encounterActive = true
 		this.playerExp = 0
+		this.log = []
 	}
 
 	attack(dmg) {
@@ -50,7 +52,7 @@ let Encounter = class Encounter {
 			killedEnemy: killedEnemy,
 			died: died,
 			enemyDamage: enemyDamage,
-			enemyAttackName: this.monster.attackName,
+			enemyAttackName: this.enemy.attackName,
 			playerExp: this.playerExp,
 		}
 		return result
@@ -58,6 +60,16 @@ let Encounter = class Encounter {
 
 	isActive() {
 		return this.encounterActive
+	}
+}
+
+let Turn = class Turn {
+	constructor(actor, actions, targets, actionValues, effects) {
+		this.actor 
+		this.actions = []
+		this.targets = []
+		this.actionValues = []
+		this.effects = []
 	}
 }
 
