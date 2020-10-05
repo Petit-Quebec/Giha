@@ -5,7 +5,7 @@ let encounters = []
 function newEncounter(hero) {
 	if (!(hero instanceof Hero))
 		throw `need a hero fight with, not this puny ${typeof hero}`
-	let newEncounter = new Encounter(hero)
+	let newEncounter = new Encounter(hero, encounters.length)
 	encounters.push(newEncounter)
 	return newEncounter
 }
