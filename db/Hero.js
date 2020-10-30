@@ -28,7 +28,6 @@ let Hero = class Hero {
 			},
 		]
 	}
-
 	statsBlob() {
 		let txt = '```ml\n'
 		txt += `${this.name} is a proud ${this.class} `
@@ -73,15 +72,16 @@ let Hero = class Hero {
 			timesLeveled: 0,
 			expToLevel: 0,
 		}
-		let ability = this.abilities.find(ability => ability.name === abilityName)
+		let ability = this.abilities.find(
+			(ability) => ability.name === abilityName
+		)
 		if (!ability) {
 			throw `you have no ability named ${abilityName}`
 		}
 
 		ability.exp += exp
 		this.exp -= exp
-		let lvlThreshold =
-			abilityLevelExpThresholds[ability.lvl]	
+		let lvlThreshold = abilityLevelExpThresholds[ability.lvl]
 		while (ability.exp >= lvlThreshold) {
 			// level up!
 			ability.exp -= lvlThreshold
@@ -104,10 +104,9 @@ let Hero = class Hero {
 
 	increaseStamina() {
 		let maxStamina = this.getMaxStamina()
-		if(this.stamina<maxStamina) {
+		if (this.stamina < maxStamina) {
 			return this.stamina++
-		}
-		else {
+		} else {
 			return this.stamina
 		}
 	}
