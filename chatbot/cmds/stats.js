@@ -30,11 +30,25 @@ module.exports.run = async (bot, message, args) => {
 
 	// parse args and test them
 	try {
-		let id = message.author.id
-		let hero = heroManager.getHeroById(id)
 
+		let hero
+
+		if(args.length){
+			hero = heroManager.getHeroByName(args[0])
+		}
+		else {
+			let id = message.author.id
+			hero = heroManager.getHeroById(id)
+		}
+		let txt
 		// update reply and log it
-		let txt = hero.statsBlob()
+		if(hero) {
+			txt = hero.statsBlob()
+		} else if (args.length) {
+			txt = "There is no hero matching this name."
+		}else { 
+			txt = "This command requires a hero! Create a hero with !rise."
+	 	}
 		msg.edit(txt)
 		log(txt, true)
 	} catch (err) {

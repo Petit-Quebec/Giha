@@ -18,18 +18,9 @@ function getHeroes() {
 	return heroes
 }
 
-function getHeroById(id) {
-	let heroFound = false
-	let heroChar
-	heroes.forEach((hero) => {
-		if (hero.userDiscordId == id) {
-			heroFound = true
-			heroChar = hero
-		}
-	})
-	if (heroFound) return heroChar
-	else return false
-}
+const getHeroById = (id) => heroes.find((hero) => hero.userDiscordId === id) || false
+
+const getHeroByName = (name) => heroes.find((hero) => hero.name === name) || false
 
 String.prototype.equalsIgnoreCase = function (compareString) {
 	return this.toUpperCase() === compareString.toUpperCase()
@@ -39,4 +30,5 @@ module.exports = {
 	newHero,
 	getHeroes,
 	getHeroById,
+	getHeroByName
 }
