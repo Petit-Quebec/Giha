@@ -78,7 +78,7 @@ function symDiff() {
 }
 
 function name(member) {
-	return member.nickname ? member.nickname : member.user.username
+	return member.nickname ? member.nickname : member.author.username
 }
 
 function isCharacter(obj) {

@@ -34,8 +34,11 @@ module.exports.run = async(bot, message, args) => {
         let hero = heroManager.getHeroById(id)
         let txt
 
-        if (!hero)
+        if (!hero) {
             txt = "You need to have a hero to flee! Make one with !rise"
+            msg.edit(txt, true)
+            log(txt, true)
+        }
         else {
             let encounters = encounterManager.getEncountersByHero(hero)
             let activeEncounter = encounters.find((encounter) => encounter.isActive()) || false
@@ -45,7 +48,7 @@ module.exports.run = async(bot, message, args) => {
             else {
                 //Want to end current encounter
                 activeEncounter.encounterActive = false
-                txt = `${hero.name}$ succesfully escaped!`
+                txt = `${hero.name} succesfully escaped!`
             }
             msg.edit(txt, true)
             log(txt, true)

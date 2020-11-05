@@ -102,7 +102,7 @@ function message(bot, msg) {
 			*/ let hasPermission = true
 			if (hasPermission) {
 				// if you get an error here, make sure the run function in the cmd file is async
-				log(`${msg.content} was ran by ${util.name(msg.member)}`, true)
+				log(`${msg.content} was ran by ${util.name(msg.member || msg)}`, true)
 				cmd.run(bot, msg, args).catch((err) => {
 					log(
 						`something went wrong with the ${cmd.help.name} command `,
