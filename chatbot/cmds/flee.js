@@ -41,7 +41,7 @@ module.exports.run = async(bot, message, args) => {
         }
         else {
             let encounters = encounterManager.getEncountersByHero(hero)
-            let activeEncounter = encounters.find((encounter) => encounter.isActive()) || false
+            let activeEncounter = encounters.find((encounter) => encounter.isActive())
 
             if (!activeEncounter)
                 txt = "You must be in an active encounter to flee!"
