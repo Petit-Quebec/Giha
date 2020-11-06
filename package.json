@@ -4,7 +4,7 @@
   "description": "a tool for weaving worlds 1.0",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "nodemon --inspect server.js"
   },
   "repository": {
     "type": "git",
