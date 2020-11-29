@@ -1,5 +1,8 @@
 import { log } from '../../util/util.js'
-import { getEncountersByHero, newEncounter } from '../../Giha/encounterManager.js'
+import {
+  getEncountersByHero,
+  newEncounter
+} from '../../Giha/encounterManager.js'
 
 let name = 'battle'
 

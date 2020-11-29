@@ -48,10 +48,7 @@ export const run = async (bot, message, args) => {
         discordId: discordId
       }
     }
-    let res = await newUser(
-      message.author.username,
-      newUserConnection
-    )
+    let res = await newUser(message.author.username, newUserConnection)
 
     // update reply and log it
     let txt = `successfully initialized user ${res.handle}`

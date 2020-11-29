@@ -44,22 +44,22 @@ export const logBar = (style, logToCLI) => {
 
 // returns the symmetric difference between a number of collections as an arry
 export const symDiff = (args) => {
-  var sets = [],
+  const sets = [],
     result = []
   // make copy of arguments into an array
-  var args = Array.prototype.slice.call(args, 0)
+  const argsCopy = Array.prototype.slice.call(args, 0)
   // put each array into a set for easy lookup
-  args.forEach(function (coll) {
+  argsCopy.forEach(function (coll) {
     sets.push(new Set(coll.array()))
   })
   // now see which elements in each array are unique
   // e.g. not contained in the other sets
-  args.forEach(function (array, arrayIndex) {
+  argsCopy.forEach(function (array, arrayIndex) {
     // iterate each item in the array
     array.forEach(function (item) {
-      var found = false
+      let found = false
       // iterate each set (use a plain for loop so it's easier to break)
-      for (var setIndex = 0; setIndex < sets.length; setIndex++) {
+      for (let setIndex = 0; setIndex < sets.length; setIndex++) {
         // skip the set from our own array
         if (setIndex !== arrayIndex) {
           if (sets[setIndex].has(item)) {

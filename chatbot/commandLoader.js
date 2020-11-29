@@ -1,13 +1,5 @@
 import { log } from '../util/util.js'
-import jsUtil from 'util'
-import fs from 'fs'
 import cmds from './cmds/index.js'
-
-const promisify = jsUtil.promisify
-fs.readdirAsync = promisify(fs.readdir)
-
-const RELATIVE_CMD_PATH = './cmds/'
-const ABSOLUTE_CMD_PATH = './chatbot/cmds/'
 
 export default async (bot) => {
   if (bot.constructor.name != 'Client')

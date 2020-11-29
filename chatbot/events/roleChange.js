@@ -29,15 +29,15 @@ export const removedRole = (oldMember, newMember) => {
 }
 
 const newPlayerRole = async (playerName, discordId) => {
-  let isUserInitialized = await isUserInitialized(discordId)
-  if (isUserInitialized) {
+  let isInitialized = await isUserInitialized(discordId)
+  if (isInitialized) {
     log('player role was added to an already initialized player', true)
     return
   }
   initializeUser({
-      discordHandle: playerName,
-      discordId: discordId
-    })
+    discordHandle: playerName,
+    discordId: discordId
+  })
     .then(() => {
       log(`player ${playerName} initialized`, true)
     })

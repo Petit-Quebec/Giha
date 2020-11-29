@@ -38,11 +38,7 @@ export const run = async (bot, message, args) => {
   // find player by member.id
   let user = await User.fromDiscordId(member.id)
   try {
-    let newCharPromise = newPlayerCharacter(
-      firstName,
-      lastName,
-      user._id
-    )
+    let newCharPromise = newPlayerCharacter(firstName, lastName, user._id)
     log('cmd newPlayerCharacter newCharPromise')
     log(newCharPromise)
     let newChar = await newCharPromise

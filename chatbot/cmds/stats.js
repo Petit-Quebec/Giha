@@ -1,5 +1,5 @@
 import { log } from '../../util/util.js'
-import { getHeroByName, getHeroById} from '../../Giha/heroManager.js'
+import { getHeroByName, getHeroById } from '../../Giha/heroManager.js'
 
 let name = 'stats'
 

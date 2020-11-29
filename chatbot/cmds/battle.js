@@ -1,5 +1,8 @@
 import { log } from '../../util/util.js'
-import { getEncountersByHero, newEncounter } from '../../Giha/encounterManager.js'
+import {
+  getEncountersByHero,
+  newEncounter
+} from '../../Giha/encounterManager.js'
 import { getHeroById } from '../../Giha/heroManager.js'
 import encounterAscii from '../../imgGen/ascii/encounterAscii.js'
 

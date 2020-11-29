@@ -41,7 +41,7 @@ const isReady = () => {
 // the above code should be easy to understand and work, no promises on the below code.
 // I had used the router for something i tried to be fancy doing but it was wrong.
 
-var router = express.Router()
+let router = express.Router()
 
 router.use(express.static('public'))
 router.use(bodyParser.urlencoded({ extended: true }))
@@ -135,6 +135,6 @@ router.delete('/monsters', (request, response) => {
 })
 
 export default {
-	run,
-	isReady
+  run,
+  isReady
 }

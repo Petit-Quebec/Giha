@@ -7,8 +7,7 @@
   "scripts": {
     "dev": "nodemon --inspect server.js",
     "lint": "eslint . --ext .js",
-    "lint-fix": "eslint . --ext .js --fix",
-    "pretty-fix": "prettier --write .",
+    "lint-fix": "eslint . --ext .js --fix && prettier --write .",
     "test": "jest"
   },
   "repository": {

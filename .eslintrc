@@ -7,6 +7,7 @@
   },
   "rules": {
     "semi": ["off", "always"],
-    "quotes": ["error", "single"]
+    "quotes": ["error", "single"],
+    "no-case-declarations": ["warn"]
   }
 }
