@@ -1,5 +1,5 @@
 import { log } from '../../util/util.js'
-import encounterManager from '../../Giha/encounterManager.js'
+import { getEncountersByHero, newEncounter } from '../../Giha/encounterManager.js'
 
 let name = 'battle'
 
@@ -37,14 +37,14 @@ export const run = async (bot, message, args) => {
     let txt = '```ml\n'
     let activeEncounter
     // lets see if this hero is already in a fight
-    let encounters = encounterManager.getEncountersByHero(heroName)
+    let encounters = getEncountersByHero(heroName)
     encounters.forEach((encounter) => {
       if (encounter.isActive()) {
         activeEncounter = encounter
       }
     })
     if (!activeEncounter) {
-      activeEncounter = encounterManager.newEncounter(heroName)
+      activeEncounter = newEncounter(heroName)
       txt += `${heroName} encountered a wild ${activeEncounter.monster.name}!`
     } else {
       let monster = activeEncounter.monster.name

@@ -1,9 +1,9 @@
 const DEV_MODE = process.env.DEV_MODE == 1
 
-import userManager from '../Giha/userManager'
+import { getUserByDiscordId } from '../Giha/userManager.js'
 import { log } from '../util/util.js'
-import reloadBotCommands from './commandLoader'
-import util from '../util/util.js'
+import reloadBotCommands from './commandLoader.js'
+import { name } from '../util/util.js'
 
 const INVALID_MSG_DELAY_MS = 5000
 let lastCommandMsg
@@ -73,7 +73,7 @@ export const message = (bot, msg) => {
       // unfinished
     }
 
-    userManager.getUserByDiscordId(msg.author.id).then(() => {
+    getUserByDiscordId(msg.author.id).then(() => {
       if (msg.author.id == '153983024411836416') {
         log('yes master UwU', true)
         cmd.run(bot, msg, args).catch((err) => {
@@ -98,7 +98,7 @@ export const message = (bot, msg) => {
     */ let hasPermission = true
       if (hasPermission) {
         // if you get an error here, make sure the run function in the cmd file is async
-        log(`${msg.content} was ran by ${util.name(msg.member || msg)}`, true)
+        log(`${msg.content} was ran by ${name(msg.member || msg)}`, true)
         cmd.run(bot, msg, args).catch((err) => {
           log(`something went wrong with the ${cmd.help.name} command `, true)
           log(err, true)
@@ -111,7 +111,7 @@ export const message = (bot, msg) => {
           log(`${cmd.permissions.userPermissions}`, true)
         })
         log(
-          `${msg.content} was attempted to be ran by ${util.name(
+          `${msg.content} was attempted to be ran by ${name(
             msg.member
           )}, but they lack the correct permissions`,
           true

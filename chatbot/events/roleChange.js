@@ -1,6 +1,6 @@
 import { log } from '../../util/util.js'
 import { symDiff } from '../../util/util.js'
-import userManager from '../../Giha/userManager.js'
+import { isUserInitialized, initializeUser } from '../../Giha/userManager.js'
 
 export const newRole = (oldMember, newMember) => {
   let playerName =
@@ -29,13 +29,12 @@ export const removedRole = (oldMember, newMember) => {
 }
 
 const newPlayerRole = async (playerName, discordId) => {
-  let isInitialized = await userManager.isInitialized(discordId)
-  if (isInitialized) {
+  let isUserInitialized = await isUserInitialized(discordId)
+  if (isUserInitialized) {
     log('player role was added to an already initialized player', true)
     return
   }
-  userManager
-    .initializePlayer({
+  initializeUser({
       discordHandle: playerName,
       discordId: discordId
     })

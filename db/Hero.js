@@ -107,4 +107,4 @@ let Hero = class Hero {
   }
 }
 
-module.exports = Hero
+export default Hero

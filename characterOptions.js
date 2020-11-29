@@ -39,7 +39,7 @@ const classList = [
 
 const subclassList = ['N/A', 'Arcane Trickster']
 
-module.exports = {
+export default {
   levelThresholds,
   classList,
   subclassList

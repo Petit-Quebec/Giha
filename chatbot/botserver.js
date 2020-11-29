@@ -1,10 +1,10 @@
 import dotenv from 'dotenv'
 import { log } from '../util/util.js'
-import messageParser from './messageParser.js'
-import reloadBotCommands from './commandLoader'
+import { message } from './messageParser.js'
+import reloadBotCommands from './commandLoader.js'
 import Discord from 'discord.js'
-import guildManager from './guildManager.js'
-import roleChange from './events/roleChange.js' // if more events are added this should be abstracted out
+import { checkGuilds } from './guildManager.js'
+import { newRole, removedRole } from './events/roleChange.js' // if more events are added this should be abstracted out
 import nameChange from './events/nameChange.js'
 import timeManager from './timeManager.js'
 
@@ -20,7 +20,7 @@ reloadBotCommands(bot)
 
 // initialize commands
 
-export const run = () => {
+const run = () => {
   if (CHATBOT_ENABLED) {
     bot.on('ready', () => {
       log(
@@ -40,7 +40,7 @@ export const run = () => {
     })
 
     bot.on('message', async (msg) => {
-      messageParser.message(bot, msg)
+      message(bot, msg)
     })
 
     bot.on('guildMemberUpdate', (oldMember, newMember) => {
@@ -74,25 +74,31 @@ export const run = () => {
   }
 }
 
-export const isReady = () => {
+const isReady = () => {
   return chatbotReady
 }
 
-export const checkSetup = () => {
+const checkSetup = () => {
   chatbotReady = false
-  guildManager.checkGuilds(bot).then((chatbotReady = true))
+  checkGuilds(bot).then((chatbotReady = true))
 }
 
 const memberUpdate = (oldMember, newMember) => {
   if (!oldMember.roles.equals(newMember.roles)) {
     // the member update was a change in rolls
     if (oldMember.roles.array().length < newMember.roles.array().length)
-      roleChange.newRole(oldMember, newMember)
-    else roleChange.removedRole(oldMember, newMember)
+      newRole(oldMember, newMember)
+    else removedRole(oldMember, newMember)
   } else if (oldMember.nickname != newMember.nickname) {
     nameChange(oldMember, newMember)
   }
   // find difference in roles
   // if DnD player role was added, initialize player
   // if DnD player role was removed, mark player as inactive.
+}
+
+export default {
+  run,
+  isReady,
+  checkSetup
 }

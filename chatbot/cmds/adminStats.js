@@ -1,6 +1,6 @@
 import { log } from '../../util/util.js'
-import userManager from '../../Giha/userManager.js'
-import aggregations from '../../Giha/aggregations.js'
+import { getUserByDiscordId } from '../../Giha/userManager.js'
+import { userStatsBlurb } from '../../Giha/aggregations.js'
 
 export const help = {
   name: 'adminStats',
@@ -24,8 +24,8 @@ export const permissions = {
 export const run = async (_bot, message) => {
   let msg = await message.channel.send('generating stats...')
   try {
-    let user = await userManager.getUserByDiscordId(message.author.id)
-    let txt = await aggregations.userStatsBlurb(user)
+    let user = await getUserByDiscordId(message.author.id)
+    let txt = await userStatsBlurb(user)
     if (txt) msg.edit(txt)
     else throw 'something went wrong!'
   } catch (err) {

@@ -1,5 +1,5 @@
 import { log } from '../../util/util.js'
-import heroManager from '../../Giha/heroManager.js'
+import { getHeroById } from '../../Giha/heroManager.js'
 
 let name = 'expAssign'
 
@@ -37,7 +37,7 @@ export const run = async (bot, message, args) => {
     }
     let abilityName = args[0]
     let id = message.author.id
-    let hero = heroManager.getHeroById(id)
+    let hero = getHeroById(id)
     if (!hero)
       throw 'Fool! You am have no hero! (make a hero with !rise <heroName>)'
     let result = hero.levelAbility(expAmount, abilityName)

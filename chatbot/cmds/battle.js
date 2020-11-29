@@ -1,7 +1,7 @@
 import { log } from '../../util/util.js'
-import encounterManager from '../../Giha/encounterManager.js'
-import heroManager from '../../Giha/heroManager.js'
-import encounterAscii from '../../imgGen/ascii/encounterAscii'
+import { getEncountersByHero, newEncounter } from '../../Giha/encounterManager.js'
+import { getHeroById } from '../../Giha/heroManager.js'
+import encounterAscii from '../../imgGen/ascii/encounterAscii.js'
 
 let name = 'battle'
 
@@ -32,7 +32,7 @@ export const run = async (_bot, message) => {
   // parse args and test them
   try {
     let id = message.author.id
-    let hero = heroManager.getHeroById(id)
+    let hero = getHeroById(id)
     if (!hero)
       throw 'Fool! You am have no hero! (make a hero with !rise <heroName>)'
     // get discord Id
@@ -42,7 +42,7 @@ export const run = async (_bot, message) => {
     let txt = '```ml\n'
     let activeEncounter
     // lets see if this hero is already in a fight
-    let encounters = encounterManager.getEncountersByHero(hero)
+    let encounters = getEncountersByHero(hero)
     encounters.forEach((encounter) => {
       if (encounter.isActive()) {
         activeEncounter = encounter
@@ -52,7 +52,7 @@ export const run = async (_bot, message) => {
       throw `at least 1 stamina is needed for battle, you currently have ${hero.stamina}`
     }
     if (!activeEncounter && hero.stamina > 0) {
-      activeEncounter = encounterManager.newEncounter(hero)
+      activeEncounter = newEncounter(hero)
       txt += `${heroName} encountered a wild ${activeEncounter.enemy.name}!`
     } else {
       let monster = activeEncounter.enemy.name
@@ -72,7 +72,7 @@ export const run = async (_bot, message) => {
       txt += `\nyou have ${hero.stamina} fighting spirit remaining`
     }
     txt += '```'
-    txt += '\n\n' + encounterAscii.encounterTextBlob(activeEncounter, 6)
+    txt += '\n\n' + encounterAscii(activeEncounter, 6)
     msg.edit(txt)
     log(txt, true)
   } catch (err) {

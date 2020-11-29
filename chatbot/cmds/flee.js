@@ -1,6 +1,6 @@
 import { log } from '../../util/util.js'
-import heroManager from '../../Giha/heroManager.js'
-import encounterManager from '../../Giha/encounterManager.js'
+import { getHeroById } from '../../Giha/heroManager.js'
+import { getEncountersByHero } from '../../Giha/encounterManager.js'
 
 let name = 'flee'
 
@@ -30,7 +30,7 @@ export const run = async (_bot, message) => {
 
   try {
     let id = message.author.id
-    let hero = heroManager.getHeroById(id)
+    let hero = getHeroById(id)
     let txt
 
     if (!hero) {
@@ -38,7 +38,7 @@ export const run = async (_bot, message) => {
       msg.edit(txt, true)
       log(txt, true)
     } else {
-      let encounters = encounterManager.getEncountersByHero(hero)
+      let encounters = getEncountersByHero(hero)
       let activeEncounter = encounters.find((encounter) => encounter.isActive())
 
       if (!activeEncounter) txt = 'You must be in an active encounter to flee!'

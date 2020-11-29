@@ -1,4 +1,4 @@
-import players from '../../Giha/userManager.js'
+import { isUserInitialized, updateUserPermissionsById } from '../../Giha/userManager.js'
 import { log } from '../../util/util.js'
 
 export const help = {
@@ -44,8 +44,8 @@ export const run = async (bot, message, args) => {
     )
   }
 
-  if (await players.isInitialized(discordId)) {
-    let result = await players.updatePlayerPermissionsById(discordId, {
+  if (await isUserInitialized(discordId)) {
+    let result = await updateUserPermissionsById(discordId, {
       admin: false,
       dm: false
     })

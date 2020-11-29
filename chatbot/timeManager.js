@@ -1,5 +1,5 @@
 // get something idk
-import heroManager from '../Giha/heroManager.js'
+import { getHeroes } from '../Giha/heroManager.js'
 
 const STAMINA_TICK_RATE = 40 //how many ms between stamina ticks
 // const CRAFTING_TICK_RATE = 100000 // how many ms between crafting ticks
@@ -30,7 +30,7 @@ const updateTimeEvents = () => {
 
 const globalIncreaseStam = () => {
   // to do
-  let heroes = heroManager.getHeroes()
+  let heroes = getHeroes()
   for (let i = 0; i < heroes.length; i++) {
     heroes[i].increaseStamina()
   }

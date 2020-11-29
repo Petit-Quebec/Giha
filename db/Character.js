@@ -1,7 +1,7 @@
 // unused by Giha
 // all functions and logic for instances of characters and about singleton characters
 
-import { log } from '../../util/util.js'
+import { log } from '../util/util.js'
 import db from './db.js'
 import characterOptions from '../characterOptions.js'
 
@@ -323,7 +323,7 @@ const initializeFields = (charObj) => {
   return newCharObj
 }
 
-module.exports = Character
+export default Character
 
 /*
 }

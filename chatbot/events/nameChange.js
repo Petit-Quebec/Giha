@@ -1,7 +1,7 @@
 //nameChange.js
 
 import { log } from '../../util/util.js'
-import userManager from './../../Giha/userManager.js'
+import { updateUserNameById } from './../../Giha/userManager.js'
 
 export default (oldMember, newMember) => {
   let oldName =
@@ -11,5 +11,5 @@ export default (oldMember, newMember) => {
 
   log(`${oldName} changed name to ${newName}`, true)
 
-  userManager.updatePlayerNameById(newMember.user.id, newName)
+  updateUserNameById(newMember.user.id, newName)
 }

@@ -1,5 +1,4 @@
-// avatar.js
-module.exports.run = async (_bot, message) => {
+export const run = async (_bot, message) => {
   let msg = await message.channel.send('generating server icon...')
 
   if (!message.guild.iconURL) return msg.edit('This server has no icon')
@@ -16,12 +15,12 @@ module.exports.run = async (_bot, message) => {
   msg.delete()
 }
 
-module.exports.help = {
+export const help = {
   name: 'icon',
   description: 'generates a the server icon and sends it to the user'
 }
 
-module.exports.permissions = {
+export const permissions = {
   userPermissions: {
     admin: true,
     dm: true,

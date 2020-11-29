@@ -1,11 +1,11 @@
 import Character from '../../db/Character.js'
 
-module.exports.help = {
+export const help = {
   name: 'listCharacters',
   description: 'admin command for checking all Characters'
 }
 
-module.exports.permissions = {
+export const permissions = {
   userPermissions: {
     admin: true,
     dm: false,
@@ -19,7 +19,7 @@ module.exports.permissions = {
   }
 }
 
-module.exports.run = async (_bot, message) => {
+export const run = async (_bot, message) => {
   let txt = await Character.listCharacters()
   await message.channel.send(txt)
 }

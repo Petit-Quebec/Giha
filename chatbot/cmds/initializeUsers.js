@@ -1,4 +1,4 @@
-import players from '../../Giha/userManager.js'
+import { initializeUser } from '../../Giha/userManager.js'
 import { log } from '../../util/util.js'
 
 export const help = {
@@ -54,7 +54,7 @@ export const run = async (bot, message) => {
       roledMembers++
 
       try {
-        await players.initializeUser(newPlayer)
+        await initializeUser(newPlayer)
         log(`initialized player ${newPlayer.discordHandle}`, true)
         toBeInitialized++
         successes.push(newPlayer.discordHandle)

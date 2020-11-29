@@ -1,11 +1,11 @@
 import User from '../../db/User.js'
 
-module.exports.help = {
+export const help = {
   name: 'listUsers',
   description: 'admin command for checking all Users'
 }
 
-module.exports.permissions = {
+export const permissions = {
   userPermissions: {
     admin: true,
     dm: false,
@@ -19,7 +19,7 @@ module.exports.permissions = {
   }
 }
 
-module.exports.run = async (_bot, message) => {
+export const run = async (_bot, message) => {
   let txt = await User.listUsers()
   await message.channel.send(txt)
 }

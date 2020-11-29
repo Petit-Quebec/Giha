@@ -73,4 +73,4 @@ let Encounter = class Encounter {
 //   }
 // }
 
-module.exports = Encounter
+export default Encounter

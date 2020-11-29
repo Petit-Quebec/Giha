@@ -1,7 +1,6 @@
 // start with npm run dev to run in development mode (refresh on save)
 import dotenv from 'dotenv'
-import util from './util/util.js'
-import { log } from './util/util.js'
+import { log, logBar } from './util/util.js'
 import db from './db/db.js'
 import chatbot from './chatbot/botserver.js'
 import webserver from './webserver/webserver.js'
@@ -13,16 +12,7 @@ const CHATBOT_ENABLED = process.env.CHATBOT_ENABLED == 1
 const CONSOLE_CHAT_OVERRIDE = process.env.CONSOLE_CHAT_OVERRIDE == 1
 const WEBSERVER_ENABLED = process.env.WEBSERVER_ENABLED == 1
 
-log('\x1b[36m', '\n\n', true)
-util.logBar(2, true)
-log(' Starting Giha...\n', true)
-
 let serverState = 0
-
-bootMonitor()
-// webserver.run();
-chatbot.run()
-util.logBar(1, true)
 
 let rl = readline.createInterface({
   input: process.stdin,
@@ -45,7 +35,7 @@ const bootMonitor = () => {
         let databaseOK = db.databaseReady()
         if (serverOK && chatbotOK && databaseOK) {
           log('\n Everything booted correctly!', true)
-          util.logBar(1, true)
+          logBar(1, true)
           serverState = 1
           if (CONSOLE_CHAT_OVERRIDE) {
             rl = runCLIBot()
@@ -64,7 +54,7 @@ const bootMonitor = () => {
         break
       case 1:
         if (chatbot.isReady()) {
-          util.logBar(1, true)
+          logBar(1, true)
           clearInterval(intervalObj)
         }
         break
@@ -87,3 +77,13 @@ const runCLIBot = () => {
   log('\x1b[32m' + ' ✓' + '\x1b[0m' + ' CLI Bot Now Active' + '%s\x1b[0m')
   return rl
 }
+
+// do the things
+log('\x1b[36m', '\n\n', true)
+logBar(2, true)
+log(' Starting Giha...\n', true)
+
+bootMonitor()
+// webserver.run();
+chatbot.run()
+logBar(1, true)

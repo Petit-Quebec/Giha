@@ -1,6 +1,6 @@
 // newCharacter.js
 import { log } from '../../util/util.js'
-import characterManager from '../../Giha/characterManager.js'
+import { newPlayerCharacter } from '../../Giha/characterManager.js'
 import User from '../../db/User.js'
 
 export const run = async (bot, message, args) => {
@@ -38,7 +38,7 @@ export const run = async (bot, message, args) => {
   // find player by member.id
   let user = await User.fromDiscordId(member.id)
   try {
-    let newCharPromise = characterManager.newPlayerCharacter(
+    let newCharPromise = newPlayerCharacter(
       firstName,
       lastName,
       user._id

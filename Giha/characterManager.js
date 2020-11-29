@@ -5,7 +5,7 @@
 import { log } from '../util/util.js'
 import Character from '../db/Character.js'
 import User from '../db/User.js'
-import userManager from '../Giha/userManager.js'
+import { isUserInitialized } from '../Giha/userManager.js'
 import db from '../db/db.js'
 
 let characters = []
@@ -63,9 +63,9 @@ export const initializeCharacter = async (nameFull, userId) => {
   log(`initializing character ${nameFull}`)
   let newChar = new Character(nameFull, userId)
 
-  if (await isInitialized(nameFull)) {
+  if (await isCharacterInitialized(nameFull)) {
     throw `GUILDBANKERROR: character already exists: ${nameFull}`
-  } else if (userId && !userManager.isInitialized(userId)) {
+  } else if (userId && !isUserInitialized(userId)) {
     throw `No user with ID ${userId} exists`
   } else {
     try {
@@ -84,7 +84,7 @@ export const initializeCharacter = async (nameFull, userId) => {
   return newChar
 }
 
-const isInitialized = async (nameFull) => {
+const isCharacterInitialized = async (nameFull) => {
   let characterSearch = await db.getElementIn(
     { character_name_full: nameFull },
     'characters'

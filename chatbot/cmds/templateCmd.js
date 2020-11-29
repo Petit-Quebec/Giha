@@ -1,6 +1,6 @@
 import { log, isUser } from '../../util/util.js'
-import userManager from '../../Giha/userManager.js'
-import characterManager from '../../Giha/characterManager.js'
+import { getUserByDiscordId } from '../../Giha/userManager.js'
+import { awardXp } from '../../Giha/characterManager.js'
 
 let name = 'templateCmd'
 
@@ -35,7 +35,7 @@ export const run = async (bot, message, args) => {
     let discordId = args[0].slice(3, args[0].length - 1)
     let target
     let xp
-    target = await userManager.getUserByDiscordId(discordId)
+    target = await getUserByDiscordId(discordId)
     if (!isUser(target)) {
       throw `issue with awarding Xp to ${args[0]}, please tag the user you wish to give Xp to.`
     }
@@ -44,7 +44,7 @@ export const run = async (bot, message, args) => {
       throw `issue with awarding xp amount '${args[1]}', numbers only please.`
 
     // do the actual operation
-    let res = await characterManager.awardXp(target, xp)
+    let res = await awardXp(target, xp)
 
     // update reply and log it
     let txt = `successfully awarded ${xp} xp! ${res.firstName} only needs ${

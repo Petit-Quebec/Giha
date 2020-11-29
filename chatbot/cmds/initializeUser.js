@@ -1,4 +1,4 @@
-import userManager from '../../Giha/userManager.js'
+import { newUser } from '../../Giha/userManager.js'
 import { log } from '../../util/util.js'
 
 const name = 'initializeUser'
@@ -48,7 +48,7 @@ export const run = async (bot, message, args) => {
         discordId: discordId
       }
     }
-    let res = await userManager.newUser(
+    let res = await newUser(
       message.author.username,
       newUserConnection
     )

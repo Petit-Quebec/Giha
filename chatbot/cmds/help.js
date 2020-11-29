@@ -1,6 +1,5 @@
-import { log } from '../../util/util.js'
-import util from '../../util/util.js'
-import userManager from '../../Giha/userManager.js'
+import { log, isUser } from '../../util/util.js'
+import { getUserByDiscordId } from '../../Giha/userManager.js'
 
 let name = 'help'
 
@@ -35,8 +34,8 @@ export const run = async (bot, message) => {
 
   // parse args and test them
   try {
-    let user = await userManager.getUserByDiscordId(message.author.id)
-    if (!util.isUser(user)) {
+    let user = await getUserByDiscordId(message.author.id)
+    if (!isUser(user)) {
       log('help.run Error | user:', true)
       log(user, true)
       throw 'issue with help, no user found.'

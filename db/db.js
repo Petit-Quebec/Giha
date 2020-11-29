@@ -1,7 +1,7 @@
 import { log } from '../util/util.js'
 import mongoose from 'mongoose'
-
-require('dotenv').config()
+import dotenv from 'dotenv'
+dotenv.config()
 
 let databaseBooted = false
 
@@ -240,7 +240,7 @@ function validateCollection(coll) {
 	// checks all entries in a collection against vallidation requirements of that collection
 }
 
-module.exports = {
+export default {
 	databaseReady,
 	mongoose,
 	getMonsterArray,

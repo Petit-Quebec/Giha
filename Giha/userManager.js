@@ -113,7 +113,7 @@ export const updateUserPermissionsById = async (id, permissions) => {
   }
 }
 
-export const isInitialized = async (id) => {
+export const isUserInitialized = async (id) => {
   let UserSearch = await db.getElementIn({ discordId: id }, 'Users')
 
   log(`checking if User with id ${id} is initialized..`)

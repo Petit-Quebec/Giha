@@ -9,7 +9,7 @@ const WEBSERVER_ENABLED = process.env.WEBSERVER_ENABLED == 1
 
 let webserverReady = false
 
-export const run = () => {
+const run = () => {
   if (WEBSERVER_ENABLED) {
     const webApp = express()
     const PORT = 3000
@@ -33,7 +33,7 @@ export const run = () => {
   }
 }
 
-export const isReady = () => {
+const isReady = () => {
   return webserverReady
 }
 
@@ -133,3 +133,8 @@ router.delete('/monsters', (request, response) => {
     }
   )
 })
+
+export default {
+	run,
+	isReady
+}

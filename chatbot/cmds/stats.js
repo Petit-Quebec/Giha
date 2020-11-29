@@ -1,5 +1,5 @@
 import { log } from '../../util/util.js'
-import heroManager from '../../Giha/heroManager.js'
+import { getHeroByName, getHeroById} from '../../Giha/heroManager.js'
 
 let name = 'stats'
 
@@ -32,10 +32,10 @@ export const run = async (bot, message, args) => {
     let hero
 
     if (args.length) {
-      hero = heroManager.getHeroByName(args[0])
+      hero = getHeroByName(args[0])
     } else {
       let id = message.author.id
-      hero = heroManager.getHeroById(id)
+      hero = getHeroById(id)
     }
     let txt
     // update reply and log it

@@ -1,5 +1,5 @@
 import { log } from '../../util/util.js'
-import heroManager from '../../Giha/heroManager.js'
+import { newHero } from '../../Giha/heroManager.js'
 
 let name = 'rise'
 
@@ -35,7 +35,7 @@ export const run = async (bot, message, args) => {
     let heroName = args[0]
     let id = message.author.id
 
-    let hero = heroManager.newHero(id, heroName)
+    let hero = newHero(id, heroName)
 
     // update reply and log it
     let txt = `${

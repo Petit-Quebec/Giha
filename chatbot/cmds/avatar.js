@@ -1,5 +1,5 @@
 // avatar.js
-module.exports.run = async (_bot, message) => {
+export const run = async (_bot, message) => {
   let msg = await message.channel.send('generating avatar...')
 
   await message.channel.send({
@@ -14,11 +14,11 @@ module.exports.run = async (_bot, message) => {
   msg.delete()
 }
 
-module.exports.help = {
+export const help = {
   name: 'avatar'
 }
 
-module.exports.permissions = {
+export const permissions = {
   userPermissions: {
     admin: true,
     dm: true,

@@ -93,7 +93,4 @@ const generateStaminaBar = (currentStam, maxStam) => {
   return text
 }
 
-// set module.exports so this file is usable from other files
-module.exports = {
-  encounterTextBlob
-}
+export default encounterTextBlob

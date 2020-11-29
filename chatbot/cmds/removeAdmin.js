@@ -1,6 +1,5 @@
-import { log } from '../../util/util.js'
-import userManager from '../../Giha/userManager.js'
-import util from '../../util/util.js'
+import { log, isUser } from '../../util/util.js'
+import { getUserByDiscordId } from '../../Giha/userManager.js'
 
 const name = 'removeAdmin'
 
@@ -33,8 +32,8 @@ export const run = async (bot, message, args) => {
     if (args.length != 1)
       throw `removeAdmin requires 1 argument (you provided ${args.length})`
     let discordId = args[0].slice(3, args[0].length - 1)
-    let user = await userManager.getUserByDiscordId(discordId)
-    if (!util.isUser(user)) {
+    let user = await getUserByDiscordId(discordId)
+    if (!isUser(user)) {
       throw `issue with removing admin from ${args[0]}, please tag the user you wish to give Xp to.`
     }
     // do the actual operation
