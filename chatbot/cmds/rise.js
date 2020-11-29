@@ -24,7 +24,7 @@ export const permissions = {
   }
 }
 
-export const run = async (bot, message, args) => {
+export const run = async (_bot, message, args) => {
   let msg = await message.channel.send('performing function...')
 
   // parse args and test them
