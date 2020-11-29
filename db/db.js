@@ -1,5 +1,5 @@
-const log = require('../util/util.js').log
-const mongoose = require('mongoose')
+import { log } from '../util/util.js'
+import mongoose from 'mongoose'
 
 require('dotenv').config()
 
@@ -77,7 +77,7 @@ function addEntry(newObj, collection) {
 				log(`ERROR adding entry to ${collection}, collection error`, true)
 				return log(err, true)
 			}
-			throw "Nick needs to remove validaiton code here, should be handled by 'the mongoose'"
+			throw 'Nick needs to remove validaiton code here, should be handled by \'the mongoose\''
 			let check = 0
 			if (check.length == 0) {
 				col.insertOne(newObj, (err, result) => {

@@ -3,8 +3,13 @@
   "version": "1.0.0",
   "description": "a tool for weaving worlds 1.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "dev": "nodemon --inspect server.js"
+    "dev": "nodemon --inspect server.js",
+    "lint": "eslint . --ext .js",
+    "lint-fix": "eslint . --ext .js --fix",
+    "pretty-fix": "prettier --write .",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -23,7 +28,11 @@
     "mongoose": "^5.9.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.14.0",
+    "jest": "^26.6.3",
+    "nodemon": "^2.0.4",
+    "prettier": "^2.2.1"
   },
   "nodemonConfig": {
     "comment": "chatbot/cmds/*.js",

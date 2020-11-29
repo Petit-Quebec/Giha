@@ -1,31 +1,33 @@
 // avatar.js
-module.exports.run = async(bot, message, args) => {
-	let msg = await message.channel.send("generating avatar...")
+module.exports.run = async (_bot, message) => {
+  let msg = await message.channel.send('generating avatar...')
 
-	await message.channel.send({files: [
-		{
-			attachment: message.author.displayAvatarURL,
-			name: "avatar.png"
-		}
-	]})
+  await message.channel.send({
+    files: [
+      {
+        attachment: message.author.displayAvatarURL,
+        name: 'avatar.png'
+      }
+    ]
+  })
 
-	msg.delete();
+  msg.delete()
 }
 
 module.exports.help = {
-	name: 'avatar'
+  name: 'avatar'
 }
 
 module.exports.permissions = {
-	userPermissions: {
-		admin: true,
-		dm: true,
-		player: true
-	},
-	locationPermissions: {
-		activeGuild: true,
-		passiveGuild: false,
-		inactiveGuild: false,
-		directMessage: true
-	}
+  userPermissions: {
+    admin: true,
+    dm: true,
+    player: true
+  },
+  locationPermissions: {
+    activeGuild: true,
+    passiveGuild: false,
+    inactiveGuild: false,
+    directMessage: true
+  }
 }

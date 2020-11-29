@@ -6,5 +6,5 @@
 // channels can be
 //  - not set up
 //  - set up as:
-//		0: TBD
-// 		1: TBD
+//  0: TBD
+//   1: TBD

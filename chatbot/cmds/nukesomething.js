@@ -1,27 +1,27 @@
-const log = require('../../util/util.js').log;
-const db = require('../../db/db.js')
+import { log } from '../../util/util.js'
+import db from '../../db/db.js'
 
-module.exports.help = {
-	name: 'nukesomething',
-	description: 'a very specific purpose'
+export const help = {
+  name: 'nukesomething',
+  description: 'a very specific purpose'
 }
 
-module.exports.permissions = {
-	userPermissions: {
-		admin: false,
-		dm: false,
-		player: false
-	},
-	locationPermissions: {
-		activeGuild: false,
-		passiveGuild: false,
-		inactiveGuild: false,
-		directMessage: false
-	}
+export const permissions = {
+  userPermissions: {
+    admin: false,
+    dm: false,
+    player: false
+  },
+  locationPermissions: {
+    activeGuild: false,
+    passiveGuild: false,
+    inactiveGuild: false,
+    directMessage: false
+  }
 }
 
-module.exports.run = async(bot, message, args) => {
-	db.deleteEntry({},'fasd').then(res => {
-		log(res,true);
-	})
+export const run = async () => {
+  db.deleteEntry({}, 'fasd').then((res) => {
+    log(res, true)
+  })
 }
