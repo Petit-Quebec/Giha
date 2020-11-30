@@ -1,34 +1,29 @@
-const Hero = require('../db/Hero.js')
+import Hero from '../db/Hero.js'
 let heroes = []
 
-function newHero(discordId, heroName) {
-	heroes.forEach((hero) => {
-		if (hero.name.equalsIgnoreCase(heroName))
-			throw `Fool! There is already a hero named '${
-				hero.name
-			}'! They are a proud ${hero.class} of level ${hero.getLevel()}`
-	})
+export const newHero = (discordId, heroName) => {
+  heroes.forEach((hero) => {
+    if (hero.name.equalsIgnoreCase(heroName))
+      throw `Fool! There is already a hero named '${
+        hero.name
+      }'! They are a proud ${hero.class} of level ${hero.getLevel()}`
+  })
 
-	let hero = new Hero(discordId, heroName)
-	heroes.push(hero)
-	return hero
+  let hero = new Hero(discordId, heroName)
+  heroes.push(hero)
+  return hero
 }
 
-function getHeroes() {
-	return heroes
+export const getHeroes = () => {
+  return heroes
 }
 
-const getHeroById = (id) => heroes.find((hero) => hero.userDiscordId === id) || false
+export const getHeroById = (id) =>
+  heroes.find((hero) => hero.userDiscordId === id) || false
 
-const getHeroByName = (name) => heroes.find((hero) => hero.name === name) || false
+export const getHeroByName = (name) =>
+  heroes.find((hero) => hero.name === name) || false
 
-String.prototype.equalsIgnoreCase = function (compareString) {
-	return this.toUpperCase() === compareString.toUpperCase()
-}
-
-module.exports = {
-	newHero,
-	getHeroes,
-	getHeroById,
-	getHeroByName
+String.prototype.equalsIgnoreCase = (compareString) => {
+  return this.toUpperCase() === compareString.toUpperCase()
 }

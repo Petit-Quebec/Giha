@@ -1,26 +1,25 @@
-const User = require('../../db/User.js');
-const log = require('../../util/util.js').log;
+import User from '../../db/User.js'
 
-module.exports.help = {
-	name: 'listUsers',
-	description: 'admin command for checking all Users'
+export const help = {
+  name: 'listUsers',
+  description: 'admin command for checking all Users'
 }
 
-module.exports.permissions = {
-	userPermissions: {
-		admin: true,
-		dm: false,
-		player: false
-	},
-	locationPermissions: {
-		activeGuild: false,
-		passiveGuild: false,
-		inactiveGuild: false,
-		directMessage: false
-	}
+export const permissions = {
+  userPermissions: {
+    admin: true,
+    dm: false,
+    player: false
+  },
+  locationPermissions: {
+    activeGuild: false,
+    passiveGuild: false,
+    inactiveGuild: false,
+    directMessage: false
+  }
 }
 
-module.exports.run = async(bot, message, args) => {
-	let txt = await User.listUsers();
-	let msg = await message.channel.send(txt);
+export const run = async (_bot, message) => {
+  let txt = await User.listUsers()
+  await message.channel.send(txt)
 }

@@ -1,36 +1,36 @@
-const log = require('../../util/util.js').log
-const userManager = require('../../Giha/userManager.js')
-const aggregations = require('../../Giha/aggregations.js')
+import { log } from '../../util/util.js'
+import { getUserByDiscordId } from '../../Giha/userManager.js'
+import { userStatsBlurb } from '../../Giha/aggregations.js'
 
-module.exports.help = {
-	name: 'adminStats',
-	description: 'admin command for checking all Characters',
+export const help = {
+  name: 'adminStats',
+  description: 'admin command for checking all Characters'
 }
 
-module.exports.permissions = {
-	userPermissions: {
-		admin: true,
-		dm: true,
-		player: true,
-	},
-	locationPermissions: {
-		activeGuild: false,
-		passiveGuild: false,
-		inactiveGuild: false,
-		directMessage: false,
-	},
+export const permissions = {
+  userPermissions: {
+    admin: true,
+    dm: true,
+    player: true
+  },
+  locationPermissions: {
+    activeGuild: false,
+    passiveGuild: false,
+    inactiveGuild: false,
+    directMessage: false
+  }
 }
 
-module.exports.run = async (bot, message, args) => {
-	let msg = await message.channel.send('generating stats...')
-	try {
-		let user = await userManager.getUserByDiscordId(message.author.id)
-		let txt = await aggregations.userStatsBlurb(user)
-		if (txt) msg.edit(txt)
-		else throw 'something went wrong!'
-	} catch (err) {
-		log('Error', true)
-		log(err, true)
-		msg.edit(err)
-	}
+export const run = async (_bot, message) => {
+  let msg = await message.channel.send('generating stats...')
+  try {
+    let user = await getUserByDiscordId(message.author.id)
+    let txt = await userStatsBlurb(user)
+    if (txt) msg.edit(txt)
+    else throw 'something went wrong!'
+  } catch (err) {
+    log('Error', true)
+    log(err, true)
+    msg.edit(err)
+  }
 }
