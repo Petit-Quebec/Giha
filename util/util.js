@@ -78,7 +78,7 @@ export const symDiff = (args) => {
 }
 
 export const name = (member) => {
-  return member.nickname ? member.nickname : member.author.username
+  return member.displayName ? member.displayName : member.author.username
 }
 
 export const isCharacter = (obj) => {

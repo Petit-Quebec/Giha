@@ -48,7 +48,7 @@ export const run = async (_bot, message, args) => {
   } catch (err) {
     // if there is a problem, log it and inform the user
     log(err, true)
-    let txt = `use the format ${exports.help.format}\n` + err
+    let txt = `use the format ${help.format}\n` + err
     msg.edit(txt)
   }
 }
