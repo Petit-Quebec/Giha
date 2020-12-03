@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/ngrayson/loom#readme",
   "dependencies": {
+    "babel-node": "^0.0.1-security",
     "discord.js": "^11.5.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
