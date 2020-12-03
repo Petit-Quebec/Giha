@@ -5,7 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon --exec babel-node --inspect server.js",
+    "babel-node": "babel-node --presets=latest",
+    "dev": "nodemon --exec npm run babel-node --inspect server.js",
     "lint": "eslint . --ext .js",
     "lint-fix": "eslint . --ext .js --fix && prettier --write .",
     "test": "jest --coverage"
@@ -21,7 +22,6 @@
   },
   "homepage": "https://github.com/ngrayson/loom#readme",
   "dependencies": {
-    "babel-node": "^0.0.1-security",
     "discord.js": "^11.5.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
