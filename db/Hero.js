@@ -4,6 +4,7 @@ let abilityLevelExpThresholds = [0, 10, 20, 30, 40, 50]
 
 let Hero = class Hero {
   constructor(userDiscordId, heroName) {
+    log(`a new hero is rising.... ${heroName}!`)
     this.createdAt = new Date()
     this.userDiscordId = userDiscordId
     this.name = heroName.charAt(0).toUpperCase() + heroName.slice(1)
