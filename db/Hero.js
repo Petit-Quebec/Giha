@@ -1,3 +1,5 @@
+import { log } from '../util/util.js'
+
 let abilityLevelExpThresholds = [0, 10, 20, 30, 40, 50]
 
 let Hero = class Hero {
