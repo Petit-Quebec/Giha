@@ -22,8 +22,8 @@ const LOCATION_TYPES = {
         walkable: true,
         translucent: false
     },          
-    C:{ // Crystal: can be seen through but not walked through
-        type: 'crystal',
+    O:{ // Obstacle: can be seen through but not walked through (ie crystal, ice, brambles, rapid waters?)
+        type: 'obstacle',
         walkable: false,
         translucent: true,
     },  
