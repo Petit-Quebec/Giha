@@ -4,7 +4,7 @@
 // const mongoose = db.mongoose
 
 // used for parsing string maps
-const LOCATION_TABLE = {
+const LOCATION_TYPES = {
     N:{ // Null: a non modifyable barrier at the edge of the map that
         type: 'null',
         walkable: false,
@@ -49,13 +49,14 @@ let InstanceLocation = class InstanceLocation {
     constructor ( locationTypeString )
     {
         let locationType = LOCATION_TYPES[ locationTypeString ]
-        if ( !locationType ) throw ( `${ locationTypeString } is not a valid location time >:O` )
+        if ( !locationType ) throw ( `"${ locationTypeString }" is not a valid location time >:O` )
         
         // some of these may be undefined for certain types 
         //  ie. special we do not define as walkable or opaque because it changes with zone
         this.type = locationType.type
         this.walkable = locationType.walkable //can walk through
-        this.opaque = locationType.translucent // can see through
+        this.translucent = locationType.translucent // can see through
+        this.breakable = locationType.breakable // can be broken
     }
 }
 
@@ -63,14 +64,15 @@ let InstanceLocation = class InstanceLocation {
 const parseLocations = (locStringArray) =>
 {
     let locationArray = [];    
-    locStringArray.array.forEach( row =>
+    locStringArray.forEach( row =>
     {
+        let locationRow = []
         row.forEach( locationString =>
         {
             let location = new InstanceLocation(locationString)
-            locationArray.push(location)
+            locationRow.push(location)
         })
-        
+        locationArray.push(locationRow)
     });
     return locationArray
 }
@@ -79,4 +81,4 @@ const parseLocations = (locStringArray) =>
 
 
 export default InstanceLocation
-export {parseLocations}
+export { parseLocations, LOCATION_TYPES }
