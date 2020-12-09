@@ -1,10 +1,23 @@
 import { log } from '../util/util.js'
+import instanceLocation from './instanceLocation.js'
+import { parseLocations } from './instanceLocation.js'
 // import db from './db.js'
 
 // const mongoose = db.mongoose
 
 let InstanceMap = class InstanceMap {
-    constructor(mapName,topography) {
+    constructor ( mapName, topography )
+    {
+        topography.array.forEach( locationRow =>
+        {
+            locationRow.forEach( location =>
+            {
+                
+                if ( !( location instanceof instanceLocation ) )
+                throw "instance maps must be made of instancelocations!!"
+            })
+            
+        });
         this.mapName = 'mapName'
         this.topography = topography //an array of instanceLocations
 
@@ -16,7 +29,7 @@ let InstanceMap = class InstanceMap {
 }
 
 const getTestInstance = () =>{
-    const testLocations =
+    const testLocationStrings =
         [
             ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'],
             ['N', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'N'],
@@ -37,9 +50,11 @@ const getTestInstance = () =>{
             ['N', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'T', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'N'],
             ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N']
         ]
-    let testInstance = new InstanceMap('Test Instance 0',testLocations)
+    let testLocations = parseLocations(testLocationStrings)
+    let testInstance = new InstanceMap( 'Test Instance 0', testLocations )
     return testInstance
 }
+
 
 export default InstanceMap
 export {getTestInstance}
