@@ -43,6 +43,14 @@ const LOCATION_TYPES = {
     breakable: false,
     destination: 'town'
   },
+  E: {
+    // Encounter: Where players encounter content
+    type: 'encounter',
+    walkable: true,
+    translucent: true,
+    breakable: false,
+    encounter: 'COMBAT WOMBAT'
+  },
   G: {
     // Ground: Where the player walks atop
     type: 'ground',
@@ -56,7 +64,7 @@ let InstanceLocation = class InstanceLocation {
   constructor(locationTypeString) {
     let locationType = LOCATION_TYPES[locationTypeString]
     if (!locationType)
-      throw `"${locationTypeString}" is not a valid location time >:O`
+      throw `"${locationTypeString}" is not a valid location type >:O`
 
     // some of these may be undefined for certain types
     //  ie. special we do not define as walkable or opaque because it changes with zone
@@ -65,6 +73,7 @@ let InstanceLocation = class InstanceLocation {
     this.translucent = locationType.translucent // can see through
     this.breakable = locationType.breakable // can be broken
     if (locationType.destination) this.destination = locationType.destination
+    if (locationType.encounter) this.encounter = locationType.encounter
     // descriptors
     // encounter
   }
@@ -75,10 +84,10 @@ const parseLocations = (locStringArray) => {
   let locationArray = []
   locStringArray.forEach((row) => {
     let locationRow = []
-    row.forEach((locationString) => {
-      let location = new InstanceLocation(locationString)
+    for (let index = 0; index < row.length; index++) {
+      let location = new InstanceLocation(row[index])
       locationRow.push(location)
-    })
+    }
     locationArray.push(locationRow)
   })
   return locationArray

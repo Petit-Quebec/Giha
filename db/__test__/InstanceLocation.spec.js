@@ -27,7 +27,7 @@ describe('Giha class - InstanceLocation', () => {
         "please don't make an instance location type with this name"
       )
     }).toThrow(
-      '"please don\'t make an instance location type with this name" is not a valid location time >:O'
+      '"please don\'t make an instance location type with this name" is not a valid location type >:O'
     )
   })
 
