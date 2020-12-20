@@ -1,5 +1,6 @@
 import { log } from '../util/util.js'
 import { getTestInstanceMap } from './InstanceMap.js'
+import Hero from './Hero.js'
 
 
 export default class Instance
@@ -15,9 +16,16 @@ export default class Instance
         this.party = []
     }
     
-    addPartyMember ( character )
+    addPartyMember ( hero )
     {
-        this.party.push( character )
-        return this.party.length
+        if ( hero instanceof Hero )
+        {
+            this.party.push( hero )
+            return this.party.length
+        }
+        else
+        {
+            throw "addPartyMember needs an object of instance Hero"
+        }
     }
 }
