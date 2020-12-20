@@ -1,5 +1,6 @@
 import { log } from '../util/util.js'
 import { getTestInstanceMap } from './InstanceMap.js'
+import InstanceMap from './InstanceMap.js'
 import Hero from './Hero.js'
 
 
@@ -9,10 +10,8 @@ export default class Instance
     {
         log('a new Instance was made!')
         this.map = getTestInstanceMap()
-        this.partyCoordinates = {
-            x: 0,
-            y: 0
-        }
+        this.floors = {floor1: this.map}
+        this.partyCoordinates = this.map.spawnLocationFrom()
         this.party = []
     }
     
@@ -27,5 +26,13 @@ export default class Instance
         {
             throw "addPartyMember needs an object of instance Hero"
         }
+    }
+
+    setMap ( map )
+    {
+        if ( !( map instanceof InstanceMap ) ) throw 'INSTANCE_ERROR: can only set a map to an InstanceMap'
+        this.map = map
+        this.partyCoordinates = map.spawnLocationFrom( 'town' )
+        return true
     }
 }

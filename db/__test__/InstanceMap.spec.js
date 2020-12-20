@@ -52,7 +52,7 @@ describe( 'Giha - testInstance', () =>
   it( 'should correctly provide the location of the entrance', () =>
   {
     let expected = {x: 16, y: 11}
-    expect(testInstanceMap.spawnLocation('town')).toStrictEqual(expected)
+    expect(testInstanceMap.spawnLocationFrom('town')).toStrictEqual(expected)
   })
 })
 

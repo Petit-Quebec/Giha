@@ -1,5 +1,6 @@
 import Instance from '../Instance.js'
 import Hero from '../Hero.js'
+import {getTestInstanceMap} from '../InstanceMap.js'
 describe( 'Giha class - Instance', () =>
 {
     it( 'should initialize an Instance when called', () =>
@@ -23,6 +24,22 @@ describe( 'Giha class - Instance', () =>
     {
         let testInstance = new Instance
         
-        expect( () => { testInstance.addPartyMember( 'Naruto' ) }).toThrow('addPartyMember needs an object of instance Hero')
-    })
+        expect( () => { testInstance.addPartyMember( 'Naruto' ) } )
+            .toThrow( 'addPartyMember needs an object of instance Hero' )
+    } )
+    it( 'should change maps as expected', () =>
+    {
+        let testInstance = new Instance
+
+        expect( testInstance.setMap( getTestInstanceMap() ) ).toBe( true )
+        expect(testInstance).toHaveProperty("partyCoordinates", {x: 16,y: 11})
+    } )
+    it( 'should throw an error if you try to set the map to something that isn\'t a map', () =>
+    {
+        let testInstance = new Instance
+
+        expect( () => { testInstance.setMap( 'Sasuke Uchiha' ) } )
+            .toThrow( 'INSTANCE_ERROR: can only set a map to an InstanceMap')
+    } )
+    
 })

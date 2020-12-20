@@ -36,7 +36,6 @@ let InstanceMap = class InstanceMap {
     for ( let rowIndex = 0; rowIndex < topoLength; rowIndex++)
     {
       let row = this.topography[ rowIndex ]
-      loopCount = 0
       while ( true )
       {
         let doorIndex = row.findIndex( location => location.type == 'door' )
@@ -49,15 +48,13 @@ let InstanceMap = class InstanceMap {
           if (door.destination == 'town') doorsToTown ++
           row = row.splice(doorIndex+1, row.length)
         }
-        if(loopCount>200) throw "INFINITE LOOOOPP in the map validator"
-        loopCount++
       }
     }
     if ( doorsToTown != 1 ) throw `INVALID MAP ERROR: each map needs exactly 1 door to town, this map has ${ doorsToTown }`
     return true;
   }
 
-  spawnLocation ( origin )
+  spawnLocationFrom ( origin )
   {
     let topoLength = this.topography.length
 
