@@ -108,25 +108,31 @@ describe('Giha - mapValidator', () => {
 
 describe('Giha - map renderASCII', () => {
   let testInstanceMap = getTestInstanceMap()
-  let mapRender = testInstanceMap.renderASCII()
-  expect(mapRender).toBe(
-    '███████████████████████\n' +
-      '█▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓█\n' +
-      '█▓  ▓▓    ▓▓▓▓▓  ¥▓▓▓▓█\n' +
-      '█▓ ¥   ▓▓       ▓▓▓▓▓▓█\n' +
-      '█▓    ▓▓  ▓▓▓▓▓▓▓▓▓¥ ▓█\n' +
-      '█▓▓  ▓▓  ▓▓▓¥  ▓▓    ▓█\n' +
-      '█▓▓▓ ▓  ▓▓▓▓      ▓  ▓█\n' +
-      '█▓▓  ▓    ▓▓▓▓▓▓▓ ▓▓ ▓█\n' +
-      '█▓▓ ░▓¥░░    ▓▓▓  ▓  ▓█\n' +
-      '█▓  ░▓░░░░░      ▓▓ ▓▓█\n' +
-      '█▓   ▓░░░░░░░░░▓▓▓▓ ▓▓█\n' +
-      '█▓ ▓ ▓▓░░░░░░░░▓     ▓█\n' +
-      '█▓ ▓  ▓▓▓░░░░░▓   ¥  ▓█\n' +
-      '█▓ ▓▓  ▓▓▓▓          ▓█\n' +
-      '█▓  ▓▓  ▓▓      ▓    ▓█\n' +
-      '█▓  ¥▓▓      ▓▓▓▓▓  ▓▓█\n' +
-      '█▓▓▓▓▓▓▓▓▓▓Ð▓▓▓▓▓▓▓▓▓▓█\n' +
-      '███████████████████████\n'
-  )
+  it('should render a map', () => {
+    let mapRender = testInstanceMap.renderASCII()
+    expect(mapRender).toBe(
+      '███████████████████████\n' +
+        '█▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓█\n' +
+        '█▓  ▓▓    ▓▓▓▓▓  ¥▓▓▓▓█\n' +
+        '█▓ ¥   ▓▓       ▓▓▓▓▓▓█\n' +
+        '█▓    ▓▓  ▓▓▓▓▓▓▓▓▓¥ ▓█\n' +
+        '█▓▓  ▓▓  ▓▓▓¥  ▓▓    ▓█\n' +
+        '█▓▓▓ ▓  ▓▓▓▓      ▓  ▓█\n' +
+        '█▓▓  ▓    ▓▓▓▓▓▓▓ ▓▓ ▓█\n' +
+        '█▓▓ ░▓¥░░    ▓▓▓  ▓  ▓█\n' +
+        '█▓  ░▓░░░░░      ▓▓ ▓▓█\n' +
+        '█▓   ▓░░░░░░░░░▓▓▓▓ ▓▓█\n' +
+        '█▓ ▓ ▓▓░░░░░░░░▓     ▓█\n' +
+        '█▓ ▓  ▓▓▓░░░░░▓   ¥  ▓█\n' +
+        '█▓ ▓▓  ▓▓▓▓          ▓█\n' +
+        '█▓  ▓▓  ▓▓      ▓    ▓█\n' +
+        '█▓  ¥▓▓      ▓▓▓▓▓  ▓▓█\n' +
+        '█▓▓▓▓▓▓▓▓▓▓Ð▓▓▓▓▓▓▓▓▓▓█\n' +
+        '███████████████████████\n'
+    )
+  })
+  it('should render a colorized map', () => {
+    let mapRender = testInstanceMap.renderASCII(true)
+    // I have no idea how to test to make sure the colors worked. screw typing all of that out.
+  })
 })

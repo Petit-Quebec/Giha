@@ -12,6 +12,7 @@ const LOCATION_TYPES = {
     translucent: false,
     breakable: false,
     ascii: '█',
+    coloredAscii: '\x1b[0m█\x1b[0m',
   },
   B: {
     // Block: a solid object which can not be walked through or seen Through
@@ -20,6 +21,7 @@ const LOCATION_TYPES = {
     translucent: false,
     breakable: true,
     ascii: '▓',
+    coloredAscii: '\x1b[0m▓\x1b[0m',
   },
   F: {
     // Fog: can be walked through but not seen through
@@ -27,6 +29,7 @@ const LOCATION_TYPES = {
     walkable: true,
     translucent: false,
     ascii: '©',
+    coloredAscii: '\x1b[2m©\x1b[0m',
   },
   O: {
     // Obstacle: can be seen through but not walked through (ie crystal, ice, brambles, rapid waters?)
@@ -34,11 +37,13 @@ const LOCATION_TYPES = {
     walkable: false,
     translucent: true,
     ascii: '░',
+    coloredAscii: '\x1b[34m░\x1b[0m',
   },
   S: {
     // Special: specific effect based on Location (water, lava, ice, acid, etc.)
     type: 'special',
     ascii: '¿',
+    coloredAscii: '\x1b[0m¿\x1b[0m',
   },
   D: {
     // Door: Where the player enters or leaves from (back to town, next level of the dungeon)
@@ -48,6 +53,7 @@ const LOCATION_TYPES = {
     breakable: false,
     destination: 'town',
     ascii: 'Ð',
+    coloredAscii: '\x1b[32mÐ\x1b[0m',
   },
   E: {
     // Encounter: Where players encounter content
@@ -57,6 +63,7 @@ const LOCATION_TYPES = {
     breakable: false,
     encounter: 'COMBAT WOMBAT',
     ascii: '¥',
+    coloredAscii: '\x1b[35m¥\x1b[0m',
   },
   G: {
     // Ground: Where the player walks atop
@@ -65,6 +72,7 @@ const LOCATION_TYPES = {
     translucent: true,
     breakable: false,
     ascii: ' ',
+    coloredAscii: '\x1b[0m \x1b[0m',
   },
 }
 
@@ -78,6 +86,7 @@ let InstanceLocation = class InstanceLocation {
     //  ie. special we do not define as walkable or opaque because it changes with zone
     this.type = locationType.type
     this.ascii = locationType.ascii
+    this.coloredAscii = locationType.coloredAscii
     this.walkable = locationType.walkable //can walk through
     this.translucent = locationType.translucent // can see through
     this.breakable = locationType.breakable // can be broken

@@ -25,11 +25,13 @@ let InstanceMap = class InstanceMap {
     return this.topography[x][y]
   }
 
-  renderASCII() {
+  renderASCII(colored) {
     let renderString = ''
     this.topography.forEach((row) => {
       row.forEach((location) => {
-        renderString += location.ascii
+        colored
+          ? (renderString += location.coloredAscii)
+          : (renderString += location.ascii)
       })
       renderString += '\n'
     })
