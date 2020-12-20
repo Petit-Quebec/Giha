@@ -25,6 +25,17 @@ let InstanceMap = class InstanceMap {
     return this.topography[x][y]
   }
 
+  renderASCII() {
+    let renderString = ''
+    this.topography.forEach((row) => {
+      row.forEach((location) => {
+        renderString += location.ascii
+      })
+      renderString += '\n'
+    })
+    return renderString
+  }
+
   validate() {
     // is it impossible to walk out of the map
     // make sure all the doors lead somewhere,
@@ -71,23 +82,23 @@ let InstanceMap = class InstanceMap {
 const getTestInstanceMap = () => {
   const testLocationStrings = [
     'NNNNNNNNNNNNNNNNNNNNNNN',
-    'NSSSSSSSSSSSSSSSSSSSSSN',
-    'NSGGSSGGGGSSSSSGGESSSSN',
-    'NSGEGGGSSGGGGGGGSSSSSSN',
-    'NSGGGGSSGGSSSSSSSSSEGSN',
-    'NSSGGSSGGSSSEGGSSGGGGSN',
-    'NSSSGSGGSSSSGGGGGGSGGSN',
-    'NSSGGSGGGGSSSSSSSGSSGSN',
-    'NSSGOSEOOGGGGSSSGGSGGSN',
-    'NSGGOSOOOOOGGGGGGSSGSSN',
-    'NSGGGSOOOOOOOOOSSSSGSSN',
-    'NSGSGSSOOOOOOOOSGGGGGSN',
-    'NSGSGGSSSOOOOOSGGGEGGSN',
-    'NSGSSGGSSSSGGGGGGGGGGSN',
-    'NSGGSSGGSSGGGGGGSGGGGSN',
-    'NSGGESSGGGGGGSSSSSGGSSN',
-    'NSSSSSSSSSSDSSSSSSSSSSN',
-    'NNNNNNNNNNNNNNNNNNNNNNN'
+    'NBBBBBBBBBBBBBBBBBBBBBN',
+    'NBGGBBGGGGBBBBBGGEBBBBN',
+    'NBGEGGGBBGGGGGGGBBBBBBN',
+    'NBGGGGBBGGBBBBBBBBBEGBN',
+    'NBBGGBBGGBBBEGGBBGGGGBN',
+    'NBBBGBGGBBBBGGGGGGBGGBN',
+    'NBBGGBGGGGBBBBBBBGBBGBN',
+    'NBBGOBEOOGGGGBBBGGBGGBN',
+    'NBGGOBOOOOOGGGGGGBBGBBN',
+    'NBGGGBOOOOOOOOOBBBBGBBN',
+    'NBGBGBBOOOOOOOOBGGGGGBN',
+    'NBGBGGBBBOOOOOBGGGEGGBN',
+    'NBGBBGGBBBBGGGGGGGGGGBN',
+    'NBGGBBGGBBGGGGGGBGGGGBN',
+    'NBGGEBBGGGGGGBBBBBGGBBN',
+    'NBBBBBBBBBBDBBBBBBBBBBN',
+    'NNNNNNNNNNNNNNNNNNNNNNN',
   ]
   let testLocations = parseLocations(testLocationStrings)
   let testInstance = new InstanceMap('Test Instance 0', testLocations)
