@@ -28,4 +28,45 @@ export default class Instance {
     this.partyCoordinates = map.spawnLocationFrom('town')
     return true
   }
+
+  move(direction) {
+    let x = this.partyCoordinates.x
+    let y = this.partyCoordinates.y
+    switch(direction) {
+      case 'up':
+        if(this.map.topography[x+1][y].walkable) {
+          this.partyCoordinates.x++
+          return this.partyCoordinates
+        }
+        else
+          return false
+        break
+      case 'down':
+        if(this.map.topography[x-1][y].walkable) {
+          this.partyCoordinates.x--
+          return this.partyCoordinates
+        }
+        else
+          return false
+        break
+      case 'left':
+        if(this.map.topography[x][y-1].walkable) {
+          this.partyCoordinates.y--
+          return this.partyCoordinates
+        }
+        else
+          return false
+        break
+      case 'right':
+        if(this.map.topography[x][y+1].walkable) {
+          this.partyCoordinates.y++
+          return this.partyCoordinates
+        }
+        else
+          return false
+        break
+      default:
+        throw 'you fucked up thats not a valid direction'
+    }
+  }
 }
