@@ -22,8 +22,41 @@ let InstanceMap = class InstanceMap {
   }
 
   getLocationAt(x, y) {
-    return this.topography[(x, y)]
+    return this.topography[x][y]
   }
+
+  validate ()
+  {
+    // is it impossible to walk out of the map
+    // make sure all the doors lead somewhere,
+    // that there is exactly one door that leads to town
+    let doorsToTown = 0
+    let loopCount = 0
+    let topoLength = this.topography.length
+    for ( let rowIndex = 0; rowIndex < topoLength; rowIndex++)
+    {
+      let row = this.topography[ rowIndex ]
+      loopCount = 0
+      while ( true )
+      {
+        let doorIndex = row.findIndex( location => location.type == 'door' )
+        if (doorIndex == -1)
+          break;
+        else // validate the door and continue the search 
+        {
+          let door = row[ doorIndex ]
+          if ( !door.destination ) throw `INVALID MAP ERROR: every door needs a destination but the door at ${ rowIndex },${ doorIndex } does not have one`
+          if (door.destination == 'town') doorsToTown ++
+          row = row.splice(doorIndex+1, row.length)
+        }
+        if(loopCount>200) throw "INFINITE LOOOOPP in the map validator"
+        loopCount++
+      }
+    }
+    if ( doorsToTown != 1 ) throw `INVALID MAP ERROR: each map needs exactly 1 door to town, this map has ${ doorsToTown }`
+    return true;
+  }
+
 }
 
 const getTestInstanceMap = () => {
@@ -52,10 +85,7 @@ const getTestInstanceMap = () => {
   return testInstance
 }
 
-const mapValidator = () => {
-  //make sure all the doors lead somewhere, etc.
-  return false
-}
+
 
 export default InstanceMap
-export { getTestInstanceMap, mapValidator }
+export { getTestInstanceMap}
