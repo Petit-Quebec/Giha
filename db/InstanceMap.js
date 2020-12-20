@@ -26,7 +26,7 @@ let InstanceMap = class InstanceMap {
   }
 }
 
-const getTestInstance = () => {
+const getTestInstanceMap = () => {
   const testLocationStrings = [
     'NNNNNNNNNNNNNNNNNNNNNNN',
     'NSSSSSSSSSSSSSSSSSSSSSN',
@@ -58,4 +58,4 @@ const mapValidator = () => {
 }
 
 export default InstanceMap
-export { getTestInstance, mapValidator }
+export { getTestInstanceMap, mapValidator }

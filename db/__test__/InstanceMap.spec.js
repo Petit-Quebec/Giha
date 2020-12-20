@@ -1,5 +1,5 @@
 import InstanceMap from '../InstanceMap.js'
-import { getTestInstance, mapValidator } from '../InstanceMap.js'
+import { getTestInstanceMap, mapValidator } from '../InstanceMap.js'
 import InstanceLocation from '../InstanceLocation.js'
 describe('Giha class - InstanceMap', () => {
   let testLocationArray
@@ -44,7 +44,7 @@ describe('Giha class - InstanceMap', () => {
 })
 describe('Giha - testInstance', () => {
   it('should provide a valid test instanceMap', () => {
-    let testInstance = getTestInstance()
+    let testInstance = getTestInstanceMap()
     expect(testInstance).toBeInstanceOf(InstanceMap)
   })
 })
