@@ -25,64 +25,47 @@ let InstanceMap = class InstanceMap {
     return this.topography[x][y]
   }
 
-  validate ()
-  {
+  validate() {
     // is it impossible to walk out of the map
     // make sure all the doors lead somewhere,
     // that there is exactly one door that leads to town
     let doorsToTown = 0
-    let loopCount = 0
     let topoLength = this.topography.length
-    for ( let rowIndex = 0; rowIndex < topoLength; rowIndex++)
-    {
-      let row = this.topography[ rowIndex ]
-      while ( true )
-      {
-        let doorIndex = row.findIndex( location => location.type == 'door' )
-        if (doorIndex == -1)
-          break;
-        else // validate the door and continue the search 
-        {
-          let door = row[ doorIndex ]
-          if ( !door.destination ) throw `INVALID MAP ERROR: every door needs a destination but the door at ${ rowIndex },${ doorIndex } does not have one`
-          if (door.destination == 'town') doorsToTown ++
-          row = row.splice(doorIndex+1, row.length)
-        }
+    for (let rowIndex = 0; rowIndex < topoLength; rowIndex++) {
+      let row = this.topography[rowIndex]
+      let doorIndex = row.findIndex((location) => location.type == 'door')
+      while (doorIndex != -1) {
+        let door = row[doorIndex]
+        if (!door.destination)
+          throw `INVALID MAP ERROR: every door needs a destination but the door at ${rowIndex},${doorIndex} does not have one`
+        if (door.destination == 'town') doorsToTown++
+        row = row.splice(doorIndex + 1, row.length)
+        doorIndex = row.findIndex((location) => location.type == 'door')
       }
     }
-    if ( doorsToTown != 1 ) throw `INVALID MAP ERROR: each map needs exactly 1 door to town, this map has ${ doorsToTown }`
-    return true;
+    if (doorsToTown != 1)
+      throw `INVALID MAP ERROR: each map needs exactly 1 door to town, this map has ${doorsToTown}`
+    return true
   }
 
-  spawnLocationFrom ( origin )
-  {
+  spawnLocationFrom(origin) {
     let topoLength = this.topography.length
 
-    for ( let rowIndex = 0; rowIndex < topoLength; rowIndex++)
-    {
-      let row = this.topography[ rowIndex ]
-      while ( true )
-      {
-        let doorIndex = row.findIndex( location => location.type == 'door' )
-        if (doorIndex == -1)
-          break;
-        else // validate the door and continue the search 
-        {
-          let door = row[ doorIndex ]
-          if ( door.destination == origin )
-          {
-            return { x: rowIndex, y: doorIndex}
-          }
-          else
-          {
-            row = row.splice(doorIndex+1, row.length)
-          }
+    for (let rowIndex = 0; rowIndex < topoLength; rowIndex++) {
+      let row = this.topography[rowIndex]
+      let doorIndex = row.findIndex((location) => location.type == 'door')
+      while (doorIndex != -1) {
+        let door = row[doorIndex]
+        if (door.destination == origin) {
+          return { x: rowIndex, y: doorIndex }
+        } else {
+          row = row.splice(doorIndex + 1, row.length)
         }
+        doorIndex = row.findIndex((location) => location.type == 'door')
       }
     }
-    return false;
+    return false
   }
-
 }
 
 const getTestInstanceMap = () => {
@@ -111,7 +94,5 @@ const getTestInstanceMap = () => {
   return testInstance
 }
 
-
-
 export default InstanceMap
-export { getTestInstanceMap}
+export { getTestInstanceMap }
