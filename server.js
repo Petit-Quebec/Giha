@@ -5,14 +5,15 @@ import db from './db/db.js'
 import chatbot from './chatbot/botserver.js'
 import webserver from './webserver/webserver.js'
 import readline from 'readline'
-import util from './util/util.js'
+import enableLog from './util/util.js'
 // import dbModify from './db/db_schema_modify.js'
 dotenv.config()
 
 const CHATBOT_ENABLED = process.env.CHATBOT_ENABLED == 1
 const CONSOLE_CHAT_OVERRIDE = process.env.CONSOLE_CHAT_OVERRIDE == 1
 const WEBSERVER_ENABLED = process.env.WEBSERVER_ENABLED == 1
-const CONSOLE_LOG_ENABLED = process.env.CONSOLE_LOG_ENABLED == 1
+
+if(process.env.CONSOLE_LOG_ENABLED == 1) enableLog()
 
 let serverState = 0
 
