@@ -41,11 +41,18 @@ describe('Giha class - InstanceMap', () => {
     map = new InstanceMap(testMapName, testLocationArray)
     expect(map.getLocationAt(0, 0) == testLocation)
   })
-})
-describe('Giha - testInstance', () => {
+} )
+
+describe( 'Giha - testInstance', () =>
+{
+  let testInstanceMap = getTestInstanceMap()
   it('should provide a valid test instanceMap', () => {
-    let testInstanceMap = getTestInstanceMap()
     expect(testInstanceMap).toBeInstanceOf(InstanceMap)
+  } )
+  it( 'should correctly provide the location of the entrance', () =>
+  {
+    let expected = {x: 16, y: 11}
+    expect(testInstanceMap.spawnLocation('town')).toStrictEqual(expected)
   })
 })
 

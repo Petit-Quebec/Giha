@@ -57,6 +57,35 @@ let InstanceMap = class InstanceMap {
     return true;
   }
 
+  spawnLocation ( origin )
+  {
+    let topoLength = this.topography.length
+
+    for ( let rowIndex = 0; rowIndex < topoLength; rowIndex++)
+    {
+      let row = this.topography[ rowIndex ]
+      while ( true )
+      {
+        let doorIndex = row.findIndex( location => location.type == 'door' )
+        if (doorIndex == -1)
+          break;
+        else // validate the door and continue the search 
+        {
+          let door = row[ doorIndex ]
+          if ( door.destination == origin )
+          {
+            return { x: rowIndex, y: doorIndex}
+          }
+          else
+          {
+            row = row.splice(doorIndex+1, row.length)
+          }
+        }
+      }
+    }
+    return false;
+  }
+
 }
 
 const getTestInstanceMap = () => {
