@@ -57,7 +57,7 @@ export const run = async (bot, message, args) => {
       message.channel.send('Smited!')
     }
   } else {
-    message.channel.send("you can't smite an uninitialized player")
+    message.channel.send('you can\'t smite an uninitialized player')
     log('Cannot assign role, player not initialized.')
   }
 }
