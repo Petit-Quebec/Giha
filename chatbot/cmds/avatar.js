@@ -6,28 +6,28 @@ export const run = async (_bot, message) => {
     files: [
       {
         attachment: message.author.displayAvatarURL,
-        name: 'avatar.png'
-      }
-    ]
+        name: 'avatar.png',
+      },
+    ],
   })
 
   msg.delete()
 }
 
 export const help = {
-  name: 'avatar'
+  name: 'avatar',
 }
 
 export const permissions = {
   userPermissions: {
     admin: true,
     dm: true,
-    player: true
+    player: true,
   },
   locationPermissions: {
     activeGuild: true,
     passiveGuild: false,
     inactiveGuild: false,
-    directMessage: true
-  }
+    directMessage: true,
+  },
 }

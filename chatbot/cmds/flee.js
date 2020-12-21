@@ -8,21 +8,21 @@ export const help = {
   name: name,
   description: 'lets you run away',
   format: '!flee',
-  note: 'uses first hero if none are specified'
+  note: 'uses first hero if none are specified',
 }
 
 export const permissions = {
   userPermissions: {
     admin: true,
     dm: true,
-    player: true
+    player: true,
   },
   locationPermissions: {
     activeGuild: true,
     passiveGuild: true,
     inactiveGuild: true,
-    directMessage: true
-  }
+    directMessage: true,
+  },
 }
 
 export const run = async (_bot, message) => {

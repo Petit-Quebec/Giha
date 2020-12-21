@@ -4,21 +4,21 @@ import { log } from '../../util/util.js'
 export const help = {
   name: 'initializeUsers',
   description:
-    'attempts to initialize all members of current guild with the correct role'
+    'attempts to initialize all members of current guild with the correct role',
 }
 
 export const permissions = {
   userPermissions: {
     admin: true,
     dm: false,
-    player: false
+    player: false,
   },
   locationPermissions: {
     activeGuild: true,
     passiveGuild: false,
     inactiveGuild: false,
-    directMessage: true
-  }
+    directMessage: true,
+  },
 }
 
 export const run = async (bot, message) => {
@@ -46,7 +46,7 @@ export const run = async (bot, message) => {
     const member = members.array()[memberIndex]
     let newPlayer = {
       discordHandle: member.nickname ? member.nickname : member.user.username,
-      discordId: member.id
+      discordId: member.id,
     }
 
     if (member.roles.some((role) => role.name == 'DnD Player')) {

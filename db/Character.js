@@ -31,11 +31,11 @@ let characterSchema = new mongoose.Schema(
     reputations: Object,
     isDead: Boolean,
     isDeleted: Boolean,
-    conditions: Object
+    conditions: Object,
   },
   {
     timestamps: true,
-    versionKey: 'version'
+    versionKey: 'version',
   }
 )
 
@@ -57,7 +57,7 @@ characterSchema.statics.newCharacter = (charObj) => {
             .then(() => {
               Character.find({
                 firstName: charObj.firstName,
-                lastName: charObj.lastName
+                lastName: charObj.lastName,
               }).then((res) => {
                 log(
                   `${greenCheck}new character '${res[0].firstName}' successfully made`,
@@ -198,7 +198,7 @@ const checkNewCharacter = async (charObj) => {
 
   let namePromise = Character.find({
     firstName: charObj.firstName,
-    lastName: charObj.lastName
+    lastName: charObj.lastName,
   })
     .then((res) => {
       log(
@@ -225,7 +225,7 @@ const checkNewCharacter = async (charObj) => {
     let res
     try {
       res = await Character.find({
-        nickName: charObj.nickName
+        nickName: charObj.nickName,
       })
     } catch (err) {
       if (err) {
@@ -318,7 +318,7 @@ const initializeFields = (charObj) => {
       typeof charObj.conditions == 'undefined' ? {} : charObj.conditions,
     userId: charObj.userId,
     isDead: false,
-    isDeleted: false
+    isDeleted: false,
   }
   return newCharObj
 }

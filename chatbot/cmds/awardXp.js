@@ -6,21 +6,21 @@ export const help = {
   name: 'awardXp',
   description: 'dm command for awarding xp to characters',
   format: '!awardXp @user <xpAmount>',
-  note: 'if xp is floating point, it will be rounded'
+  note: 'if xp is floating point, it will be rounded',
 }
 
 export const permissions = {
   userPermissions: {
     admin: true,
     dm: true,
-    player: false
+    player: false,
   },
   locationPermissions: {
     activeGuild: false,
     passiveGuild: false,
     inactiveGuild: false,
-    directMessage: false
-  }
+    directMessage: false,
+  },
 }
 
 export const run = async (bot, message, args) => {

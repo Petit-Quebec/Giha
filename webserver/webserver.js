@@ -93,12 +93,12 @@ router.put('/monsters', (request, response) => {
     {
       $set: {
         name: request.body.name,
-        special: request.body.special
-      }
+        special: request.body.special,
+      },
     },
     {
       sort: { _id: 1 },
-      upsert: true
+      upsert: true,
     }
   ).then(
     (result) => {
@@ -118,7 +118,7 @@ router.delete('/monsters', (request, response) => {
   db.deleteMonster(
     //query
     {
-      name: request.body.name
+      name: request.body.name,
     },
     //options
     {}
@@ -136,5 +136,5 @@ router.delete('/monsters', (request, response) => {
 
 export default {
   run,
-  isReady
+  isReady,
 }

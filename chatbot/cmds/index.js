@@ -49,5 +49,5 @@ export default {
   smite,
   stats,
   templateCmd,
-  testCharacter
+  testCharacter,
 }

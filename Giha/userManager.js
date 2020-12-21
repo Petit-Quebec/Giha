@@ -18,7 +18,7 @@ export const newUser = async (handle, connection) => {
   }
   let newUser = await User.newUser({
     handle: handle,
-    connections: connection
+    connections: connection,
   })
   return newUser
 }
@@ -47,16 +47,16 @@ export const initializeUser = (newUser) => {
 
           let newUserDoc = new User({
             name: {
-              first: 'name' in newUser ? newUser.name : 'null'
+              first: 'name' in newUser ? newUser.name : 'null',
             },
             connections: {
               discord: {
                 discord_handle:
                   'discordHandle' in newUser ? newUser.discordHandle : 'null',
-                discordId: newUser.discordId
-              }
+                discordId: newUser.discordId,
+              },
             },
-            is_active: true
+            is_active: true,
           })
 
           newUserDoc.save((err, user) => {
@@ -103,7 +103,7 @@ export const updateUserPermissionsById = async (id, permissions) => {
         typeof permissions.admin == 'boolean'
           ? permissions.admin
           : oldPerms.admin,
-      dm: typeof permissions.dm == 'boolean' ? permissions.dm : oldPerms.dm
+      dm: typeof permissions.dm == 'boolean' ? permissions.dm : oldPerms.dm,
     }
     return db.editEntry(
       'Users',

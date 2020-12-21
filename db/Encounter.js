@@ -53,7 +53,7 @@ let Encounter = class Encounter {
       died: died,
       enemyDamage: enemyDamage,
       enemyAttackName: this.enemy.attackName,
-      playerExp: this.playerExp
+      playerExp: this.playerExp,
     }
     return result
   }

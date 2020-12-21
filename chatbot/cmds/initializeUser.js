@@ -7,21 +7,21 @@ export const help = {
   name: name,
   description:
     'attempts to initialize a given member of current guild without doing a role check',
-  format: `!${name} @user`
+  format: `!${name} @user`,
 }
 
 export const permissions = {
   userPermissions: {
     admin: true,
     dm: true,
-    player: false
+    player: false,
   },
   locationPermissions: {
     activeGuild: true,
     passiveGuild: false,
     inactiveGuild: false,
-    directMessage: true
-  }
+    directMessage: true,
+  },
 }
 
 export const run = async (bot, message, args) => {
@@ -45,8 +45,8 @@ export const run = async (bot, message, args) => {
     let newUserConnection = {
       discord: {
         discordHandle: message.author.username,
-        discordId: discordId
-      }
+        discordId: discordId,
+      },
     }
     let res = await newUser(message.author.username, newUserConnection)
 

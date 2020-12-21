@@ -7,21 +7,21 @@ export const help = {
   name: name,
   description: 'a new Hero rises from the world of Redault!',
   format: `!${name} <heroName>`,
-  note: 'be brave, child'
+  note: 'be brave, child',
 }
 
 export const permissions = {
   userPermissions: {
     admin: true,
     dm: true,
-    player: true
+    player: true,
   },
   locationPermissions: {
     activeGuild: true,
     passiveGuild: true,
     inactiveGuild: true,
-    directMessage: true
-  }
+    directMessage: true,
+  },
 }
 
 export const run = async (_bot, message, args) => {

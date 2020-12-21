@@ -4,21 +4,21 @@ import { userStatsBlurb } from '../../Giha/aggregations.js'
 
 export const help = {
   name: 'adminStats',
-  description: 'admin command for checking all Characters'
+  description: 'admin command for checking all Characters',
 }
 
 export const permissions = {
   userPermissions: {
     admin: true,
     dm: true,
-    player: true
+    player: true,
   },
   locationPermissions: {
     activeGuild: false,
     passiveGuild: false,
     inactiveGuild: false,
-    directMessage: false
-  }
+    directMessage: false,
+  },
 }
 
 export const run = async (_bot, message) => {

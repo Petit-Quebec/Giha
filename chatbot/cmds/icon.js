@@ -7,9 +7,9 @@ export const run = async (_bot, message) => {
     files: [
       {
         attachment: message.author.guild.iconURL,
-        name: 'icon.png'
-      }
-    ]
+        name: 'icon.png',
+      },
+    ],
   })
 
   msg.delete()
@@ -17,19 +17,19 @@ export const run = async (_bot, message) => {
 
 export const help = {
   name: 'icon',
-  description: 'generates a the server icon and sends it to the user'
+  description: 'generates a the server icon and sends it to the user',
 }
 
 export const permissions = {
   userPermissions: {
     admin: true,
     dm: true,
-    player: true
+    player: true,
   },
   locationPermissions: {
     activeGuild: true,
     passiveGuild: false,
     inactiveGuild: false,
-    directMessage: false
-  }
+    directMessage: false,
+  },
 }

@@ -61,19 +61,19 @@ export const run = async (bot, message, args) => {
 export const help = {
   name: 'newPlayerCharacter',
   description:
-    'initializes new character\nsyntax:\n!newCharacter @<user> <fullName>'
+    'initializes new character\nsyntax:\n!newCharacter @<user> <fullName>',
 }
 
 export const permissions = {
   userPermissions: {
     admin: true,
     dm: true,
-    player: false
+    player: false,
   },
   locationPermissions: {
     activeGuild: true,
     passiveGuild: false,
     inactiveGuild: false,
-    directMessage: true
-  }
+    directMessage: true,
+  },
 }

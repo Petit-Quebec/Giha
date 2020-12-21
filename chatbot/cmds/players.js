@@ -3,21 +3,21 @@ import { log } from '../../util/util.js'
 
 export const help = {
   name: 'players',
-  description: 'prints out information about all registered players'
+  description: 'prints out information about all registered players',
 }
 
 export const permissions = {
   userPermissions: {
     admin: true,
     dm: true,
-    player: false
+    player: false,
   },
   locationPermissions: {
     activeGuild: true,
     passiveGuild: false,
     inactiveGuild: false,
-    directMessage: true
-  }
+    directMessage: true,
+  },
 }
 
 export const run = async (_bot, message) => {

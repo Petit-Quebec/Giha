@@ -1,7 +1,7 @@
 import { log } from '../../util/util.js'
 import {
   getEncountersByHero,
-  newEncounter
+  newEncounter,
 } from '../../Giha/encounterManager.js'
 
 let name = 'battle'
@@ -10,21 +10,21 @@ export const help = {
   name: name,
   description: 'glorious field of battle',
   format: '!battle <heroName>',
-  note: 'blahblah'
+  note: 'blahblah',
 }
 
 export const permissions = {
   userPermissions: {
     admin: true,
     dm: true,
-    player: true
+    player: true,
   },
   locationPermissions: {
     activeGuild: true,
     passiveGuild: true,
     inactiveGuild: true,
-    directMessage: true
-  }
+    directMessage: true,
+  },
 }
 
 export const run = async (bot, message, args) => {

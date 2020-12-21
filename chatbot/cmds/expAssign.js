@@ -5,23 +5,23 @@ let name = 'expAssign'
 
 export const help = {
   name: name,
-  description: 'Assigns experience to skill of player\'s choosing',
+  description: "Assigns experience to skill of player's choosing",
   format: `!${name} <skillName> <expAmount>`,
-  note: 'if xp is floating point, it will be rounded'
+  note: 'if xp is floating point, it will be rounded',
 }
 
 export const permissions = {
   userPermissions: {
     admin: true,
     dm: true,
-    player: true
+    player: true,
   },
   locationPermissions: {
     activeGuild: true,
     passiveGuild: true,
     inactiveGuild: true,
-    directMessage: true
-  }
+    directMessage: true,
+  },
 }
 
 export const run = async (bot, message, args) => {
