@@ -60,14 +60,14 @@ describe('Giha - instance renderASCII', () => {
         '█▓ ▓▓  ▓▓▓▓          ▓█\n' +
         '█▓  ▓▓  ▓▓      ▓    ▓█\n' +
         '█▓  ¥▓▓      ▓▓▓▓▓  ▓▓█\n' +
-        '█▓▓▓▓▓▓▓▓▓▓Ð▓▓▓▓▓▓▓▓▓▓█\n' +
+        '█▓▓▓▓▓▓▓▓▓▓@▓▓▓▓▓▓▓▓▓▓█\n' +
         '███████████████████████\n'
     )
   })
   it('should render a colorized map', () => {
     let mapRender = testInstance.renderASCII(true)
     expect(mapRender).toBeDefined()
-    // console.log(mapRender)
+    console.log(mapRender)
     // I have no idea how to test to make sure the colors worked. screw typing all of that out.
   })
 })
