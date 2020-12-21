@@ -39,7 +39,7 @@ let InstanceMap = class InstanceMap {
         if (!door.destination)
           throw `INVALID MAP ERROR: every door needs a destination but the door at ${rowIndex},${doorIndex} does not have one`
         if (door.destination == 'town') doorsToTown++
-        row = row.splice(doorIndex + 1, row.length)
+        row = row.slice(doorIndex + 1, row.length)
         doorIndex = row.findIndex((location) => location.type == 'door')
       }
     }
@@ -54,12 +54,14 @@ let InstanceMap = class InstanceMap {
     for (let rowIndex = 0; rowIndex < topoLength; rowIndex++) {
       let row = this.topography[rowIndex]
       let doorIndex = row.findIndex((location) => location.type == 'door')
+      let rowOffset = 0
       while (doorIndex != -1) {
         let door = row[doorIndex]
         if (door.destination == origin) {
-          return { x: rowIndex, y: doorIndex }
+          return { x: rowIndex, y: doorIndex + rowOffset }
         } else {
           row = row.slice(doorIndex + 1, row.length)
+          rowOffset += doorIndex + 1
         }
         doorIndex = row.findIndex((location) => location.type == 'door')
       }

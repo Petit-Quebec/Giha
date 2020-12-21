@@ -24,10 +24,10 @@ describe('Giha class - InstanceLocation', () => {
   it('should reject bad constructor arguments', () => {
     expect(() => {
       new InstanceLocation(
-        "please don't make an instance location type with this name"
+        'please dont make an instance location type with this name'
       )
     }).toThrow(
-      '"please don\'t make an instance location type with this name" is not a valid location type >:O'
+      '"please dont make an instance location type with this name" is not a valid location type >:O'
     )
   })
 

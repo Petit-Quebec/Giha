@@ -61,12 +61,14 @@ describe('Giha - spawnLocation', () => {
     let testLocation = new InstanceLocation('D')
     testLocation.destination = 'Konoha, the village hidden in the leaves'
     testInstanceMap.topography[16][14] = testLocation
-    console.log(testInstanceMap.topography[16])
     expect(
       testInstanceMap.spawnLocationFrom(
         'Konoha, the village hidden in the leaves'
       )
     ).toStrictEqual(expected)
+  })
+  it('should return false if no door in the map leads to that location', () => {
+    expect(testInstanceMap.spawnLocationFrom('Sunagakure')).toBe(false)
   })
 })
 

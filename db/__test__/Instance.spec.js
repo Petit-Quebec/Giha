@@ -30,7 +30,7 @@ describe('Giha class - Instance', () => {
     expect(testInstance.setMap(getTestInstanceMap())).toBe(true)
     expect(testInstance).toHaveProperty('partyCoordinates', { x: 16, y: 11 })
   })
-  it("should throw an error if you try to set the map to something that isn't a map", () => {
+  it('should throw an error if you try to set the map to something that isnt a map', () => {
     let testInstance = new Instance()
 
     expect(() => {
@@ -66,8 +66,8 @@ describe('Giha - instance renderASCII', () => {
   })
   it('should render a colorized map', () => {
     let mapRender = testInstance.renderASCII(true)
-    console.log(mapRender)
-
+    expect(mapRender).toBeDefined()
+    // console.log(mapRender)
     // I have no idea how to test to make sure the colors worked. screw typing all of that out.
   })
 })
