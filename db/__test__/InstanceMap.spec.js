@@ -48,9 +48,25 @@ describe('Giha - testInstance', () => {
   it('should provide a valid test instanceMap', () => {
     expect(testInstanceMap).toBeInstanceOf(InstanceMap)
   })
-  it('should correctly provide the location of the entrance', () => {
+})
+
+describe('Giha - spawnLocation', () => {
+  let testInstanceMap = getTestInstanceMap()
+  it('should correctly provide the location of the entrance in the test map', () => {
     let expected = { x: 16, y: 11 }
     expect(testInstanceMap.spawnLocationFrom('town')).toStrictEqual(expected)
+  })
+  it('should correctly provide the location of the entrance in the test map, even with extra doors', () => {
+    let expected = { x: 16, y: 14 }
+    let testLocation = new InstanceLocation('D')
+    testLocation.destination = 'Konoha, the village hidden in the leaves'
+    testInstanceMap.topography[16][14] = testLocation
+    console.log(testInstanceMap.topography[16])
+    expect(
+      testInstanceMap.spawnLocationFrom(
+        'Konoha, the village hidden in the leaves'
+      )
+    ).toStrictEqual(expected)
   })
 })
 
@@ -103,36 +119,5 @@ describe('Giha - mapValidator', () => {
     }).toThrow(
       'INVALID MAP ERROR: each map needs exactly 1 door to town, this map has 2'
     )
-  })
-})
-
-describe('Giha - map renderASCII', () => {
-  let testInstanceMap = getTestInstanceMap()
-  it('should render a map', () => {
-    let mapRender = testInstanceMap.renderASCII()
-    expect(mapRender).toBe(
-      '███████████████████████\n' +
-        '█▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓█\n' +
-        '█▓  ▓▓    ▓▓▓▓▓  ¥▓▓▓▓█\n' +
-        '█▓ ¥   ▓▓       ▓▓▓▓▓▓█\n' +
-        '█▓    ▓▓  ▓▓▓▓▓▓▓▓▓¥ ▓█\n' +
-        '█▓▓  ▓▓  ▓▓▓¥  ▓▓    ▓█\n' +
-        '█▓▓▓ ▓  ▓▓▓▓      ▓  ▓█\n' +
-        '█▓▓  ▓    ▓▓▓▓▓▓▓ ▓▓ ▓█\n' +
-        '█▓▓ ░▓¥░░    ▓▓▓  ▓  ▓█\n' +
-        '█▓  ░▓░░░░░      ▓▓ ▓▓█\n' +
-        '█▓   ▓░░░░░░░░░▓▓▓▓ ▓▓█\n' +
-        '█▓ ▓ ▓▓░░░░░░░░▓     ▓█\n' +
-        '█▓ ▓  ▓▓▓░░░░░▓   ¥  ▓█\n' +
-        '█▓ ▓▓  ▓▓▓▓          ▓█\n' +
-        '█▓  ▓▓  ▓▓      ▓    ▓█\n' +
-        '█▓  ¥▓▓      ▓▓▓▓▓  ▓▓█\n' +
-        '█▓▓▓▓▓▓▓▓▓▓Ð▓▓▓▓▓▓▓▓▓▓█\n' +
-        '███████████████████████\n'
-    )
-  })
-  it('should render a colorized map', () => {
-    let mapRender = testInstanceMap.renderASCII(true)
-    // I have no idea how to test to make sure the colors worked. screw typing all of that out.
   })
 })

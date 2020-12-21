@@ -7,7 +7,7 @@ describe('Giha class - Instance', () => {
     expect(testInstance).toBeInstanceOf(Instance)
     expect(testInstance).toHaveProperty('party', [])
     expect(testInstance).toHaveProperty('map')
-    expect(testInstance).toHaveProperty('partyCoordinates')
+    expect(testInstance).toHaveProperty('partyCoordinates', { x: 16, y: 11 })
   })
 
   it('should accept a Hero as a new party member', () => {
@@ -36,5 +36,38 @@ describe('Giha class - Instance', () => {
     expect(() => {
       testInstance.setMap('Sasuke Uchiha')
     }).toThrow('INSTANCE_ERROR: can only set a map to an InstanceMap')
+  })
+})
+
+describe('Giha - instance renderASCII', () => {
+  let testInstance = new Instance()
+  it('should render a map', () => {
+    let mapRender = testInstance.renderASCII()
+    expect(mapRender).toBe(
+      '███████████████████████\n' +
+        '█▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓█\n' +
+        '█▓  ▓▓    ▓▓▓▓▓  ¥▓▓▓▓█\n' +
+        '█▓ ¥   ▓▓       ▓▓▓▓▓▓█\n' +
+        '█▓    ▓▓  ▓▓▓▓▓▓▓▓▓¥ ▓█\n' +
+        '█▓▓  ▓▓  ▓▓▓¥  ▓▓    ▓█\n' +
+        '█▓▓▓ ▓  ▓▓▓▓      ▓  ▓█\n' +
+        '█▓▓  ▓    ▓▓▓▓▓▓▓ ▓▓ ▓█\n' +
+        '█▓▓ ░▓¥░░    ▓▓▓  ▓  ▓█\n' +
+        '█▓  ░▓░░░░░      ▓▓ ▓▓█\n' +
+        '█▓   ▓░░░░░░░░░▓▓▓▓ ▓▓█\n' +
+        '█▓ ▓ ▓▓░░░░░░░░▓     ▓█\n' +
+        '█▓ ▓  ▓▓▓░░░░░▓   ¥  ▓█\n' +
+        '█▓ ▓▓  ▓▓▓▓          ▓█\n' +
+        '█▓  ▓▓  ▓▓      ▓    ▓█\n' +
+        '█▓  ¥▓▓      ▓▓▓▓▓  ▓▓█\n' +
+        '█▓▓▓▓▓▓▓▓▓▓Ð▓▓▓▓▓▓▓▓▓▓█\n' +
+        '███████████████████████\n'
+    )
+  })
+  it('should render a colorized map', () => {
+    let mapRender = testInstance.renderASCII(true)
+    console.log(mapRender)
+
+    // I have no idea how to test to make sure the colors worked. screw typing all of that out.
   })
 })

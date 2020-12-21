@@ -8,7 +8,7 @@ export default class Instance {
     log('a new Instance was made!')
     this.map = getTestInstanceMap()
     this.floors = { floor1: this.map }
-    this.partyCoordinates = this.map.spawnLocationFrom()
+    this.partyCoordinates = this.map.spawnLocationFrom('town')
     this.party = []
   }
 
@@ -27,5 +27,19 @@ export default class Instance {
     this.map = map
     this.partyCoordinates = map.spawnLocationFrom('town')
     return true
+  }
+
+  renderASCII(colored) {
+    // console.log(this.map.topography[16][13])
+    let renderString = ''
+    this.map.topography.forEach((row) => {
+      row.forEach((location) => {
+        colored
+          ? (renderString += location.coloredAscii)
+          : (renderString += location.ascii)
+      })
+      renderString += '\n'
+    })
+    return renderString
   }
 }

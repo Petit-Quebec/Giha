@@ -25,19 +25,6 @@ let InstanceMap = class InstanceMap {
     return this.topography[x][y]
   }
 
-  renderASCII(colored) {
-    let renderString = ''
-    this.topography.forEach((row) => {
-      row.forEach((location) => {
-        colored
-          ? (renderString += location.coloredAscii)
-          : (renderString += location.ascii)
-      })
-      renderString += '\n'
-    })
-    return renderString
-  }
-
   validate() {
     // is it impossible to walk out of the map
     // make sure all the doors lead somewhere,
@@ -72,7 +59,7 @@ let InstanceMap = class InstanceMap {
         if (door.destination == origin) {
           return { x: rowIndex, y: doorIndex }
         } else {
-          row = row.splice(doorIndex + 1, row.length)
+          row = row.slice(doorIndex + 1, row.length)
         }
         doorIndex = row.findIndex((location) => location.type == 'door')
       }
@@ -103,8 +90,8 @@ const getTestInstanceMap = () => {
     'NNNNNNNNNNNNNNNNNNNNNNN',
   ]
   let testLocations = parseLocations(testLocationStrings)
-  let testInstance = new InstanceMap('Test Instance 0', testLocations)
-  return testInstance
+  let testInstanceMap = new InstanceMap('Test Instance 0', testLocations)
+  return testInstanceMap
 }
 
 export default InstanceMap
