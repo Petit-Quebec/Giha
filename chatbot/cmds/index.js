@@ -1,4 +1,5 @@
 import * as adminStats from './adminStats.js'
+import * as adventure from './adventure.js'
 import * as avatar from './avatar.js'
 import * as awardXp from './awardXp.js'
 import * as baseBattle from './baseBattle.js'
@@ -26,6 +27,7 @@ import * as testCharacter from './testCharacter.js'
 
 export default {
   adminStats,
+  adventure,
   avatar,
   awardXp,
   baseBattle,
@@ -49,5 +51,5 @@ export default {
   smite,
   stats,
   templateCmd,
-  testCharacter
+  testCharacter,
 }
