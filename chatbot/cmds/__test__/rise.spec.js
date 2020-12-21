@@ -8,15 +8,15 @@ describe('Bot cmds - rise', () => {
     mockEdit = jest.fn()
     mockMessage = {
       author: {
-        id: 1
+        id: 1,
       },
       channel: {
         send: jest.fn(() => {
           return {
-            edit: mockEdit
+            edit: mockEdit,
           }
-        })
-      }
+        }),
+      },
     }
   })
 

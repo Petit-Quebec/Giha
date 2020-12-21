@@ -35,7 +35,9 @@ const run = () => {
       )
       chatbotReady = true
       log('bot.commands:')
-      log(bot.commands)
+      bot.commands.forEach((command) => {
+        log(command.help.name)
+      })
       timeManager()
     })
 
@@ -100,5 +102,5 @@ const memberUpdate = (oldMember, newMember) => {
 export default {
   run,
   isReady,
-  checkSetup
+  checkSetup,
 }

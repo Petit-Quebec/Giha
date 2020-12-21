@@ -14,7 +14,7 @@ const MAX_HANDLE_LENGTH = 32
 const schemaOptions = {
   toJSON: { virtuals: true },
   timestamps: true,
-  versionKey: 'version'
+  versionKey: 'version',
 }
 
 const userSchema = new Schema(
@@ -22,9 +22,9 @@ const userSchema = new Schema(
     connections: {
       discord: {
         discordId: String,
-        discord_handle: String
+        discord_handle: String,
       },
-      google: String
+      google: String,
     },
     resonite: Number,
     isDeleted: Boolean,
@@ -34,10 +34,10 @@ const userSchema = new Schema(
     defaultCharacter: mongoose.ObjectId,
     name: {
       first: String,
-      last: String
+      last: String,
     },
     current_system: String,
-    scopes: []
+    scopes: [],
   },
   schemaOptions
 )
@@ -58,7 +58,7 @@ userSchema.statics.newUser = (userObj) => {
             .save()
             .then(() => {
               User.find({
-                handle: userObj.handle
+                handle: userObj.handle,
               }).then((res) => {
                 log(res, true)
                 log(
@@ -290,7 +290,7 @@ const checkNewUser = async (userObj) => {
   // check handle uniqueness
   if (userObj.handle) {
     let userFromHandle = await User.find({
-      handle: userObj.handle
+      handle: userObj.handle,
     })
     log(`User.checkNewUser User handle search for ${userObj.handle}:`)
     log(userFromHandle)
@@ -334,7 +334,7 @@ const initializeFields = (userObj) => {
         : userObj.current_system,
     connections:
       typeof userObj.connections == 'undefined' ? {} : userObj.connections,
-    scopes: typeof userObj.scopes == 'undefined' ? [] : userObj.scopes
+    scopes: typeof userObj.scopes == 'undefined' ? [] : userObj.scopes,
   }
 
   return newUserObj
@@ -353,7 +353,7 @@ export const findOrCreate = (profile) => {
     let provider = profile.provider
     let date = Date.now()
     let newUser = new User({
-      created_at: date
+      created_at: date,
     })
 
     // Oauth provider details

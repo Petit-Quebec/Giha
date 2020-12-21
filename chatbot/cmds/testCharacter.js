@@ -3,21 +3,21 @@ import { log } from '../../util/util.js'
 
 export const help = {
   name: 'testCharacter',
-  description: 'tests the character class'
+  description: 'tests the character class',
 }
 
 export const permissions = {
   userPermissions: {
     admin: true,
     dm: true,
-    player: false
+    player: false,
   },
   locationPermissions: {
     activeGuild: true,
     passiveGuild: false,
     inactiveGuild: false,
-    directMessage: true
-  }
+    directMessage: true,
+  },
 }
 
 export const run = async (_bot, message) => {
@@ -28,7 +28,7 @@ export const run = async (_bot, message) => {
   try {
     character = await Character.find({
       firstName: 'Sansbar',
-      lastName: 'Illyn'
+      lastName: 'Illyn',
     })
   } catch (err) {
     log(err, true)
@@ -51,7 +51,7 @@ const createSansBar = async (message) => {
   try {
     res = await Character.newCharacter({
       firstName: 'Sansbar',
-      lastName: 'Illyn'
+      lastName: 'Illyn',
     })
   } catch (err) {
     log(err, true)

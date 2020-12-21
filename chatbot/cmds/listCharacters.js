@@ -2,21 +2,21 @@ import Character from '../../db/Character.js'
 
 export const help = {
   name: 'listCharacters',
-  description: 'admin command for checking all Characters'
+  description: 'admin command for checking all Characters',
 }
 
 export const permissions = {
   userPermissions: {
     admin: true,
     dm: false,
-    player: false
+    player: false,
   },
   locationPermissions: {
     activeGuild: false,
     passiveGuild: false,
     inactiveGuild: false,
-    directMessage: false
-  }
+    directMessage: false,
+  },
 }
 
 export const run = async (_bot, message) => {

@@ -8,21 +8,21 @@ export const help = {
   name: name,
   description: 'templated command to be copied to new commands',
   format: `!${name} @user <numberAmount>`,
-  note: 'if xp is floating point, it will be rounded'
+  note: 'if xp is floating point, it will be rounded',
 }
 
 export const permissions = {
   userPermissions: {
     admin: false,
     dm: false,
-    player: false
+    player: false,
   },
   locationPermissions: {
     activeGuild: false,
     passiveGuild: false,
     inactiveGuild: false,
-    directMessage: false
-  }
+    directMessage: false,
+  },
 }
 
 export const run = async (bot, message, args) => {

@@ -18,7 +18,7 @@ const levelThresholds = [
   225000,
   265000,
   305000,
-  355000
+  355000,
 ]
 
 const classList = [
@@ -34,7 +34,7 @@ const classList = [
   'Rogue',
   'Sorcerer',
   'Warlock',
-  'Wizard'
+  'Wizard',
 ]
 
 const subclassList = ['N/A', 'Arcane Trickster']
@@ -42,5 +42,5 @@ const subclassList = ['N/A', 'Arcane Trickster']
 export default {
   levelThresholds,
   classList,
-  subclassList
+  subclassList,
 }

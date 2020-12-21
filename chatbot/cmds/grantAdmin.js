@@ -7,21 +7,21 @@ export const help = {
   name: name,
   description: 'Grants a target user admin powers',
   format: `!${name} @user`,
-  note: 'can only be ran by server lord'
+  note: 'can only be ran by server lord',
 }
 
 export const permissions = {
   userPermissions: {
     admin: false,
     dm: false,
-    player: false
+    player: false,
   },
   locationPermissions: {
     activeGuild: false,
     passiveGuild: false,
     inactiveGuild: false,
-    directMessage: false
-  }
+    directMessage: false,
+  },
 }
 
 export const run = async (bot, message, args) => {

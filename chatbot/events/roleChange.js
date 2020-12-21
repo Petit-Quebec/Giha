@@ -36,7 +36,7 @@ const newPlayerRole = async (playerName, discordId) => {
   }
   initializeUser({
     discordHandle: playerName,
-    discordId: discordId
+    discordId: discordId,
   })
     .then(() => {
       log(`player ${playerName} initialized`, true)

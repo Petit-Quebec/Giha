@@ -116,7 +116,7 @@ const parseGuilds = (connectedGuilds, initializedGuilds) => {
       passiveGuilds.push({
         id: connectedGuild.id,
         name: connectedGuild.name,
-        type: 'N/A'
+        type: 'N/A',
       })
     }
   })

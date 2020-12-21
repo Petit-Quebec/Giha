@@ -15,20 +15,20 @@ let Hero = class Hero {
       {
         name: 'Pick',
         exp: 0,
-        lvl: 1
+        lvl: 1,
       },
       {
         name: 'Axe',
         exp: 0,
         lvl: 1,
-        damage: 1
+        damage: 1,
       },
       {
         name: 'Hardy',
         exp: 0,
         lvl: 1,
-        staminaMax: 10
-      }
+        staminaMax: 10,
+      },
     ]
   }
   statsBlob() {
@@ -70,7 +70,7 @@ let Hero = class Hero {
     }
     let res = {
       timesLeveled: 0,
-      expToLevel: 0
+      expToLevel: 0,
     }
     let ability = this.abilities.find((ability) => ability.name === abilityName)
     if (!ability) {

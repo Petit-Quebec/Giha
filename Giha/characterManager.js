@@ -14,7 +14,7 @@ export const newPlayerCharacter = async (firstName, lastName, userId) => {
   let newChar = await Character.newCharacter({
     firstName: firstName,
     lastName: lastName,
-    userId: userId
+    userId: userId,
   })
 
   log('checking default character for user..', true)

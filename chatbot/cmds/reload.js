@@ -7,21 +7,21 @@ export const help = {
   name: name,
   description: 'command used to reload bot Commands',
   format: `!${name}`,
-  note: ''
+  note: '',
 }
 
 export const permissions = {
   userPermissions: {
     admin: false,
     dm: false,
-    player: false
+    player: false,
   },
   locationPermissions: {
     activeGuild: false,
     passiveGuild: false,
     inactiveGuild: false,
-    directMessage: false
-  }
+    directMessage: false,
+  },
 }
 
 export const run = async (bot, message) => {

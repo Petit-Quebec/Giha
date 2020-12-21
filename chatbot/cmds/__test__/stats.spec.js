@@ -10,15 +10,15 @@ describe('Bot cmds - stats', () => {
     mockEdit = jest.fn()
     mockMessage = {
       author: {
-        id: 1
+        id: 1,
       },
       channel: {
         send: jest.fn(() => {
           return {
-            edit: mockEdit
+            edit: mockEdit,
           }
-        })
-      }
+        }),
+      },
     }
   })
 
@@ -44,7 +44,7 @@ describe('Bot cmds - stats', () => {
 
   it('should print stats if you have a hero', async () => {
     getHeroById.mockReturnValue({
-      statsBlob: jest.fn(() => 'Mock Hero Stats Blob')
+      statsBlob: jest.fn(() => 'Mock Hero Stats Blob'),
     })
 
     await run(null, mockMessage, [])

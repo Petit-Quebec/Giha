@@ -8,21 +8,21 @@ export const help = {
   description:
     'help command, informs user of their role and available commands',
   format: `!${name}`,
-  note: 'still only works for registered players and above'
+  note: 'still only works for registered players and above',
 }
 
 export const permissions = {
   userPermissions: {
     admin: true,
     dm: true,
-    player: true
+    player: true,
   },
   locationPermissions: {
     activeGuild: true,
     passiveGuild: true,
     inactiveGuild: true,
-    directMessage: true
-  }
+    directMessage: true,
+  },
 }
 
 export const run = async (bot, message) => {

@@ -2,14 +2,13 @@ const BAR_WIDTH = 50
 
 const BAR_PLUS = '\x1b[36m' + '+'.repeat(BAR_WIDTH) + '\x1b[0m'
 const BAR_SINGLE = '\x1b[36m' + '-'.repeat(BAR_WIDTH) + '\x1b[0m'
-const BAR_DOUBLE = '\x1b[36m' + '='.repeat( BAR_WIDTH ) + '\x1b[0m'
+const BAR_DOUBLE = '\x1b[36m' + '='.repeat(BAR_WIDTH) + '\x1b[0m'
 
-let CONSOLE_LOG_ENABLED = false;
+let CONSOLE_LOG_ENABLED = false
 
 export const greenCheck = '\x1b[32m✓\x1b[0m'
 
-export const enableLog = () =>
-{
+export const enableLog = () => {
   CONSOLE_LOG_ENABLED = true
 }
 
@@ -17,11 +16,8 @@ export const sleep = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-export const log = ( str, logToFile ) =>
-{
-  if ( logToFile )
-  {
-    
+export const log = (str, logToFile) => {
+  if (logToFile) {
     //  write to file
   }
   // write to verbose log channel in admin server

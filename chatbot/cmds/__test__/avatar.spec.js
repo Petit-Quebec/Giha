@@ -8,13 +8,13 @@ describe('Bot cmds - avatar', () => {
       channel: {
         send: jest.fn(() => {
           return {
-            delete: mockDelete
+            delete: mockDelete,
           }
-        })
+        }),
       },
       author: {
-        displayAvatarURL: mockUrl
-      }
+        displayAvatarURL: mockUrl,
+      },
     }
   })
 
@@ -36,9 +36,9 @@ describe('Bot cmds - avatar', () => {
       files: [
         {
           attachment: mockUrl,
-          name: 'avatar.png'
-        }
-      ]
+          name: 'avatar.png',
+        },
+      ],
     })
   })
 })

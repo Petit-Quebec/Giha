@@ -3,21 +3,21 @@ import { userStatsBlurb } from '../../Giha/aggregations.js'
 
 export const help = {
   name: 'setMain',
-  description: 'command for designating a character as your main character'
+  description: 'command for designating a character as your main character',
 }
 
 export const permissions = {
   userPermissions: {
     admin: true,
     dm: true,
-    player: true
+    player: true,
   },
   locationPermissions: {
     activeGuild: false,
     passiveGuild: false,
     inactiveGuild: false,
-    directMessage: false
-  }
+    directMessage: false,
+  },
 }
 
 export const run = async (_bot, message) => {
