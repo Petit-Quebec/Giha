@@ -7,6 +7,7 @@ import { checkGuilds } from './guildManager.js'
 import { newRole, removedRole } from './events/roleChange.js' // if more events are added this should be abstracted out
 import nameChange from './events/nameChange.js'
 import timeManager from './timeManager.js'
+import parseReaction from './reactionParser.js'
 
 dotenv.config({ path: '/../.env' })
 const CHATBOT_ENABLED = process.env.CHATBOT_ENABLED == 1
@@ -47,6 +48,10 @@ const run = () => {
 
     bot.on('guildMemberUpdate', (oldMember, newMember) => {
       memberUpdate(oldMember, newMember)
+    })
+
+    bot.on('messageReactionAdd', (bot, messageReaction, user) => {
+      parseReaction(messageReaction, user)
     })
 
     bot.on('error', (err) => {
