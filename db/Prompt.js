@@ -1,5 +1,4 @@
 import { TextChannel, DMChannel, Client } from 'discord.js'
-import { message } from '../chatbot/messageParser.js'
 import ResponseAction from './ResponseAction.js'
 // a class that lets the bot manage asking questions and receiving information
 // ie. send a message, react to itself, deal with responses
@@ -65,10 +64,7 @@ let Prompt = class Prompt {
         //save the message as part of the prompt
         this.message = res
         // if this prompt has emoji responseActions, add those options for the user
-        this.responseActions.forEach((responseAction) => {
-          if (responseAction.triggerType == 'emoji')
-            res.react(responseAction.trigger)
-        })
+        this.addReactionButtons()
       })
       .catch((err) => {
         throw err
@@ -94,6 +90,59 @@ let Prompt = class Prompt {
     })
     return false
   }
+
+  /**
+   * Delete the prompt
+   * removes pointers to responseActions
+   * returns the promise for deleting the message
+   */
+  delete() {
+    this.responseActions.forEach((responseAction) => {
+      responseAction = null
+    })
+    return this.message.delete()
+  }
+
+  /**
+   * adds any reactions that are used by responseActions
+   * returns an array of promises to add the reactions
+   */
+  addReactionButtons() {
+    let promises = []
+    this.responseActions.forEach((responseAction) => {
+      if (responseAction.triggerType == 'emoji') {
+        promises.push(this.message.react(responseAction.trigger))
+      }
+    })
+    return promises
+  }
+  /**
+   * removes all reactions from the message
+   */
+  cleanReactions() {
+    return this.message.reactions.removeAll()
+  }
+  /**
+   * removes all reactions and adds default reactions
+   * returns the same promise as adding reactions
+   */
+  refreshReactions() {
+    return new Promise((resolve, reject) => {
+      this.cleanReactions()
+        .then(() => {
+          this.addReactionButtons()
+            .then((res) => {
+              resolve(res)
+            })
+            .catch((err) => {
+              reject(err)
+            })
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    })
+  }
 }
 
-export default Conversation
+export default Prompt
