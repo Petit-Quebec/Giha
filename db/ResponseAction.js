@@ -17,8 +17,8 @@ let ResponseAction = class ResponseAction {
     // check types, etc.
     if (triggerType != 'emoji' && triggerType != 'message')
       throw `ResponseAction Constructor Error: triggerType can be either 'emoji' or 'message', not '${triggerType}'`
-    if (typeof trigger != 'String')
-      throw `ResponseAction Constructor Error: trigger must be of type string, either a message or an emoji id, not '${typeof trigger}'`
+    if (!trigger instanceof Emoji)
+      throw `ResponseAction Constructor Error: trigger must be an instance of Discord Emoji, not '${typeof trigger}'`
     if (typeof action != 'Function')
       throw `ResponseAction Constructor Error: action must be a callback function, not ${typeof action}`
 
