@@ -2,8 +2,8 @@ import Prompt from '../Prompt'
 import { Client, DMChannel, Emoji, TextChannel } from 'discord.js'
 
 describe('Giha class - Prompt', () => {
-  let testClient = MockClient
-  let testTextChannel = MockTextChannel
+  let testClient = jest.mock(Client)
+  let testTextChannel = jest.mock(TextChannel)
   // let testDMChannel = new DMChannel(testClient, {})
   let testIsReusable = true
   let testResponseAction = new jest.mock('./ResponseAction')
