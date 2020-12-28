@@ -15,11 +15,11 @@ let ResponseAction = class ResponseAction {
    */
   constructor(triggerType, trigger, action) {
     // check types, etc.
-    if (triggerType != 'emoji' && triggerType != 'message')
+    if (triggerType != 'emoji')
       throw `ResponseAction Constructor Error: triggerType can be either 'emoji' or 'message', not '${triggerType}'`
-    if (!trigger instanceof Emoji)
+    if (!(trigger instanceof Emoji))
       throw `ResponseAction Constructor Error: trigger must be an instance of Discord Emoji, not '${typeof trigger}'`
-    if (typeof action != 'Function')
+    if (typeof action != 'function')
       throw `ResponseAction Constructor Error: action must be a callback function, not ${typeof action}`
 
     if (triggerType == 'emoji') {
@@ -37,3 +37,5 @@ let ResponseAction = class ResponseAction {
     this.action(userId)
   }
 }
+
+export default ResponseAction
