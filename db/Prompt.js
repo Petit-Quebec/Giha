@@ -57,6 +57,7 @@ let Prompt = class Prompt {
     this.channel = channel
     this.client = client
     this.message
+    this.reactionCollector
     // everything is set up, now send the message
     channel
       .send(msgContent, msgOptions)
@@ -65,30 +66,19 @@ let Prompt = class Prompt {
         this.message = res
         // if this prompt has emoji responseActions, add those options for the user
         this.addReactionButtons()
+        this.reactCollector = reactCollector(res, reactFilter())
+
+        this.reactCollector.on('collect', (reaction, user) => {
+          let userReaction = collected.array()[0]._emoji
+          this.trigger(user, userReaction)
+        })
+        this.reactCollector.on('end', () => {
+          this.delete()
+        })
       })
       .catch((err) => {
         throw err
       })
-  }
-
-  /**
-   * Trigger ay relevant responseAction
-   * @param {string} userId - the userId string
-   * @param {string} emoji - the emojiId string
-   * returns true if there was a match,
-   * otherwise returns false
-   */
-  trigger(userId, emojiId) {
-    // check to see if this trigger matches any that we expect
-    this.responseActions.forEach((responseAction) => {
-      if (
-        responseAction.triggerType == 'emoji' &&
-        responseAction.trigger == emojiId
-      )
-        responseAction.act(userId)
-      return true
-    })
-    return false
   }
 
   /**
@@ -116,6 +106,27 @@ let Prompt = class Prompt {
     })
     return promises
   }
+
+  /**
+   * Trigger ay relevant responseAction
+   * @param {string} userId - the userId string
+   * @param {string} emoji - the emojiId string
+   * returns true if there was a match,
+   * otherwise returns false
+   */
+  trigger(userId, emojiId) {
+    // check to see if this trigger matches any that we expect
+    this.responseActions.forEach((responseAction) => {
+      if (
+        responseAction.triggerType == 'emoji' &&
+        responseAction.trigger == emojiId
+      )
+        responseAction.act(userId)
+      return true
+    })
+    return false
+  }
+
   /**
    * removes all reactions from the message
    */
@@ -143,6 +154,20 @@ let Prompt = class Prompt {
         })
     })
   }
+}
+
+const reactFilter = (responseActions, reaction, user) => {
+  let emojiList = []
+  responseActions.forEach((responseAction) => {
+    if (responseAction.triggerType == 'emoji')
+      emojiList.push(responseAction.trigger)
+  })
+  return emojiList.includes(reaction.emoji.name) && !user.bot
+}
+
+const reactCollector = (message, filter) => {
+  const collector = message.createReactionCollector(filter)
+  return collector
 }
 
 export default Prompt
