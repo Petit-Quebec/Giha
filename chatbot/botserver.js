@@ -50,10 +50,6 @@ const run = () => {
       memberUpdate(oldMember, newMember)
     })
 
-    bot.on('messageReactionAdd', (bot, messageReaction, user) => {
-      parseReaction(messageReaction, user)
-    })
-
     bot.on('error', (err) => {
       log('\x1b[31m', true)
       log(err.error, true)
