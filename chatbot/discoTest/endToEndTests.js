@@ -167,20 +167,40 @@ const resolveTest = () => {
 }
 
 const logResults = () => {
+  let passingSuites = -1 // it gets incremented once in the beginning okay?
+  let suitePass = true
+  let passingTests = 0
   let resultBlurb = ''
   let resultSuiteIndex = 0
   testReport.forEach((test) => {
     if (test.testSuite + 1 > resultSuiteIndex) {
       resultSuiteIndex++
       resultBlurb += `Test Suite ${resultSuiteIndex}/${numTestSuites}\n`
+      // if the suite passed add 1 to passing suites, if not, reset teh variable
+      suitePass ? passingSuites++ : (suitePass = true)
     }
     resultBlurb += ` Test #${test.testNum} `
     if (test.result == 'fail') {
       resultBlurb += '\x1b[30m\x1b[41mFAIL\x1b[0m\n'
       resultBlurb += '\x1b[31m  ERROR:\x1b[0m\n'
-      resultBlurb += test.error
-    } else resultBlurb += '\x1b[30m\x1b[42mPASS\x1b[0m\n'
+      resultBlurb += test.error + '\n'
+      suitePass = false
+    } else {
+      resultBlurb += '\x1b[30m\x1b[42mPASS\x1b[0m\n'
+      passingTests++
+    }
   })
+  resultBlurb += '===================\n'
+  resultBlurb += '\x1b[1mTest Suites: '
+  passingSuites < resultSuiteIndex
+    ? (resultBlurb += '\x1b[31m')
+    : (resultBlurb += '\x1b[32m')
+  resultBlurb += `${passingSuites} passed\x1b[0m, ${resultSuiteIndex} total\n`
+  resultBlurb += `\x1b[1mTests: `
+  passingTests < testReport.length
+    ? (resultBlurb += '\x1b[31m')
+    : (resultBlurb += '\x1b[32m')
+  resultBlurb += `${passingTests} passed,\x1b[0m ${testReport.length} total`
   console.log(resultBlurb)
 }
 
