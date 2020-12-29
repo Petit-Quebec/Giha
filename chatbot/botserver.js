@@ -100,8 +100,13 @@ const memberUpdate = (oldMember, newMember) => {
   // if DnD player role was removed, mark player as inactive.
 }
 
+const shutdown = () => {
+  return bot.destroy()
+}
+
 export default {
   run,
   isReady,
   checkSetup,
+  shutdown,
 }
