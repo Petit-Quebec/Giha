@@ -16,35 +16,43 @@ const testState = {
   booting: 1,
   testing: 2,
   switching: 3,
-  shutdown: 4,
+  wrapUp: 4,
 }
 // test suite state monitor
 //  startup | initializing bots
 //  booting | both bots are coming online, only a matter of time
 //  testing | tests are actively being ran
 //switching | switching from one test to the next
-// shutdown | tests are complete, bots are spinning down
+// wrapUp | tests are complete, bots are spinning down
 let testStatus
 
-let numTests
+let numTestSuites
 let testIndex = 0
-let testReport = ''
+let testSuiteIndex = 0
+let testReport = []
 
-const loadTests = () => {
+const loadMockTestSuites = () => {
+  let testSuites = []
   let tests = []
-  const mockTest1 = () => {
+  const mockSuccessfulTest = () => {
     return new Promise((resolve, reject) => {
       setTimeout(() => resolve(1), 1000)
     })
   }
-  tests.push(mockTest1)
-  const mockTest2 = () => {
+  tests.push(mockSuccessfulTest)
+  const mockFailTest = () => {
     return new Promise((resolve, reject) => {
-      setTimeout(() => resolve(2), 2000)
+      setTimeout(() => reject(2), 2000)
     })
   }
-  tests.push(mockTest2)
-  return tests
+  tests.push(mockFailTest)
+  let testSuite = {
+    suiteName: 'Mock Test Suite',
+    tests: tests,
+    numTests: tests.length,
+  }
+  testSuites.push(testSuite)
+  return testSuites
 }
 
 const testMonitor = () => {
@@ -75,9 +83,11 @@ const testMonitor = () => {
         // the transition from testing to switching occurs in the promise callback
         break
       case testState.switching:
-        console.log(`running test${testIndex + 1}/${numTests}:`)
+        console.log(
+          `running test${testIndex + 1}/${testSuites[testSuiteIndex].numTests}:`
+        )
         // run the next test
-        let nextTest = tests[testIndex] // next test function
+        let nextTest = testSuites[testSuiteIndex].tests[testIndex] // next test function
         let testPromise = nextTest() // next test promise
         console.log(nextTest)
         // make sure it is a promise
@@ -86,42 +96,96 @@ const testMonitor = () => {
         // switch state to testing until this test wraps up
         testStatus = testState.testing
         // add a callback to the promise for all completed testing code
-        testPromise.then((res) => {
-          // add to testing report
-          testReport += res
-          // increment testIndex
-          testIndex++
-          // check if that was the last test
-          if (testIndex >= numTests) {
-            // testing is complete!
-            logBar(2, true)
-            console.log('end to end testing complete')
-            // get ready to wrap up
-            // display test results
-            console.log('test results:\n\n')
-            testStatus = testState.shutdown
-          } else {
-            // switch state to switching so that the next test can run
-            testStatus = testState.switching
-          }
-        })
+        testPromise
+          .then((res) => {
+            // test successful!
+            // add to testing report
+            testReport.push({
+              testSuite: testSuiteIndex,
+              testNum: testIndex,
+              result: 'pass',
+            })
+            resolveTest()
+          })
+          .catch((err) => {
+            // test failed
+            // add to testing report
+            testReport.push({
+              testSuite: testSuiteIndex,
+              testNum: testIndex,
+              result: 'fail',
+              error: err,
+            })
+            resolveTest()
+          })
         break
-      case testState.shutdown:
-        console.log('shutting down...')
+      case testState.wrapUp:
+        logBar(2, true)
+        console.log('end to end testing complete')
+        // get ready to wrap up
+        // display test results
+        console.log('test results:')
+        logResults()
         chatbot.shutdown()
         testBot.shutdown()
         clearInterval(intervalObj)
         testStatus = null
+        console.log('shutting down...')
         process.exit()
-        break
+        break // technically this never is called
       default:
         break
     }
   })
 }
 
+const resolveTest = () => {
+  // increment testIndex
+  testIndex++
+  // check if that was the last test
+  if (testIndex >= testSuites[testSuiteIndex].numTests) {
+    // test suite is complete!
+    // on to the next test suite
+    testSuiteIndex++
+    console.log(
+      `testSuiteIndex: ${testSuiteIndex} numTestSuites: ${numTestSuites}`
+    )
+    // check to see if that was the last suite
+    if (testSuiteIndex >= numTestSuites) {
+      // testing is complete
+      testStatus = testState.wrapUp
+    } else {
+      // testing is incomplete, reset testIndex for next test suite
+      testStatus = testState.switching
+      testIndex = 0
+    }
+  } else {
+    // switch state to switching so that the next test can run
+    testStatus = testState.switching
+  }
+  return true
+}
+
+const logResults = () => {
+  let resultBlurb = ''
+  let resultSuiteIndex = 0
+  testReport.forEach((test) => {
+    if (test.testSuite + 1 > resultSuiteIndex) {
+      resultSuiteIndex++
+      resultBlurb += `Test Suite ${resultSuiteIndex}/${numTestSuites}\n`
+    }
+    resultBlurb += ` Test #${test.testNum} `
+    if (test.result == 'fail') {
+      resultBlurb += '\x1b[30m\x1b[41mFAIL\x1b[0m\n'
+      resultBlurb += '\x1b[31m  ERROR:\x1b[0m\n'
+      resultBlurb += test.error
+    } else resultBlurb += '\x1b[30m\x1b[42mPASS\x1b[0m\n'
+  })
+  console.log(resultBlurb)
+}
+
 // load tests
-const tests = loadTests()
-numTests = tests.length
+const testSuites = loadMockTestSuites()
+numTestSuites = testSuites.length
 // begin state machine
 testMonitor()
