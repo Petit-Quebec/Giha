@@ -42,7 +42,7 @@ const loadMockTestSuites = () => {
   tests.push(mockSuccessfulTest)
   const mockFailTest = () => {
     return new Promise((resolve, reject) => {
-      setTimeout(() => reject(2), 2000)
+      setTimeout(() => resolve(2), 2000)
     })
   }
   tests.push(mockFailTest)
@@ -190,6 +190,8 @@ const logResults = () => {
       passingTests++
     }
   })
+  suitePass ? passingSuites++ : (suitePass = true)
+
   resultBlurb += '===================\n'
   resultBlurb += '\x1b[1mTest Suites: '
   passingSuites < resultSuiteIndex
