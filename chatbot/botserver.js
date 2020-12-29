@@ -1,4 +1,3 @@
-import dotenv from 'dotenv'
 import { log } from '../util/util.js'
 import { message } from './messageParser.js'
 import reloadBotCommands from './commandLoader.js'
@@ -8,9 +7,11 @@ import { newRole, removedRole } from './events/roleChange.js' // if more events 
 import nameChange from './events/nameChange.js'
 import timeManager from './timeManager.js'
 
-dotenv.config({ path: '/../.env' })
-const CHATBOT_ENABLED = process.env.CHATBOT_ENABLED == 1
+import dotenv from 'dotenv'
+dotenv.config() //already configured because this is called from root anyways
 const token = process.env.DBOT_TOKEN
+
+const CHATBOT_ENABLED = process.env.CHATBOT_ENABLED == 1
 
 let chatbotReady = false
 
