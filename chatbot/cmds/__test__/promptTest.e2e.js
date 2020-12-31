@@ -3,7 +3,7 @@ import Prompt from '../../Prompt'
 import ResponseAction from '../../ResponseAction'
 import testBot from '../../discoTest/testBot'
 import chatBot from '../../botserver'
-
+=======
 let callback = () => {
   return true
 }
