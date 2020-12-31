@@ -109,4 +109,5 @@ export default {
   isReady,
   checkSetup,
   shutdown,
+  bot,
 }

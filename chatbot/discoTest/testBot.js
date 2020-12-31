@@ -4,10 +4,12 @@ dotenv.config()
 
 const token = process.env.TEST_DBOT_TOKEN
 const testChannelId = process.env.TEST_CHANNEL_ID
+const testEmojiId = process.env.TEST_EMOJI_ID
 
 const bot = new Discord.Client({})
 let testBotReady = false
 let testChannel
+let testEmoji
 
 const run = () => {
   bot.on('ready', () => {
@@ -21,6 +23,7 @@ const run = () => {
         '\x1b[0m'
     )
     testChannel = bot.channels.get(testChannelId)
+    testEmoji = bot.emojis.get(testEmojiId)
     testBotReady = true
     bot.on('message', async (msg) => {
       parseTestMessage(msg)
@@ -50,4 +53,6 @@ const shutdown = () => {
   return bot.destroy()
 }
 
-export default { run, isReady, shutdown, getTestChannel }
+const getTestEmoji = () => {}
+
+export default { run, isReady, shutdown, getTestChannel, getTestEmoji, bot }

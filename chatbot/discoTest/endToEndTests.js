@@ -11,6 +11,8 @@ require('fs')
     require('./routes/' + file)
   })
   */
+let testChannel
+
 const testState = {
   startup: 0,
   booting: 1,
@@ -25,6 +27,8 @@ const testState = {
 //switching | switching from one test to the next
 // wrapUp | tests are complete, bots are spinning down
 let testStatus
+let chatBot
+let testBot
 
 let numTestSuites
 let testIndex = 0
@@ -72,11 +76,12 @@ const testMonitor = () => {
       case testState.booting:
         // check to see if bots are ready
         if (chatbot.isReady() && testBot.isReady()) {
+          testChannel = testBot.getTestChannel()
           // if so, log and move on to testing
           logBar(2, true)
           console.log('testbot and normal bot both up and running!')
           console.log('testChannel:')
-          console.log(testBot.getTestChannel())
+          console.log(testChannel)
           console.log('beginning tests...')
           testStatus = testState.switching
         }
