@@ -1,4 +1,3 @@
-import dotenv from 'dotenv'
 import { log } from '../util/util.js'
 import { message } from './messageParser.js'
 import reloadBotCommands from './commandLoader.js'
@@ -9,9 +8,11 @@ import nameChange from './events/nameChange.js'
 import timeManager from './timeManager.js'
 import parseReaction from './reactionParser.js'
 
-dotenv.config({ path: '/../.env' })
-const CHATBOT_ENABLED = process.env.CHATBOT_ENABLED == 1
+import dotenv from 'dotenv'
+dotenv.config() //already configured because this is called from root anyways
 const token = process.env.DBOT_TOKEN
+
+const CHATBOT_ENABLED = process.env.CHATBOT_ENABLED == 1
 
 let chatbotReady = false
 
@@ -100,8 +101,13 @@ const memberUpdate = (oldMember, newMember) => {
   // if DnD player role was removed, mark player as inactive.
 }
 
+const shutdown = () => {
+  return bot.destroy()
+}
+
 export default {
   run,
   isReady,
   checkSetup,
+  shutdown,
 }

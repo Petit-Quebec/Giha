@@ -9,18 +9,19 @@
     "dev": "nodemon --exec npm run babel-node --inspect server.js",
     "lint": "eslint . --ext .js",
     "lint-fix": "eslint . --ext .js --fix && prettier --write .",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "e2e": "node ./chatbot/discotest/endToEndTests.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ngrayson/loom.git"
+    "url": "git+https://github.com/Petit-Quebec/Giha.git"
   },
   "author": "Nick Grayson",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ngrayson/loom/issues"
+    "url": "https://github.com/Petit-Quebec/Giha/issues"
   },
-  "homepage": "https://github.com/ngrayson/loom#readme",
+  "homepage": "https://github.com/Petit-Quebec/Giha#readme",
   "dependencies": {
     "discord.js": "^11.5.1",
     "dotenv": "^8.2.0",
