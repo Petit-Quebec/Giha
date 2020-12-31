@@ -3,9 +3,11 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 const token = process.env.TEST_DBOT_TOKEN
+const testChannelId = process.env.TEST_CHANNEL_ID
 
 const bot = new Discord.Client({})
 let testBotReady = false
+let testChannel
 
 const run = () => {
   bot.on('ready', () => {
@@ -18,6 +20,7 @@ const run = () => {
         bot.user.tag +
         '\x1b[0m'
     )
+    testChannel = bot.channels.get(testChannelId)
     testBotReady = true
     bot.on('message', async (msg) => {
       parseTestMessage(msg)
@@ -39,8 +42,12 @@ const parseTestMessage = (message) => {
   return false
 }
 
+const getTestChannel = () => {
+  return testChannel
+}
+
 const shutdown = () => {
   return bot.destroy()
 }
 
-export default { run, isReady, shutdown }
+export default { run, isReady, shutdown, getTestChannel }
