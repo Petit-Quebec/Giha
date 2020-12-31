@@ -75,6 +75,8 @@ const testMonitor = () => {
           // if so, log and move on to testing
           logBar(2, true)
           console.log('testbot and normal bot both up and running!')
+          console.log('testChannel:')
+          console.log(testBot.getTestChannel())
           console.log('beginning tests...')
           testStatus = testState.switching
         }
@@ -88,7 +90,7 @@ const testMonitor = () => {
         )
         // run the next test
         let nextTest = testSuites[testSuiteIndex].tests[testIndex] // next test function
-        let testPromise = nextTest() // next test promise
+        let testPromise = nextTest(chatbot, testBot) // next test promise passing the bots (testbot also comes with a test channel)
         console.log(nextTest)
         // make sure it is a promise
         if (!types.isPromise(testPromise))
