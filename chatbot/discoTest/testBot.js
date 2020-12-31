@@ -24,6 +24,7 @@ const run = () => {
     )
     testChannel = bot.channels.get(testChannelId)
     testEmoji = bot.emojis.get(testEmojiId)
+    console.log(testEmoji)
     testBotReady = true
     bot.on('message', async (msg) => {
       parseTestMessage(msg)
@@ -53,6 +54,15 @@ const shutdown = () => {
   return bot.destroy()
 }
 
-const getTestEmoji = () => {}
+const getTestEmoji = () => {
+  if (!testBotReady) {
+    return new Promise((resolve, reject) => {
+      testEmoji = bot.emojis.get(testEmojiId).then(() => {
+        resolve(testEmoji)
+      })
+    })
+  }
+  return testEmoji
+}
 
 export default { run, isReady, shutdown, getTestChannel, getTestEmoji, bot }

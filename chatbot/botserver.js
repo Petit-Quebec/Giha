@@ -6,7 +6,6 @@ import { checkGuilds } from './guildManager.js'
 import { newRole, removedRole } from './events/roleChange.js' // if more events are added this should be abstracted out
 import nameChange from './events/nameChange.js'
 import timeManager from './timeManager.js'
-import parseReaction from './reactionParser.js'
 
 import dotenv from 'dotenv'
 dotenv.config() //already configured because this is called from root anyways

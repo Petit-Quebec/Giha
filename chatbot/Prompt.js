@@ -1,4 +1,5 @@
-import { TextChannel, DMChannel, Client } from 'discord.js'
+// import { TextChannel, DMChannel, Client } from 'discord.js'
+import Discord from 'discord.js'
 import ResponseAction from './ResponseAction.js'
 // a class that lets the bot manage asking questions and receiving information
 // ie. send a message, react to itself, deal with responses

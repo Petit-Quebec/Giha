@@ -2,6 +2,7 @@ import testBot from './testBot.js'
 import { types } from 'util'
 import chatbot from './../botserver.js'
 import { logBar } from '../../util/util.js'
+import loadTestSuites from './loadTestSuites.js'
 /*
 var normalizedPath = require('path').join(__dirname, 'routes')
 
@@ -27,37 +28,14 @@ const testState = {
 //switching | switching from one test to the next
 // wrapUp | tests are complete, bots are spinning down
 let testStatus
-let chatBot
-let testBot
+
+let mockTestSuites
+let testSuites
 
 let numTestSuites
 let testIndex = 0
 let testSuiteIndex = 0
 let testReport = []
-
-const loadMockTestSuites = () => {
-  let testSuites = []
-  let tests = []
-  const mockSuccessfulTest = () => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => resolve(1), 1000)
-    })
-  }
-  tests.push(mockSuccessfulTest)
-  const mockFailTest = () => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => resolve(2), 2000)
-    })
-  }
-  tests.push(mockFailTest)
-  let testSuite = {
-    suiteName: 'Mock Test Suite',
-    tests: tests,
-    numTests: tests.length,
-  }
-  testSuites.push(testSuite)
-  return testSuites
-}
 
 const testMonitor = () => {
   testStatus = testState.startup
@@ -80,9 +58,14 @@ const testMonitor = () => {
           // if so, log and move on to testing
           logBar(2, true)
           console.log('testbot and normal bot both up and running!')
-          console.log('testChannel:')
-          console.log(testChannel)
-          console.log('beginning tests...')
+          console.log('loading tests...')
+
+          // load tests
+          mockTestSuites = loadMockTestSuites()
+          testSuites = mockTestSuites.concat(loadTestSuites())
+
+          numTestSuites = testSuites.length
+
           testStatus = testState.switching
         }
         break
@@ -90,8 +73,11 @@ const testMonitor = () => {
         // the transition from testing to switching occurs in the promise callback
         break
       case testState.switching:
+        console.log(testSuites[testSuiteIndex])
         console.log(
-          `running test${testIndex + 1}/${testSuites[testSuiteIndex].numTests}:`
+          `running test ${testIndex + 1}/${
+            testSuites[testSuiteIndex].numTests
+          }:`
         )
         // run the next test
         let nextTest = testSuites[testSuiteIndex].tests[testIndex] // next test function
@@ -154,9 +140,7 @@ const resolveTest = () => {
     // test suite is complete!
     // on to the next test suite
     testSuiteIndex++
-    console.log(
-      `testSuiteIndex: ${testSuiteIndex} numTestSuites: ${numTestSuites}`
-    )
+    console.log(`testSuite ${testSuiteIndex}/${numTestSuites}`)
     // check to see if that was the last suite
     if (testSuiteIndex >= numTestSuites) {
       // testing is complete
@@ -190,7 +174,9 @@ const logResults = () => {
     if (test.result == 'fail') {
       resultBlurb += '\x1b[30m\x1b[41mFAIL\x1b[0m\n'
       resultBlurb += '\x1b[31m  ERROR:\x1b[0m\n'
-      resultBlurb += test.error + '\n'
+      console.log(resultBlurb)
+      console.log(test.error)
+      resultBlurb = ''
       suitePass = false
     } else {
       resultBlurb += '\x1b[30m\x1b[42mPASS\x1b[0m\n'
@@ -212,9 +198,29 @@ const logResults = () => {
   resultBlurb += `${passingTests} passed,\x1b[0m ${testReport.length} total`
   console.log(resultBlurb)
 }
+const loadMockTestSuites = () => {
+  let testSuites = []
+  let tests = []
+  const mockSuccessfulTest = () => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => resolve(1), 1000)
+    })
+  }
+  tests.push(mockSuccessfulTest)
+  const mockFailTest = () => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => resolve(2), 500)
+    })
+  }
+  tests.push(mockFailTest)
+  let testSuite = {
+    suiteName: 'Mock Test Suite',
+    tests: tests,
+    numTests: tests.length,
+  }
+  testSuites.push(testSuite)
+  return testSuites
+}
 
-// load tests
-const testSuites = loadMockTestSuites()
-numTestSuites = testSuites.length
 // begin state machine
 testMonitor()
