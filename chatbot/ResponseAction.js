@@ -10,7 +10,7 @@ let ResponseAction = class ResponseAction {
   /**
    * Create a ResponseAction
    * @param {string} triggerType - wether the expected response is to an emoji reaction or text
-   * @param {string} trigger - which emoji or text string triggers this action
+   * @param {string | Emoji} trigger - which emoji or text string triggers this action
    * @callback action - a callback which accepts the userId as an argument, called when response occurs
    */
   constructor(triggerType, trigger, action) {
