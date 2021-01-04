@@ -1,6 +1,9 @@
 // import { TextChannel, DMChannel, Client } from 'discord.js'
 import Discord from 'discord.js'
 import ResponseAction from './ResponseAction.js'
+import dotenv from 'dotenv'
+dotenv.config()
+const ENV = process.env.ENV
 // a class that lets the bot manage asking questions and receiving information
 // ie. send a message, react to itself, deal with responses
 // ie. send a message, wait for a list of specific replies
@@ -29,14 +32,17 @@ let Prompt = class Prompt {
     msgOptions
   ) {
     // make sure message is a discord message
-    if (!channel instanceof TextChannel && !channel instanceof DMChannel)
+    if (
+      !channel instanceof Discord.TextChannel &&
+      !channel instanceof Discord.DMChannel
+    )
       throw 'Prompt Constructor Error: channel must be a Discord TextChannel or DMChannel'
     // check isReusable
     if (!typeof isReusable == 'Boolean')
       throw `Prompt Constructor Error: isReusable must be of type Boolean, not ${typeof isReusable}`
 
     // check and set client
-    if (!client instanceof Client) throw 'Client must be a discord bot'
+    if (!client instanceof Discord.Client) throw 'Client must be a discord bot'
     if (Array.isArray(responseActions)) {
       // check and set responseActions
       // check every element to make sure it is a ResponseAction or Error
@@ -53,33 +59,58 @@ let Prompt = class Prompt {
         throw `Prompt Constructor Error: responseActions must be an instance of ResponseAction`
     }
     // set everything
-    this.isDM = channel instanceof DMChannel
+    this.isDM = channel instanceof Discord.DMChannel
     this.isReusable = isReusable
     this.channel = channel
     this.client = client
+    this.reactCollector
     this.message
-    this.reactionCollector
-    // everything is set up, now send the message
-    channel
-      .send(msgContent, msgOptions)
-      .then((res) => {
-        //save the message as part of the prompt
-        this.message = res
-        // if this prompt has emoji responseActions, add those options for the user
-        this.addReactionButtons()
-        this.reactCollector = reactCollector(res, reactFilter())
-
-        this.reactCollector.on('collect', (reaction, user) => {
-          let userReaction = collected.array()[0]._emoji
-          this.trigger(user, userReaction)
+    this.reactionPromises
+    this.messagePromise = new Promise((resolve, reject) => {
+      // everything is set up, now send the message
+      channel
+        .send(
+          client.user.username,
+          // msgContent
+          msgOptions
+        )
+        .then((res) => {
+          //save the message as part of the prompt
+          this.message = res
+          // if this prompt has emoji responseActions, add those options for the user
+          this.reactionPromises = this.addReactionButtons()
+          this.reactCollector = reactCollector(res, () => {
+            return true
+          })
+          this.reactCollector.on('collect', (reaction, reason) => {
+            let reactionUser = reaction.users.array()[0]
+            // no bots allowed (except in testing), and even then, don't count the poster
+            if (
+              !reactionUser.bot ||
+              (ENV == 'DEV' && reactionUser.id != this.client.user.id)
+            ) {
+              console.log('reaction detected!')
+              console.log(
+                ` _emoji.id: ${reaction._emoji.id}\n` +
+                  ` username: ${reaction.users.array()[0].username}\n` +
+                  ` id: ${reaction.users.array()[0].id}\n` +
+                  ` bot: ${reaction.users.array()[0].bot}`
+              )
+              console.log('this.client.user.id')
+              console.log(this.client.user.id)
+              // let userReaction = reaction.array()[0]._emoji
+              // this.trigger(user, userReaction)
+            }
+          })
+          this.reactCollector.on('end', () => {
+            this.delete()
+          })
+          resolve(res)
         })
-        this.reactCollector.on('end', () => {
-          this.delete()
+        .catch((err) => {
+          throw err
         })
-      })
-      .catch((err) => {
-        throw err
-      })
+    })
   }
 
   /**
@@ -98,14 +129,14 @@ let Prompt = class Prompt {
    * adds any reactions that are used by responseActions
    * returns an array of promises to add the reactions
    */
-  addReactionButtons() {
+  async addReactionButtons() {
     let promises = []
-    this.responseActions.forEach((responseAction) => {
+    for (let responseAction of this.responseActions) {
       if (responseAction.triggerType == 'emoji') {
-        promises.push(this.message.react(responseAction.trigger))
+        await this.message.react(responseAction.trigger)
       }
-    })
-    return promises
+    }
+    return true
   }
 
   /**
@@ -116,6 +147,7 @@ let Prompt = class Prompt {
    * otherwise returns false
    */
   trigger(userId, emojiId) {
+    console.log('trigger was called')
     // check to see if this trigger matches any that we expect
     this.responseActions.forEach((responseAction) => {
       if (
@@ -157,13 +189,27 @@ let Prompt = class Prompt {
   }
 }
 
-const reactFilter = (responseActions, reaction, user) => {
+const reactFilter = (client, responseActions) => {
+  if (!client || client == undefined) throw 'client must be defined'
+  let clientId = client.id
   let emojiList = []
   responseActions.forEach((responseAction) => {
     if (responseAction.triggerType == 'emoji')
       emojiList.push(responseAction.trigger)
   })
-  return emojiList.includes(reaction.emoji.name) && !user.bot
+  return (reaction, user) => {
+    if (env == 'DEV') {
+      // // console.log('dev enabled')
+      // console.log('user.id')
+      // console.log(user.id)
+      // console.log('user.username')
+      // console.log(user.username)
+      // console.log('client.id')
+      // console.log(clientId)
+      return user.id != clientId
+      // emojiList.includes( reaction.emoji.id )
+    } else return emojiList.includes(reaction.emoji.id) && !user.bot
+  }
 }
 
 const reactCollector = (message, filter) => {

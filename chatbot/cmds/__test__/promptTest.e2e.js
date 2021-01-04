@@ -1,49 +1,58 @@
 import Prompt from '../../Prompt.js'
 import ResponseAction from '../../ResponseAction.js'
-import testBot from '../../discoTest/testBot.js'
-import chatBot from '../../botserver.js'
+import dotenv from 'dotenv'
+dotenv.config()
+const testChannelId = process.env.TEST_CHANNEL_ID
 
 let callback = () => {
+  console.log('callback!!')
   callBackCalled = true
   return
 }
 let callBackCalled = false
 
-let test = () => {
-  return new Promise((resolve, reject) => {
-    let channel = testBot.getTestChannel()
-    let isReusable = true
-    let responseActions
-    let client = chatBot.bot
-    let msgContent = 'this is a test message'
-    let msgOptions = {}
+let test = async (chatBot, testBot, testEmoji) => {
+  let isReusable = true
+  let responseActions
+  let client = chatBot
+  let msgContent = 'this is a test message'
+  let msgOptions = {}
+  let testChannel = await client.channels.get(testChannelId)
 
-    let testEmoji = testBot
-      .getTestEmoji()
-      .then((res) => {
-        console.log(res)
-        // make a new responseActrion
+  responseActions = new ResponseAction('emoji', testEmoji, callback)
+  // make a new prompt
+  let testPrompt = new Prompt(
+    testChannel,
+    isReusable,
+    responseActions,
+    client,
+    msgContent,
+    msgOptions
+  )
+  let botMessage = await testPrompt.messagePromise
 
-        responseActions = new ResponseAction('emoji', res, callback)
-        // make a new prompt
-        let testPrompt = new Prompt(
-          channel,
-          isReusable,
-          responseActions,
-          client,
-          msgContent,
-          msgOptions
-        )
-      })
-      .catch((err) => {
-        console.log(err)
-        reject(err)
-      })
-
-    // testPrompt.message.
+  let testBotMessage = await testBot.channels
+    .get(testChannel.id)
+    .messages.get(botMessage.id)
+  // wait a second
+  setTimeout(async () => {
     // then have the test bot react to it
-    // then make sure that the propper function is called
-    reject()
+    await testBotMessage.react(testEmoji)
+
+    let reactionUsers = botMessage.reactions.array()[0].users.array()
+    if (
+      reactionUsers.find((element) => element == chatBot.user.id) == -1 ||
+      reactionUsers.find((element) => element == testBot.user.id) == -1
+    )
+      throw 'the correct reactions are missing'
+  }, 2000)
+  return new Promise((resolve, reject) => {
+    let reactInterval = setInterval(() => {
+      if (callBackCalled) {
+        resolve(true)
+        clearInterval(reactInterval)
+      }
+    }, 1000)
   })
 }
 

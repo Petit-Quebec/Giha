@@ -22,59 +22,63 @@ reloadBotCommands(bot)
 // initialize commands
 
 const run = () => {
-  if (CHATBOT_ENABLED) {
-    bot.on('ready', () => {
-      log(
-        '\x1b[32m' +
-          ' ✓' +
-          '\x1b[0m' +
-          ' Discord Bot logged in under ' +
-          '\x1b[7m' +
-          bot.user.tag +
-          '\x1b[0m',
-        true
-      )
-      chatbotReady = true
-      log('bot.commands:')
-      bot.commands.forEach((command) => {
-        log(command.help.name)
-      })
-      timeManager()
-    })
-
-    bot.on('message', async (msg) => {
-      message(bot, msg)
-    })
-
-    bot.on('guildMemberUpdate', (oldMember, newMember) => {
-      memberUpdate(oldMember, newMember)
-    })
-
-    bot.on('error', (err) => {
-      log('\x1b[31m', true)
-      log(err.error, true)
-      if (Object.entries(err.error)[0][1] == 'SELF_SIGNED_CERT_IN_CHAIN') {
+  return new Promise((resolve, reject) => {
+    if (CHATBOT_ENABLED) {
+      bot.on('ready', () => {
         log(
-          '\nBot was blocked by a certificate issue, may be a firewall problem.' +
-            '\n shutting bot down.',
+          '\x1b[32m' +
+            ' ✓' +
+            '\x1b[0m' +
+            ' Discord Bot logged in under ' +
+            '\x1b[7m' +
+            bot.user.tag +
+            '\x1b[0m',
           true
         )
-        // bot.destroy().then(() => {
-        //   log(' Discord bot bot shut down successful.', true)
-        // });
-      }
-      log('\x1b[0m', true)
-    })
+        chatbotReady = true
+        log('bot.commands:')
+        bot.commands.forEach((command) => {
+          log(command.help.name)
+        })
+        timeManager()
+        resolve(bot)
+      })
 
-    bot.on('reconnecting', () => {
-      log('Discord Bot attempting to reconnect...', true)
-    })
+      bot.on('message', async (msg) => {
+        message(bot, msg)
+      })
 
-    bot
-      .login(token)
-      .then(log('  Discord bot logging in...', true))
-      .catch(console.error)
-  }
+      bot.on('guildMemberUpdate', (oldMember, newMember) => {
+        memberUpdate(oldMember, newMember)
+      })
+
+      bot.on('error', (err) => {
+        reject(err)
+        log('\x1b[31m', true)
+        log(err.error, true)
+        if (Object.entries(err.error)[0][1] == 'SELF_SIGNED_CERT_IN_CHAIN') {
+          log(
+            '\nBot was blocked by a certificate issue, may be a firewall problem.' +
+              '\n shutting bot down.',
+            true
+          )
+          // bot.destroy().then(() => {
+          //   log(' Discord bot bot shut down successful.', true)
+          // });
+        }
+        log('\x1b[0m', true)
+      })
+
+      bot.on('reconnecting', () => {
+        log('Discord Bot attempting to reconnect...', true)
+      })
+
+      bot
+        .login(token)
+        .then(log('  Discord bot logging in...', true))
+        .catch(console.error)
+    }
+  })
 }
 
 const isReady = () => {
