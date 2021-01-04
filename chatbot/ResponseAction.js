@@ -22,9 +22,6 @@ let ResponseAction = class ResponseAction {
     if (typeof action != 'function')
       throw `ResponseAction Constructor Error: action must be a callback function, not ${typeof action}`
 
-    if (triggerType == 'emoji') {
-    } // make sure that the emoji string is a valid emoji
-
     this.triggerType = triggerType
     this.trigger = trigger
     this.action = action

@@ -10,7 +10,7 @@ let testBotReady = false
 let testEmoji
 
 const run = () => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     bot.on('ready', () => {
       console.log(
         '\x1b[32m' +
@@ -32,7 +32,7 @@ const run = () => {
     })
 
     bot.on('message', async (msg) => {
-      parseTestMessage(msg)
+      console.log(msg)
     })
 
     bot
@@ -46,16 +46,6 @@ const isReady = () => {
   return testBotReady
 }
 
-const parseTestMessage = (message) => {
-  return false
-}
-
-const getTestChannel = () => {
-  if (testBotReady) return testEmoji
-  console.log('tried to get testChannel before testbot is online')
-  return testChannel
-}
-
 const shutdown = () => {
   return bot.destroy()
 }
@@ -66,4 +56,4 @@ const getTestEmoji = async () => {
   return testEmoji
 }
 
-export default { run, isReady, shutdown, getTestChannel, getTestEmoji, bot }
+export default { run, isReady, shutdown, getTestEmoji, bot }

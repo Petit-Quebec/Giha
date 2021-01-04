@@ -50,12 +50,16 @@ let test = async (chatBot, testBot, testEmoji) => {
       throw 'the correct reactions are missing'
   }, 2000)
   return new Promise((resolve, reject) => {
-    let reactInterval = setInterval(() => {
-      if (callBackCalled && callbackUser.id == testBot.user.id) {
-        resolve(true)
-        clearInterval(reactInterval)
-      }
-    }, 1000)
+    try {
+      let reactInterval = setInterval(() => {
+        if (callBackCalled && callbackUser.id == testBot.user.id) {
+          resolve(true)
+          clearInterval(reactInterval)
+        }
+      }, 10)
+    } catch (err) {
+      reject(err)
+    }
   })
 }
 

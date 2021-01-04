@@ -1,4 +1,3 @@
-import { getUserByDiscordId } from '../Giha/userManager.js'
 import { log } from '../util/util.js'
 import reloadBotCommands from './commandLoader.js'
 import { name } from '../util/util.js'

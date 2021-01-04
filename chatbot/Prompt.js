@@ -33,22 +33,23 @@ let Prompt = class Prompt {
   ) {
     // make sure message is a discord message
     if (
-      !channel instanceof Discord.TextChannel &&
-      !channel instanceof Discord.DMChannel
+      !(channel instanceof Discord.TextChannel) &&
+      !(channel instanceof Discord.DMChannel)
     )
       throw 'Prompt Constructor Error: channel must be a Discord TextChannel or DMChannel'
     // check isReusable
-    if (!typeof isReusable == 'Boolean')
+    if (!(typeof isReusable == 'boolean'))
       throw `Prompt Constructor Error: isReusable must be of type Boolean, not ${typeof isReusable}`
 
     // check and set client
-    if (!client instanceof Discord.Client) throw 'Client must be a discord bot'
+    if (!(client instanceof Discord.Client))
+      throw 'Client must be a discord bot'
     if (Array.isArray(responseActions)) {
       // check and set responseActions
       // check every element to make sure it is a ResponseAction or Error
       responseActions.forEach((element) => {
-        if (!element instanceof ResponseAction)
-          throw `Prompt Constructor Error: All responseActions must be instances of ResponseAction`
+        if (!(element instanceof ResponseAction))
+          throw 'Prompt Constructor Error: All responseActions must be instances of ResponseAction'
       })
       this.responseActions = responseActions
     } else {
@@ -56,7 +57,7 @@ let Prompt = class Prompt {
       if (responseActions instanceof ResponseAction)
         this.responseActions = [responseActions]
       else
-        throw `Prompt Constructor Error: responseActions must be an instance of ResponseAction`
+        throw 'Prompt Constructor Error: responseActions must be an instance of ResponseAction'
     }
     // set everything
     this.isDM = channel instanceof Discord.DMChannel
@@ -68,48 +69,52 @@ let Prompt = class Prompt {
     this.reactionPromises
     this.messagePromise = new Promise((resolve, reject) => {
       // everything is set up, now send the message
-      channel
-        .send(
-          client.user.username,
-          // msgContent
-          msgOptions
-        )
-        .then((res) => {
-          //save the message as part of the prompt
-          this.message = res
-          this.reactCollector = this.message.createReactionCollector(
-            (reaction, user) =>
-              this.responseActions.find((responseAction) => {
-                return responseAction.trigger == reaction.emoji.id
-              }) &&
-              (!user.bot || (ENV == 'DEV' && user.id != this.client.user.id)),
-            { time: 15000 }
+      try {
+        channel
+          .send(
+            client.user.username,
+            // msgContent
+            msgOptions
           )
-          this.reactCollector.on('collect', (reaction) => {
-            // console.log(`collected ${reaction.emoji.name}`)
-            this.reactionPromises = this.addReactionButtons()
+          .then((res) => {
+            //save the message as part of the prompt
+            this.message = res
+            this.reactCollector = this.message.createReactionCollector(
+              (reaction, user) =>
+                this.responseActions.find((responseAction) => {
+                  return responseAction.trigger == reaction.emoji.id
+                }) &&
+                (!user.bot || (ENV == 'DEV' && user.id != this.client.user.id)),
+              { time: 15000 }
+            )
+            this.reactCollector.on('collect', (reaction) => {
+              // console.log(`collected ${reaction.emoji.name}`)
+              this.reactionPromises = this.addReactionButtons()
 
-            let user = reaction.users.cache.array()[0]
-            let reactionId = reaction._emoji.id
-            // console.log('reaction detected!')
-            // console.log(
-            //   ` _emoji.id: ${reactionId}\n` +
-            //     ` username: ${user.username}\n` +
-            //     ` id: ${user.id}\n` +
-            //     ` bot: ${user.bot}`
-            // )
-            this.trigger(user, reactionId)
+              let user = reaction.users.cache.array()[0]
+              let reactionId = reaction._emoji.id
+              // console.log('reaction detected!')
+              // console.log(
+              //   ` _emoji.id: ${reactionId}\n` +
+              //     ` username: ${user.username}\n` +
+              //     ` id: ${user.id}\n` +
+              //     ` bot: ${user.bot}`
+              // )
+              this.trigger(user, reactionId)
+            })
+            this.reactCollector.on('end', (collected) =>
+              console.log(`collected ${collected.size} items`)
+            )
+
+            // if this prompt has emoji responseActions, add those options for the user
+            resolve(res)
           })
-          this.reactCollector.on(`end`, (collected) =>
-            console.log(`collected ${collected.size} items`)
-          )
-
-          // if this prompt has emoji responseActions, add those options for the user
-          resolve(res)
-        })
-        .catch((err) => {
-          throw err
-        })
+          .catch((err) => {
+            throw err
+          })
+      } catch (err) {
+        reject(err)
+      }
     })
   }
 
@@ -119,9 +124,9 @@ let Prompt = class Prompt {
    * returns the promise for deleting the message
    */
   delete() {
-    this.responseActions.forEach((responseAction) => {
-      responseAction = null
-    })
+    // this.responseActions.forEach((responseAction) => {
+    //   responseAction = null
+    // })
     return this.message.delete()
   }
 
@@ -130,7 +135,6 @@ let Prompt = class Prompt {
    * returns an array of promises to add the reactions
    */
   async addReactionButtons() {
-    let promises = []
     for (let responseAction of this.responseActions) {
       if (responseAction.triggerType == 'emoji') {
         await this.message.react(responseAction.trigger)
@@ -210,10 +214,5 @@ const reactFilter = (client, responseActions) => {
     } else return emojiList.includes(reaction.emoji.id) && !user.bot
   }
 }*/
-
-const reactCollector = (message, filter, options) => {
-  const collector = message.createReactionCollector(filter, options)
-  return collector
-}
 
 export default Prompt

@@ -113,7 +113,7 @@ const logResults = () => {
     ? (resultBlurb += '\x1b[31m')
     : (resultBlurb += '\x1b[32m')
   resultBlurb += `${passingSuites} passed\x1b[0m, ${resultSuiteIndex} total\n`
-  resultBlurb += `\x1b[1mTests: `
+  resultBlurb += '\x1b[1mTests: '
   passingTests < testReport.length
     ? (resultBlurb += '\x1b[31m')
     : (resultBlurb += '\x1b[32m')
@@ -125,14 +125,14 @@ const loadMockTestSuites = () => {
   let testSuites = []
   let tests = []
   const mockSuccessfulTest1 = () => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       setTimeout(() => resolve(1), 1000)
     })
   }
   tests.push(mockSuccessfulTest1)
 
   const mockSuccessfulTest2 = () => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       setTimeout(() => resolve(2), 500)
     })
   }

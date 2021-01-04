@@ -1,13 +1,13 @@
 import dotenv from 'dotenv'
-import { getHeroByName, getHeroes } from '../../../Giha/heroManager.js'
+import { getHeroByName } from '../../../Giha/heroManager.js'
 
 dotenv.config()
 const testChannelId = process.env.TEST_CHANNEL_ID
 const testHeroName = 'Jiraya'
-const test = async (chatBot, testBot, testEmoji) => {
+const test = async (chatBot, testBot) => {
   let testChannel = testBot.channels.cache.get(testChannelId)
   let testMessage = await testChannel.send(`!rise ${testHeroName}`)
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     setInterval(() => {
       if (getHeroByName(testHeroName)) {
         testMessage.delete()
