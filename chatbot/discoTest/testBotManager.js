@@ -32,7 +32,7 @@ const run = () => {
     })
 
     bot.on('message', async (msg) => {
-      console.log(msg)
+      console.log(msg.content)
     })
 
     bot
