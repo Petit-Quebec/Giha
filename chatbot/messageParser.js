@@ -1,10 +1,9 @@
-const DEV_MODE = process.env.DEV_MODE == 1
-
 import { getUserByDiscordId } from '../Giha/userManager.js'
 import { log } from '../util/util.js'
 import reloadBotCommands from './commandLoader.js'
 import { name } from '../util/util.js'
-
+import dotenv from 'dotenv'
+dotenv.config()
 const INVALID_MSG_DELAY_MS = 5000
 let lastCommandMsg
 
@@ -20,8 +19,7 @@ export const message = (bot, msg) => {
 
   let prefix = '!'
 
-  if (msg.author.bot) return
-  // if (msg.channel.type === "dm") return;
+  if (msg.author.bot && process.env.ENV != 'DEV') return
 
   let messageArray = msg.content.split(/\s+/g)
   let command = messageArray[0]
@@ -34,12 +32,7 @@ export const message = (bot, msg) => {
   log(' | ' + msg.content, true)
 
   /* Dev Mode Feature */
-  if (
-    DEV_MODE &&
-    command == '!!' &&
-    lastCommandMsg &&
-    lastCommandMsg.content != '!!'
-  ) {
+  if (command == '!!' && lastCommandMsg && lastCommandMsg.content != '!!') {
     msg.channel.send('running last command:\n`' + lastCommandMsg.content + '`')
     let reloadPromise = reloadBotCommands(bot)
     reloadPromise
@@ -73,51 +66,51 @@ export const message = (bot, msg) => {
       // unfinished
     }
 
-    getUserByDiscordId(msg.author.id).then(() => {
-      if (msg.author.id == '153983024411836416') {
-        log('yes master UwU', true)
-        cmd.run(bot, msg, args).catch((err) => {
-          log(`something went wrong with the ${cmd.help.name} command `, true)
-          log(err, true)
-        })
-        return true
-      }
+    // getUserByDiscordId(msg.author.id).then(() => {
+    //   if (msg.author.id == '153983024411836416') {
+    //     log('yes master UwU', true)
+    //     cmd.run(bot, msg, args).catch((err) => {
+    //       log(`something went wrong with the ${cmd.help.name} command `, true)
+    //       log(err, true)
+    //     })
+    //     return true
+    //   }
+    console.log('!!!')
 
-      /*
-    if (!user) {
-    log('command sent by a non-user, ignoring them', true)
-    msg.author.createDM().then((channel) => {
-      channel.send(
-      `You are not an initialized user, so you may not send commands`
-      )
-    })
-    return false
-    }
-    
-    let hasPermission = checkMsgPermissions(cmd, user)
-    */ let hasPermission = true
-      if (hasPermission) {
-        // if you get an error here, make sure the run function in the cmd file is async
-        log(`${msg.content} was ran by ${name(msg.member || msg)}`, true)
-        cmd.run(bot, msg, args).catch((err) => {
-          log(`something went wrong with the ${cmd.help.name} command `, true)
-          log(err, true)
-        })
-      } else {
+    /*
+      if (!user) {
+        log('command sent by a non-user, ignoring them', true)
         msg.author.createDM().then((channel) => {
           channel.send(
-            `*${cmd.name}* is not a valid command for your permission level\n`
-          )
-          log(`${cmd.permissions.userPermissions}`, true)
-        })
-        log(
-          `${msg.content} was attempted to be ran by ${name(
-            msg.member
-          )}, but they lack the correct permissions`,
-          true
+            `You are not an initialized user, so you may not send commands`
+            )
+          })
+          return false
+        }
+        
+        let hasPermission = checkMsgPermissions(cmd, user)
+        */ let hasPermission = true
+    if (hasPermission) {
+      // if you get an error here, make sure the run function in the cmd file is async
+      log(`${msg.content} was ran by ${name(msg.member || msg)}`, true)
+      cmd.run(bot, msg, args).catch((err) => {
+        log(`something went wrong with the ${cmd.help.name} command `, true)
+        log(err, true)
+      })
+    } else {
+      msg.author.createDM().then((channel) => {
+        channel.send(
+          `*${cmd.name}* is not a valid command for your permission level\n`
         )
-      }
-    })
+        log(`${cmd.permissions.userPermissions}`, true)
+      })
+      log(
+        `${msg.content} was attempted to be ran by ${name(
+          msg.member
+        )}, but they lack the correct permissions`,
+        true
+      )
+    }
   } else {
     // msg was not a valid command
     log(`'${msg.content}' is not a valid command`, true)

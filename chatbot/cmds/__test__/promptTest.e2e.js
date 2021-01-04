@@ -59,10 +59,9 @@ let test = async (chatBot, testBot, testEmoji) => {
   })
 }
 
-let PromptTestSuite = {
-  suiteName: 'Prompt TestSuite',
+let promptTestSuite = {
+  suiteName: 'prompt TestSuite',
   tests: [test],
-  numTests: 1,
 }
 
-export default PromptTestSuite
+export default promptTestSuite
