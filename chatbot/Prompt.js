@@ -77,34 +77,34 @@ let Prompt = class Prompt {
         .then((res) => {
           //save the message as part of the prompt
           this.message = res
+          this.reactCollector = this.message.createReactionCollector(
+            (reaction, user) =>
+              this.responseActions.find((responseAction) => {
+                return responseAction.trigger == reaction.emoji.id
+              }) &&
+              (!user.bot || (ENV == 'DEV' && user.id != this.client.user.id)),
+            { time: 15000 }
+          )
+          this.reactCollector.on('collect', (reaction) => {
+            // console.log(`collected ${reaction.emoji.name}`)
+            this.reactionPromises = this.addReactionButtons()
+
+            let user = reaction.users.cache.array()[0]
+            let reactionId = reaction._emoji.id
+            // console.log('reaction detected!')
+            // console.log(
+            //   ` _emoji.id: ${reactionId}\n` +
+            //     ` username: ${user.username}\n` +
+            //     ` id: ${user.id}\n` +
+            //     ` bot: ${user.bot}`
+            // )
+            this.trigger(user, reactionId)
+          })
+          this.reactCollector.on(`end`, (collected) =>
+            console.log(`collected ${collected.size} items`)
+          )
+
           // if this prompt has emoji responseActions, add those options for the user
-          this.reactionPromises = this.addReactionButtons()
-          this.reactCollector = reactCollector(res, () => {
-            return true
-          })
-          this.reactCollector.on('collect', (reaction, reason) => {
-            let reactionUser = reaction.users.array()[0]
-            // no bots allowed (except in testing), and even then, don't count the poster
-            if (
-              !reactionUser.bot ||
-              (ENV == 'DEV' && reactionUser.id != this.client.user.id)
-            ) {
-              console.log('reaction detected!')
-              console.log(
-                ` _emoji.id: ${reaction._emoji.id}\n` +
-                  ` username: ${reaction.users.array()[0].username}\n` +
-                  ` id: ${reaction.users.array()[0].id}\n` +
-                  ` bot: ${reaction.users.array()[0].bot}`
-              )
-              console.log('this.client.user.id')
-              console.log(this.client.user.id)
-              // let userReaction = reaction.array()[0]._emoji
-              // this.trigger(user, userReaction)
-            }
-          })
-          this.reactCollector.on('end', () => {
-            this.delete()
-          })
           resolve(res)
         })
         .catch((err) => {
@@ -147,7 +147,6 @@ let Prompt = class Prompt {
    * otherwise returns false
    */
   trigger(userId, emojiId) {
-    console.log('trigger was called')
     // check to see if this trigger matches any that we expect
     this.responseActions.forEach((responseAction) => {
       if (
@@ -188,7 +187,7 @@ let Prompt = class Prompt {
     })
   }
 }
-
+/*
 const reactFilter = (client, responseActions) => {
   if (!client || client == undefined) throw 'client must be defined'
   let clientId = client.id
@@ -210,10 +209,10 @@ const reactFilter = (client, responseActions) => {
       // emojiList.includes( reaction.emoji.id )
     } else return emojiList.includes(reaction.emoji.id) && !user.bot
   }
-}
+}*/
 
-const reactCollector = (message, filter) => {
-  const collector = message.createReactionCollector(filter)
+const reactCollector = (message, filter, options) => {
+  const collector = message.createReactionCollector(filter, options)
   return collector
 }
 

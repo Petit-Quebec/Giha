@@ -3,9 +3,11 @@ import ResponseAction from '../../ResponseAction.js'
 import dotenv from 'dotenv'
 dotenv.config()
 const testChannelId = process.env.TEST_CHANNEL_ID
+let callbackUser
 
-let callback = () => {
-  console.log('callback!!')
+const callback = (user) => {
+  console.log(`callback called by ${user.username}`)
+  callbackUser = user
   callBackCalled = true
   return
 }
@@ -17,7 +19,7 @@ let test = async (chatBot, testBot, testEmoji) => {
   let client = chatBot
   let msgContent = 'this is a test message'
   let msgOptions = {}
-  let testChannel = await client.channels.get(testChannelId)
+  let testChannel = await client.channels.cache.get(testChannelId)
 
   responseActions = new ResponseAction('emoji', testEmoji, callback)
   // make a new prompt
@@ -31,15 +33,16 @@ let test = async (chatBot, testBot, testEmoji) => {
   )
   let botMessage = await testPrompt.messagePromise
 
-  let testBotMessage = await testBot.channels
+  let testBotMessage = await testBot.channels.cache
     .get(testChannel.id)
-    .messages.get(botMessage.id)
+    .messages.cache.get(botMessage.id)
   // wait a second
+  await testBotMessage.react(testEmoji)
   setTimeout(async () => {
     // then have the test bot react to it
-    await testBotMessage.react(testEmoji)
-
-    let reactionUsers = botMessage.reactions.array()[0].users.array()
+    let reactionUsers = botMessage.reactions.cache
+      .array()[0]
+      .users.cache.array()
     if (
       reactionUsers.find((element) => element == chatBot.user.id) == -1 ||
       reactionUsers.find((element) => element == testBot.user.id) == -1
@@ -48,7 +51,7 @@ let test = async (chatBot, testBot, testEmoji) => {
   }, 2000)
   return new Promise((resolve, reject) => {
     let reactInterval = setInterval(() => {
-      if (callBackCalled) {
+      if (callBackCalled && callbackUser.id == testBot.user.id) {
         resolve(true)
         clearInterval(reactInterval)
       }

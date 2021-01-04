@@ -6,7 +6,6 @@ import loadTestSuites from './loadTestSuites.js'
 
 let mockTestSuites
 let testSuites
-
 let testReport = []
 
 const testMonitor = async () => {
@@ -37,11 +36,13 @@ const testMonitor = async () => {
   ) {
     console.log(`TestSuite ${testSuiteIndex + 1}`)
     let tests = testSuites[testSuiteIndex].tests
-    for (let testIndex = 0; testIndex < tests.length; tests++) {
+    for (let testIndex = 0; testIndex < tests.length; testIndex++) {
       let test = tests[testIndex]
       console.log(testSuites[testSuiteIndex])
       console.log(
-        `running test ${testIndex + 1}/${testSuites[testSuiteIndex].numTests}:`
+        `running test ${testIndex + 1}/${
+          testSuites[testSuiteIndex].tests.length
+        }:`
       )
 
       let testPromise
@@ -123,22 +124,22 @@ const logResults = () => {
 const loadMockTestSuites = () => {
   let testSuites = []
   let tests = []
-  const mockSuccessfulTest = () => {
+  const mockSuccessfulTest1 = () => {
     return new Promise((resolve, reject) => {
       setTimeout(() => resolve(1), 1000)
     })
   }
-  tests.push(mockSuccessfulTest)
-  const mockFailTest = () => {
+  tests.push(mockSuccessfulTest1)
+
+  const mockSuccessfulTest2 = () => {
     return new Promise((resolve, reject) => {
-      setTimeout(() => reject(2), 500)
+      setTimeout(() => resolve(2), 500)
     })
   }
-  tests.push(mockFailTest)
+  tests.push(mockSuccessfulTest2)
   let testSuite = {
     suiteName: 'Mock Test Suite',
     tests: tests,
-    numTests: tests.length,
   }
   testSuites.push(testSuite)
   return testSuites

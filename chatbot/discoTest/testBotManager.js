@@ -21,7 +21,7 @@ const run = () => {
           bot.user.tag +
           '\x1b[0m'
       )
-      testEmoji = bot.emojis.get(testEmojiId)
+      testEmoji = bot.emojis.cache.get(testEmojiId)
       console.log('testEmoji')
       console.log(testEmoji.id)
       testBotReady = true

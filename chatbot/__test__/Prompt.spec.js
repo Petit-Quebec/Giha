@@ -1,5 +1,5 @@
-import Prompt from '../Prompt'
-import { Client, DMChannel, Emoji, TextChannel } from 'discord.js'
+// import Prompt from '../Prompt'
+// import { Client, DMChannel, Emoji, TextChannel } from 'discord.js'
 
 describe('Giha class - Prompt', () => {
   it('should be tested end-to-end', () => {
