@@ -9,32 +9,33 @@
     "dev": "nodemon --exec npm run babel-node --inspect server.js",
     "lint": "eslint . --ext .js",
     "lint-fix": "eslint . --ext .js --fix && prettier --write .",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "e2e": "node ./chatbot/discotest/endToEndTests.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ngrayson/loom.git"
+    "url": "git+https://github.com/Petit-Quebec/Giha.git"
   },
   "author": "Nick Grayson",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ngrayson/loom/issues"
+    "url": "https://github.com/Petit-Quebec/Giha/issues"
   },
-  "homepage": "https://github.com/ngrayson/loom#readme",
+  "homepage": "https://github.com/Petit-Quebec/Giha#readme",
   "dependencies": {
-    "discord.js": "^11.5.1",
+    "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "mongodb": "^3.5.3",
-    "mongoose": "^5.9.2"
+    "mongoose": "^5.11.9"
   },
   "devDependencies": {
-    "@babel/node": "^7.12.6",
-    "@babel/plugin-transform-runtime": "^7.12.1",
-    "@babel/preset-env": "^7.12.7",
+    "@babel/node": "^7.12.10",
+    "@babel/plugin-transform-runtime": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.6.3",
-    "eslint": "^7.14.0",
+    "eslint": "^7.17.0",
     "jest": "^26.6.3",
     "nodemon": "^2.0.4",
     "prettier": "^2.2.1"

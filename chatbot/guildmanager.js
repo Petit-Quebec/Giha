@@ -40,7 +40,7 @@ function getInitializedGuilds() {
 export const checkGuilds = (client) => {
   return new Promise((resolve) => {
     // pull all connected guilds from bot
-    let connectedGuilds = getConnectedGuilds(client).array()
+    let connectedGuilds = getConnectedGuilds(client).cache.array()
     // pull all initialized guilds from DB (promise)
     let initializedGuilds
     // wait for DB response

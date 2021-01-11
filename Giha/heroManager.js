@@ -24,6 +24,8 @@ export const getHeroById = (id) =>
 export const getHeroByName = (name) =>
   heroes.find((hero) => hero.name === name) || false
 
-String.prototype.equalsIgnoreCase = (compareString) => {
-  return this.toUpperCase() === compareString.toUpperCase()
+String.prototype.equalsIgnoreCase = function (compareString) {
+  let thisUpper = this.toUpperCase()
+  let compareUpper = compareString.toUpperCase()
+  return thisUpper === compareUpper
 }

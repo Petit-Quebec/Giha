@@ -2,7 +2,7 @@
 import dotenv from 'dotenv'
 import { log, logBar } from './util/util.js'
 import db from './db/db.js'
-import chatbot from './chatbot/botserver.js'
+import chatbot from './chatbot/botManager.js'
 import webserver from './webserver/webserver.js'
 import readline from 'readline'
 import { enableLog } from './util/util.js'
