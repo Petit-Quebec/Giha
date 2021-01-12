@@ -22,7 +22,8 @@ describe('Giha class - ResponseAction', () => {
     )
   })
   it('should error when passed a bad callback', () => {
-    let phonyCallback = `Legendary Super Saiyan 4 Uchiha Madara with the Eternal Mangekyou Sharingan, Rinnegan, Mystic Eyes of Death Perception, and Geass doujutsus, equipped with his Shining Trapezohedron while casting Super Tengen Toppa Gurren Lagann as his Susanoo, controlling the Gold Experience Requiem stand, having become the original vampire after having absorbed Alucard as well as a God Hand, able to tap into the speedforce, wearing the Kamen Rider Black RX suit, with Kryptonian DNA implanted in him and having eaten Popeye's spinach while possessing quantum powers like Dr. Manhattan and having mastered Hokuto Shinken.`
+    let phonyCallback =
+      "Legendary Super Saiyan 4 Uchiha Madara with the Eternal Mangekyou Sharingan, Rinnegan, Mystic Eyes of Death Perception, and Geass doujutsus, equipped with his Shining Trapezohedron while casting Super Tengen Toppa Gurren Lagann as his Susanoo, controlling the Gold Experience Requiem stand, having become the original vampire after having absorbed Alucard as well as a God Hand, able to tap into the speedforce, wearing the Kamen Rider Black RX suit, with Kryptonian DNA implanted in him and having eaten Popeye's spinach while possessing quantum powers like Dr. Manhattan and having mastered Hokuto Shinken."
     expect(() => {
       new ResponseAction(testTriggerType, testEmoji, phonyCallback)
     }).toThrow(
