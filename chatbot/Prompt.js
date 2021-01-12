@@ -79,6 +79,7 @@ let Prompt = class Prompt {
           .then((res) => {
             //save the message as part of the prompt
             this.message = res
+            this.reactionPromises = this.addReactionButtons()
             this.reactCollector = this.message.createReactionCollector(
               (reaction, user) =>
                 this.responseActions.find((responseAction) => {
@@ -89,7 +90,6 @@ let Prompt = class Prompt {
             )
             this.reactCollector.on('collect', (reaction) => {
               // console.log(`collected ${reaction.emoji.name}`)
-              this.reactionPromises = this.addReactionButtons()
 
               let user = reaction.users.cache.array()[0]
               let reactionId = reaction._emoji.id

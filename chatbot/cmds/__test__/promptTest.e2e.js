@@ -38,25 +38,23 @@ let test = async (chatBot, testBot, testEmoji) => {
     .messages.cache.get(botMessage.id)
   // wait a second
   await testBotMessage.react(testEmoji)
-  setTimeout(async () => {
-    // then have the test bot react to it
-    let reactionUsers = botMessage.reactions.cache
-      .array()[0]
-      .users.cache.array()
-    if (
-      reactionUsers.find((element) => element == chatBot.user.id) == -1 ||
-      reactionUsers.find((element) => element == testBot.user.id) == -1
-    )
-      throw 'the correct reactions are missing'
-  }, 2000)
   return new Promise((resolve, reject) => {
     try {
-      let reactInterval = setInterval(() => {
+      setTimeout(async () => {
+        // then have the test bot react to it
+        let reactionUsers = botMessage.reactions.cache
+          .array()[0]
+          .users.cache.array()
+        if (
+          reactionUsers.find((element) => element == chatBot.user.id) == -1 ||
+          reactionUsers.find((element) => element == testBot.user.id) == -1
+        )
+          throw 'the correct reactions are missing'
         if (callBackCalled && callbackUser.id == testBot.user.id) {
           resolve(true)
           clearInterval(reactInterval)
         }
-      }, 10)
+      }, 2000)
     } catch (err) {
       reject(err)
     }
