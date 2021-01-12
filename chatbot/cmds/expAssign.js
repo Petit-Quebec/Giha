@@ -5,7 +5,7 @@ let name = 'expAssign'
 
 export const help = {
   name: name,
-  description: "Assigns experience to skill of player's choosing",
+  description: `Assigns experience to skill of player's choosing`,
   format: `!${name} <skillName> <expAmount>`,
   note: 'if xp is floating point, it will be rounded',
 }

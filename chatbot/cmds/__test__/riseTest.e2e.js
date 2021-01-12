@@ -24,7 +24,7 @@ const heroTest = async (chatBot, testBot) => {
 
 const messageTest = async (chatBot, testBot) => {
   let testChannel = testBot.channels.cache.get(testChannelId)
-  let chatBotTestMessage = await testChannel.send(`!rise ${testHero2Name}`)
+  await testChannel.send(`!rise ${testHero2Name}`)
   return new Promise((resolve, reject) => {
     let interval = setInterval(() => {
       let testBotTestMessage = testChannel.messages.cache.find(
