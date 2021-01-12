@@ -10,6 +10,6 @@
     "semi": ["off", "always"],
     "quotes": ["error", "single", { "avoidEscape": true }],
     "no-case-declarations": ["warn"],
-    "eol-last": ["warn", "always"]
+    "eol-last": ["warn", "windows"]
   }
 }
