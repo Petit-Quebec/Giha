@@ -4,6 +4,13 @@ import botManager from '../botManager.js'
 import { logBar } from '../../util/util.js'
 import loadTestSuites from './loadTestSuites.js'
 
+import dotenv from 'dotenv'
+dotenv.config()
+const ENV = process.env.ENV
+
+if (ENV != 'DEV')
+  throw `ENV must be set to Dev for end to end testing, it is currently ${ENV}`
+
 let mockTestSuites
 let testSuites
 let testReport = []

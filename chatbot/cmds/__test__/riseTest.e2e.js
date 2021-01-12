@@ -33,7 +33,6 @@ const messageTest = async (chatBot, testBot) => {
       )
       if (testBotTestMessage) {
         console.log(testBotTestMessage)
-        chatBotTestMessage.delete()
         resolve(true)
         clearInterval(interval)
       }
