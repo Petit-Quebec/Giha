@@ -1,20 +1,10 @@
-let Monster = class Monster {
-  constructor(name, health, speed, damage, attackName) {
-    this.name = name
-    this.health = health
-    this.speed = speed
-    this.damage = damage
-    this.attackName = attackName
-  }
-}
-let theTragus = new Monster('Tragus Ultra', 34, 5, 30, 'Spacetime Enema')
-let bun = new Monster('Diminunitive Bun', 3, 1, 2, 'Schnuzzle')
+import monsters from './Monster.js'
 
 let Encounter = class Encounter {
   constructor(hero, id) {
     this.hero = hero
     this.id = id
-    this.enemy = Math.random() > 0.8 ? theTragus : bun
+    this.enemy = Math.random() > 0.8 ? monsters[0] : monsters[1]
     this.enemyHealth = this.enemy.health
     this.enemySpeed = this.enemy.speed
     this.enemyDamage = this.enemy.damage
