@@ -1,6 +1,23 @@
-import monsters from './Monster.js'
+import Encounter from './Encounter.js'
+import encounterTypes from './Encounter.js'
+/**
+ * @class
+ * @requires ./Encounter
+ */
+class FightingEncounter extends Encounter {
+  /**
+   *
+   * @param {Monster} enemy
+   */
+  constructor(enemy) {
+    super(encounterTypes.FIGHTING)
+    this.enemy = enemy
+  }
+}
+// Fighting encounter class
+// extends encounter
 
-let Encounter = class Encounter {
+/*
   constructor(hero, id) {
     this.hero = hero
     this.id = id
@@ -62,5 +79,6 @@ let Encounter = class Encounter {
 //     this.effects = []
 //   }
 // }
+*/
 
-export default Encounter
+export default FightingEncounter
