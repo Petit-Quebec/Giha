@@ -41,7 +41,7 @@ let Encounter = class Encounter {
 
 const encounterTypes = {
   FIGHTING: 'Fighting',
-  MINING: 'Mining',
+  GATHERING: 'Gathering',
 }
 
 const encounterStatuses = {
