@@ -1,4 +1,4 @@
-import Resource, { gatherSkills } from '../db/Resources'
+import Resource, { gatherSkills } from '../db/GatheringResource'
 
 let resources = []
 

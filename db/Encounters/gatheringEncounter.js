@@ -1,4 +1,4 @@
-import Resource, { gatherSkills } from '../Resources.js'
+import Resource, { gatherSkills } from '../GatheringResource.js'
 import Encounter from './Encounter.js'
 import encounterTypes from './Encounter.js'
 import encounterStatuses from './Encounter.js'
