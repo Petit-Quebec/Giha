@@ -65,6 +65,7 @@ let Prompt = class Prompt {
     this.channel = channel
     this.client = client
     this.reactCollector
+    this.reactFilter = this.createReactFilter()
     this.message
     this.reactionPromises
     this.messagePromise = new Promise((resolve, reject) => {
@@ -81,26 +82,25 @@ let Prompt = class Prompt {
             this.message = res
             this.reactionPromises = this.addReactionButtons()
             this.reactCollector = this.message.createReactionCollector(
-              (reaction, user) =>
-                this.responseActions.find((responseAction) => {
-                  return responseAction.trigger == reaction.emoji.id
-                }) &&
-                (!user.bot || (ENV == 'DEV' && user.id != this.client.user.id)),
+              // dummy reaction filter because I don't trust discord's filtering
+              () => {
+                return true
+              },
               { time: 15000 }
             )
             this.reactCollector.on('collect', (reaction) => {
               // console.log(`collected ${reaction.emoji.name}`)
 
-              let user = reaction.users.cache.array()[0]
+              let userCache = reaction.users.cache.array()
+              let user = userCache.pop()
               let reactionId = reaction._emoji.id
-              // console.log('reaction detected!')
-              // console.log(
-              //   ` _emoji.id: ${reactionId}\n` +
-              //     ` username: ${user.username}\n` +
-              //     ` id: ${user.id}\n` +
-              //     ` bot: ${user.bot}`
-              // )
-              this.trigger(user, reactionId)
+              //do our own, more reliable filtering
+              if (this.reactFilter(reactionId, user)) {
+                // console.log('reaction valid')
+                this.trigger(user, reactionId)
+              } else {
+                // console.log('reaction invalid')
+              }
             })
             this.reactCollector.on('end', (collected) =>
               console.log(`collected ${collected.size} items`)
@@ -135,12 +135,13 @@ let Prompt = class Prompt {
    * returns an array of promises to add the reactions
    */
   async addReactionButtons() {
+    let reactions = []
     for (let responseAction of this.responseActions) {
       if (responseAction.triggerType == 'emoji') {
-        await this.message.react(responseAction.trigger)
+        reactions.push(await this.message.react(responseAction.trigger))
       }
     }
-    return true
+    return reactions
   }
 
   /**
@@ -190,9 +191,18 @@ let Prompt = class Prompt {
         })
     })
   }
+
+  createReactFilter() {
+    return (reactionId, user) =>
+      this.responseActions.find((responseAction) => {
+        return responseAction.trigger == reactionId
+      }) &&
+      user.id != this.client.user.id &&
+      (!user.bot || ENV == 'DEV')
+  }
 }
 /*
-const reactFilter = (client, responseActions) => {
+const createReactFilter = (client, responseActions) => {
   if (!client || client == undefined) throw 'client must be defined'
   let clientId = client.id
   let emojiList = []

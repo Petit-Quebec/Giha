@@ -32,7 +32,7 @@ const messageTest = async (chatBot, testBot) => {
           (msg.content = `${testHero2Name} rises! Huzzah! They are a powerful level 1 Spelunker!`)
       )
       if (testBotTestMessage) {
-        console.log(testBotTestMessage)
+        // console.log(testBotTestMessage)
         resolve(true)
         clearInterval(interval)
       }

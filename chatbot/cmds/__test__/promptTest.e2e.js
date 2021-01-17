@@ -32,11 +32,12 @@ let test = async (chatBot, testBot, testEmoji) => {
     msgOptions
   )
   let botMessage = await testPrompt.messagePromise
+  await testPrompt.reactionPromises
 
   let testBotMessage = await testBot.channels.cache
     .get(testChannel.id)
     .messages.cache.get(botMessage.id)
-  // wait a second
+
   await testBotMessage.react(testEmoji)
   return new Promise((resolve, reject) => {
     try {
@@ -50,9 +51,13 @@ let test = async (chatBot, testBot, testEmoji) => {
           reactionUsers.find((element) => element == testBot.user.id) == -1
         )
           throw 'the correct reactions are missing'
+        // console.log(
+        //   `callbackcalled: ${callBackCalled}  by  ${callbackUser.username}`
+        // )
+        // console.log(` compared to ${testBot.user.id}`)
         if (callBackCalled && callbackUser.id == testBot.user.id) {
+          console.log(`It's the same!`)
           resolve(true)
-          clearInterval(reactInterval)
         }
       }, 2000)
     } catch (err) {
