@@ -1,4 +1,4 @@
-import MiningEncounter from '../MiningEncounter'
+import MiningEncounter from '../gatheringEncounter'
 describe('Giha Class - Mining Encounter', () => {
   let testMiningEncounter = new MiningEncounter()
   it('should be able to instantiate a mining event', () => {
