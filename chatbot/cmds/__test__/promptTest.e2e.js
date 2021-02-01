@@ -56,7 +56,7 @@ let test = async (chatBot, testBot, testEmoji) => {
         // )
         // console.log(` compared to ${testBot.user.id}`)
         if (callBackCalled && callbackUser.id == testBot.user.id) {
-          console.log(`It's the same!`)
+          console.log("It's the same!")
           resolve(true)
         }
       }, 2000)

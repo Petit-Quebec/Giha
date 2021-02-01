@@ -51,7 +51,7 @@ const LOCATION_TYPES = {
   },
   E: {
     // Encounter: Where players encounter content
-    type: 'encounter',
+    type: 'trap-door_closed',
     walkable: true,
     translucent: true,
     breakable: false,
@@ -60,7 +60,7 @@ const LOCATION_TYPES = {
   },
   G: {
     // Ground: Where the player walks atop
-    type: 'ground',
+    type: 'ground_rock',
     walkable: true,
     translucent: true,
     breakable: false,

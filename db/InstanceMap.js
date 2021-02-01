@@ -27,7 +27,7 @@ let InstanceMap = class InstanceMap {
   getLocationAt(x, y) {
     return this.topography[x][y]
   }
-  
+
   renderASCII() {
     let renderString = ''
     this.topography.forEach((row) => {
@@ -38,7 +38,7 @@ let InstanceMap = class InstanceMap {
     })
     return renderString
   }
-  
+
   async renderImg() {
     return await mapRenderer(this)
   }
