@@ -1,6 +1,7 @@
 import { log } from '../util/util.js'
 import InstanceLocation from './InstanceLocation.js'
 import { parseLocations } from './InstanceLocation.js'
+import mapRenderer from '../imgGen/map/renderer.js'
 // import db from './db.js'
 
 // const mongoose = db.mongoose
@@ -15,6 +16,8 @@ let InstanceMap = class InstanceMap {
     })
     this.name = mapName
     this.topography = topography //an array of InstanceLocations
+    this.width = topography[0].length
+    this.height = topography.length
     // this.zone // what zone it is in
     //
 
@@ -24,7 +27,7 @@ let InstanceMap = class InstanceMap {
   getLocationAt(x, y) {
     return this.topography[x][y]
   }
-
+  
   renderASCII() {
     let renderString = ''
     this.topography.forEach((row) => {
@@ -34,6 +37,10 @@ let InstanceMap = class InstanceMap {
       renderString += '\n'
     })
     return renderString
+  }
+  
+  async renderImg() {
+    return await mapRenderer(this)
   }
 
   validate() {
