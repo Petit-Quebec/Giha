@@ -15,6 +15,9 @@ let InstanceMap = class InstanceMap {
     })
     this.name = mapName
     this.topography = topography //an array of InstanceLocations
+    this.heroes = [
+      { name: 'testHero', location: this.spawnLocationFrom('town') },
+    ]
     // this.zone // what zone it is in
     //
 

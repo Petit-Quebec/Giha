@@ -104,6 +104,15 @@ describe('Giha - mapValidator', () => {
       'INVALID MAP ERROR: each map needs exactly 1 door to town, this map has 2'
     )
   })
+  it('should spawn the hero at the door to town', () => {
+    testInstanceMap = getTestInstanceMap()
+    let doorToTownLoc = testInstanceMap.spawnLocationFrom('town')
+    let heroLoc = testInstanceMap.heroes[0].location
+    console.log(doorToTownLoc)
+    console.log(heroLoc)
+    expect(doorToTownLoc.x == heroLoc.x).toBe(true)
+    expect(doorToTownLoc.y == heroLoc.y).toBe(true)
+  })
 })
 
 describe('Giha - map renderASCII', () => {
