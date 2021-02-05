@@ -80,6 +80,10 @@ let InstanceMap = class InstanceMap {
     }
     return false
   }
+
+  getHeroes() {
+    return this.heroes
+  }
 }
 
 const getTestInstanceMap = () => {
