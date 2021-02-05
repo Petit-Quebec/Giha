@@ -73,7 +73,7 @@ let Prompt = class Prompt {
       try {
         channel
           .send(
-            client.user.username,
+            client.user.username, //should be msgContent but that will break the test so needs to update at the same time
             // msgContent
             msgOptions
           )
@@ -86,7 +86,7 @@ let Prompt = class Prompt {
               () => {
                 return true
               },
-              { time: 15000 }
+              msgOptions
             )
             this.reactCollector.on('collect', (reaction) => {
               // console.log(`collected ${reaction.emoji.name}`)
