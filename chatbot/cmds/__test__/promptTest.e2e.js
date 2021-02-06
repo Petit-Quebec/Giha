@@ -109,7 +109,6 @@ let promptTimeoutTest = async (chatBot, testBot, testEmoji) => {
     { time: 100 },
     collectorExpiredCallback
   )
-  let botMessage = await testPrompt.messagePromise
   await testPrompt.reactionPromises
 
   return new Promise((resolve, reject) => {
