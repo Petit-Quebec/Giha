@@ -8,6 +8,12 @@ const ENV = process.env.ENV
 // ie. send a message, react to itself, deal with responses
 // ie. send a message, wait for a list of specific replies
 
+let promptBehaviors = {
+  oneClick: 'oneClick', // first user that clicks  activates callback, can be cleared by refreshReactions
+  oneClickPerUser: 'oneClickPerUser', // first time a user clicks, callback activates, can be cleared by refreshReactions
+  noLimit: 'noLimit', // not recommended, buggy and results in callback being called multiple times and idk why
+}
+
 /** Class representing an automated prompt to users
  * @class
  * @requires ./ResponseAction
@@ -16,20 +22,24 @@ let Prompt = class Prompt {
   /**
    *
    * @param {Object} channel - the (Discord) Channel to send the prompt in
-   * @param {boolean} isReusable - if this prompt goes away once it is used or if it keeps listening
+   * @param {string} behavior - how this prompt should behave, more information is in Prompt.js
    * @param {ResponseAction|[ResponseAction]} responseActions - what actions can happen as responses to this prompt
    * @param {Object} client - which (Discord) client to use for messaging
    * @param {string} msgContent - what content the prompt message should display
    * @param {Object} [msgOptions] - what message options (if any) the prompt should have (includes embeds)
+   * @param {Object} [reactCollectorOptions] - what reactCollector options (if any) the prompt should have (includes things like expiry time for watching reactions)
+   * @param {Object} [reactCollectorTimeoutCallback] - function to call when the react collector expires - will clear reactions by default
    * Information on building messages is available here https://discord.js.org/#/docs/main/stable/class/TextChannel?scrollTo=send
    */
   constructor(
     channel,
-    isReusable,
+    promptBehavior,
     responseActions,
     client,
     msgContent,
-    msgOptions
+    msgOptions,
+    reactCollectorOptions,
+    reactCollectorTimeoutCallback
   ) {
     // make sure message is a discord message
     if (
@@ -38,8 +48,8 @@ let Prompt = class Prompt {
     )
       throw 'Prompt Constructor Error: channel must be a Discord TextChannel or DMChannel'
     // check isReusable
-    if (!(typeof isReusable == 'boolean'))
-      throw `Prompt Constructor Error: isReusable must be of type Boolean, not ${typeof isReusable}`
+    let behavior = promptBehaviors[promptBehavior]
+    if (!behavior) throw `${promptBehavior} is not a valid prompt behavior`
 
     // check and set client
     if (!(client instanceof Discord.Client))
@@ -61,22 +71,19 @@ let Prompt = class Prompt {
     }
     // set everything
     this.isDM = channel instanceof Discord.DMChannel
-    this.isReusable = isReusable
     this.channel = channel
+    this.behavior = behavior
     this.client = client
     this.reactCollector
     this.reactFilter = this.createReactFilter()
     this.message
     this.reactionPromises
+    this.reactHistory = []
     this.messagePromise = new Promise((resolve, reject) => {
       // everything is set up, now send the message
       try {
         channel
-          .send(
-            client.user.username, //should be msgContent but that will break the test so needs to update at the same time
-            // msgContent
-            msgOptions
-          )
+          .send(msgContent, msgOptions)
           .then((res) => {
             //save the message as part of the prompt
             this.message = res
@@ -86,7 +93,7 @@ let Prompt = class Prompt {
               () => {
                 return true
               },
-              msgOptions
+              reactCollectorOptions ? reactCollectorOptions : { time: 60000 }
             )
             this.reactCollector.on('collect', (reaction) => {
               // console.log(`collected ${reaction.emoji.name}`)
@@ -97,14 +104,19 @@ let Prompt = class Prompt {
               //do our own, more reliable filtering
               if (this.reactFilter(reactionId, user)) {
                 // console.log('reaction valid')
+                this.reactHistory.push({ user: user, reactionId: reactionId })
                 this.trigger(user, reactionId)
               } else {
                 // console.log('reaction invalid')
               }
             })
-            this.reactCollector.on('end', (collected) =>
+            this.reactCollector.on('end', (collected) => {
               console.log(`collected ${collected.size} items`)
-            )
+              if (reactCollectorTimeoutCallback) reactCollectorTimeoutCallback()
+              else {
+                this.cleanReactions()
+              }
+            })
 
             // if this prompt has emoji responseActions, add those options for the user
             resolve(res)
@@ -138,7 +150,7 @@ let Prompt = class Prompt {
     let reactions = []
     for (let responseAction of this.responseActions) {
       if (responseAction.triggerType == 'emoji') {
-        reactions.push(await this.message.react(responseAction.trigger))
+        reactions.push(this.message.react(responseAction.trigger))
       }
     }
     return reactions
@@ -153,14 +165,15 @@ let Prompt = class Prompt {
    */
   trigger(userId, emojiId) {
     // check to see if this trigger matches any that we expect
-    this.responseActions.forEach((responseAction) => {
+    for (let responseAction of this.responseActions) {
       if (
         responseAction.triggerType == 'emoji' &&
         responseAction.trigger == emojiId
-      )
+      ) {
         responseAction.act(userId)
-      return true
-    })
+        return true
+      }
+    }
     return false
   }
 
@@ -176,6 +189,7 @@ let Prompt = class Prompt {
    */
   refreshReactions() {
     return new Promise((resolve, reject) => {
+      this.reactHistory = []
       this.cleanReactions()
         .then(() => {
           this.addReactionButtons()
@@ -193,12 +207,39 @@ let Prompt = class Prompt {
   }
 
   createReactFilter() {
-    return (reactionId, user) =>
-      this.responseActions.find((responseAction) => {
+    let filter = (reactionId, user) => {
+      // emoji check
+      let emojiCheck = this.responseActions.find((responseAction) => {
+        // is the emoji a valid one
         return responseAction.trigger == reactionId
-      }) &&
-      user.id != this.client.user.id &&
-      (!user.bot || ENV == 'DEV')
+      })
+
+      let userCheck = user.id != this.client.user.id // was the reaction done by something other than the bot
+
+      let botCheck = !user.bot || ENV == 'DEV' // the test bot is okay if we are in dev mode //behavioral check
+      // behavior check
+      let behaviorCheck
+      switch (this.behavior) {
+        case 'oneClick':
+          behaviorCheck = this.reactHistory.length == 0
+          break
+        case 'oneClickPerUser':
+          behaviorCheck =
+            undefined ==
+            this.reactHistory.find((reactLog) => {
+              return (
+                reactLog.user === user && reactLog.reactionId === reactionId
+              )
+            })
+          break
+        case 'noLimit':
+        default:
+          break
+      }
+
+      return emojiCheck && behaviorCheck && userCheck && botCheck
+    }
+    return filter
   }
 }
 /*

@@ -69,13 +69,22 @@ const run = async (bot, message, args) => {
       responseActions.push(responseAction)
     }
 
+    let expireCallback = () => {
+      shroomPrompt.message.edit(
+        `The shrooms have all burrowed.\nYour final score is: ${shroomHunt.score}`
+      )
+      shroomPrompt.cleanReactions()
+    }
+
     shroomPrompt = new Prompt(
       message.channel,
-      true,
+      'oneClickPerUser',
       responseActions,
       bot,
       'YOU UNCOVER MAGEROOF, PICK SOME BEFORE THEY BURROW!!!',
-      { time: 15000 }
+      {},
+      { time: 15000 },
+      expireCallback
     )
 
     // make numShrooms reaction objects
