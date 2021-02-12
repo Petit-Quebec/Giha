@@ -5,31 +5,33 @@ dotenv.config()
 const testChannelId = process.env.TEST_CHANNEL_ID
 let callbackUser
 
-const callback = (user) => {
+let reactionCallBacks = 0
+const reactionCallback = (user) => {
   console.log(`callback called by ${user.username}`)
   callbackUser = user
-  callBackCalled = true
+  reactionCallBacks++
   return
 }
-let callBackCalled = false
 
-let test = async (chatBot, testBot, testEmoji) => {
-  let isReusable = true
+let promptBehaviorTest = async (chatBot, testBot, testEmoji) => {
+  let behavior = 'oneClick'
   let responseActions
   let client = chatBot
-  let msgContent = 'this is a test message'
+  let msgContent = 'this is a test message checking prompt behavior'
   let msgOptions = {}
   let testChannel = await client.channels.cache.get(testChannelId)
 
-  responseActions = new ResponseAction('emoji', testEmoji, callback)
+  responseActions = new ResponseAction('emoji', testEmoji, reactionCallback)
+
   // make a new prompt
   let testPrompt = new Prompt(
     testChannel,
-    isReusable,
+    behavior,
     responseActions,
     client,
     msgContent,
-    msgOptions
+    msgOptions,
+    { time: 5000 }
   )
   let botMessage = await testPrompt.messagePromise
   await testPrompt.reactionPromises
@@ -51,15 +53,70 @@ let test = async (chatBot, testBot, testEmoji) => {
           reactionUsers.find((element) => element == testBot.user.id) == -1
         )
           throw 'the correct reactions are missing'
-        // console.log(
-        //   `callbackcalled: ${callBackCalled}  by  ${callbackUser.username}`
-        // )
-        // console.log(` compared to ${testBot.user.id}`)
-        if (callBackCalled && callbackUser.id == testBot.user.id) {
-          console.log(`It's the same!`)
-          resolve(true)
+        if (reactionCallBacks != 1 || callbackUser.id != testBot.user.id) {
+          throw 'first reaction failed'
         }
-      }, 2000)
+        // try to react again (unreact, re-react) , expect no additional callback
+        // prompt.refreshReactions
+        // react again, expect one additional callback
+        await testBotMessage.reactions.removeAll()
+        await testBotMessage.react(testEmoji)
+
+        if (reactionCallBacks != 1) {
+          throw 'second reaction failed'
+        }
+
+        await testPrompt.refreshReactions()
+        await testBotMessage.react(testEmoji)
+
+        if (reactionCallBacks != 2) {
+          throw 'third reaction failed'
+        }
+
+        resolve(true)
+      }, 1500)
+    } catch (err) {
+      reject(err)
+    }
+  })
+}
+
+let collectorExpiredCallBackCalled = false
+const collectorExpiredCallback = () => {
+  console.log('collector timed out')
+  collectorExpiredCallBackCalled = true
+}
+
+let promptTimeoutTest = async (chatBot, testBot, testEmoji) => {
+  let behavior = 'oneClick'
+  let responseActions
+  let client = chatBot
+  let msgContent =
+    'this is a second test message looking for a reaction timeout event'
+  let msgOptions = {}
+  let testChannel = await client.channels.cache.get(testChannelId)
+
+  responseActions = new ResponseAction('emoji', testEmoji, reactionCallback)
+
+  // make a new prompt
+  let testPrompt = new Prompt(
+    testChannel,
+    behavior,
+    responseActions,
+    client,
+    msgContent,
+    msgOptions,
+    { time: 100 },
+    collectorExpiredCallback
+  )
+  await testPrompt.reactionPromises
+
+  return new Promise((resolve, reject) => {
+    try {
+      setTimeout(async () => {
+        if (collectorExpiredCallBackCalled) resolve(true)
+        else reject('timeout collector did not trigger')
+      }, 1500)
     } catch (err) {
       reject(err)
     }
@@ -68,7 +125,7 @@ let test = async (chatBot, testBot, testEmoji) => {
 
 let promptTestSuite = {
   suiteName: 'prompt TestSuite',
-  tests: [test],
+  tests: [promptBehaviorTest, promptTimeoutTest],
 }
 
 export default promptTestSuite
