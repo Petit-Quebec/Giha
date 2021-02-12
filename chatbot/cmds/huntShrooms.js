@@ -78,7 +78,7 @@ const run = async (bot, message, args) => {
 
     shroomPrompt = new Prompt(
       message.channel,
-      'oneClickPerUser',
+      'oneClick',
       responseActions,
       bot,
       'YOU UNCOVER MAGEROOF, PICK SOME BEFORE THEY BURROW!!!',
