@@ -24,6 +24,7 @@ import * as stats from './stats.js'
 import * as templateCmd from './templateCmd.js'
 import * as testCharacter from './testCharacter.js'
 import * as map from './map.js'
+import * as shroomHunt from './huntShrooms.js'
 
 export default {
   adminStats,
@@ -52,4 +53,5 @@ export default {
   templateCmd,
   testCharacter,
   map,
+  shroomHunt,
 }
