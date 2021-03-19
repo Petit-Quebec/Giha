@@ -35,8 +35,9 @@ export const run = async (_bot, message) => {
       console.log(err)
     })
     const embed = new Discord.MessageEmbed()
-      .attachFiles(['./map.png'])
+      .attachFiles(['map.png'])
       .setImage('attachment://map.png')
+    msg.delete()
     message.channel.send(embed)
   } catch (err) {
     log(err, true)
