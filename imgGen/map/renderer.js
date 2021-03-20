@@ -1,6 +1,6 @@
 import mergeImages from 'merge-images'
 import canvas from 'canvas'
-import InstanceMap from '../../db/instanceMap'
+import InstanceMap from '../../db/instanceMap.js'
 const { Canvas, Image } = canvas
 
 let TILE_DIM = { WIDTH: 32, HEIGHT: 32 }
