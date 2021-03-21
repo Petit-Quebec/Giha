@@ -1,5 +1,5 @@
 import { log } from '../../util/util.js'
-import { getTestInstanceMap } from '../../db/instanceMap.js'
+import { getTestInstanceMap } from '../../db/InstanceMap.js'
 import fs from 'fs'
 import Discord from 'discord.js'
 
