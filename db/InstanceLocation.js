@@ -53,7 +53,7 @@ const LOCATION_TYPES = {
   },
   g: {
     // Ground: Where the player walks atop
-    type: 'ground_rock',
+    type: 'ground',
     walkable: true,
     translucent: true,
     breakable: false,
