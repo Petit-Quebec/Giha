@@ -1,7 +1,7 @@
 // import { log } from '../util/util.js'
 // import db from './db.js'
 
-import { randomEncounter } from '../Giha/encounterManager'
+import { randomEncounter } from '../Giha/encounterManager.js'
 
 // const mongoose = db.mongoose
 

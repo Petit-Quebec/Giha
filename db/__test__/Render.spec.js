@@ -7,7 +7,7 @@ describe('Render test', () => {
     it.each(locTypes)('%s- should be able to render all possible locations separately', async (type) => {
         let testLocation = [[new InstanceLocation(type)]]
         let testMap = new InstanceMap('Individual Test Map', testLocation)
-        let imgData = await render(testMap)
+        let imgData = await testMap.renderImg()
         expect(imgData.slice(16,20)).toStrictEqual(Buffer.from([0, 0, 0, 32]))
         expect(imgData.slice(20,24)).toStrictEqual(Buffer.from([0, 0, 0, 32]))
         expect(imgData).toBeInstanceOf(Buffer)
@@ -19,7 +19,7 @@ describe('Render test', () => {
             testLocations.push([new InstanceLocation(loc)])
         }
         let testMap = new InstanceMap('All Test Map', testLocations)
-        let imgData = await render(testMap)
+        let imgData = await testMap.renderImg()
         let heightPixels = 32*testMap.height
         let widthPixels = 32*testMap.width
         let Hbyte1 = 0xff & heightPixels
