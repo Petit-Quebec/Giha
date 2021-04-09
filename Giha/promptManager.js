@@ -11,11 +11,13 @@ const newPrompt = (
 ) => {
   let prompt = new Prompt(
     channel,
-    isReusable,
+    promptBehavior,
     responseActions,
     client,
     msgContent,
-    msgOptions
+    msgOptions,
+    reactCollectorOptions,
+    reactCollectorTimeoutCallback
   )
   activePrompts.push(prompt)
   return prompt
