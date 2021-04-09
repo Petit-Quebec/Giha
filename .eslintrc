@@ -8,7 +8,8 @@
   },
   "rules": {
     "semi": ["off", "always"],
-    "quotes": ["error", "single"],
-    "no-case-declarations": ["warn"]
+    "quotes": ["error", "single", { "avoidEscape": true }],
+    "no-case-declarations": ["warn"],
+    "eol-last": ["warn", "windows"]
   }
 }

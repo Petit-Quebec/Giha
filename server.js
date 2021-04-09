@@ -2,7 +2,7 @@
 import dotenv from 'dotenv'
 import { log, logBar } from './util/util.js'
 import db from './db/db.js'
-import chatbot from './chatbot/botserver.js'
+import chatbot from './chatbot/botManager.js'
 import webserver from './webserver/webserver.js'
 import readline from 'readline'
 import { enableLog } from './util/util.js'
@@ -12,7 +12,7 @@ dotenv.config()
 const CHATBOT_ENABLED = process.env.CHATBOT_ENABLED == 1
 const CONSOLE_CHAT_OVERRIDE = process.env.CONSOLE_CHAT_OVERRIDE == 1
 const WEBSERVER_ENABLED = process.env.WEBSERVER_ENABLED == 1
-if (process.env.CONSOLE_LOG_ENABLED) enableLog()
+if (process.env.ENV == 'DEV') enableLog()
 
 let serverState = 0
 
@@ -30,12 +30,7 @@ const bootMonitor = () => {
   const intervalObj = setInterval(() => {
     switch (serverState) {
       case 0:
-        let serverOK =
-          !WEBSERVER_ENABLED || (WEBSERVER_ENABLED && webserver.isReady())
-        let chatbotOK =
-          !CHATBOT_ENABLED || (CHATBOT_ENABLED && chatbot.isReady())
-        let databaseOK = db.databaseReady()
-        if (serverOK && chatbotOK && databaseOK) {
+        if (serverOK() && chatBotOK() && db.databaseReady()) {
           log('\n Everything booted correctly!', true)
           logBar(1, true)
           serverState = 1
@@ -78,6 +73,14 @@ const runCLIBot = () => {
 
   log('\x1b[32m' + ' ✓' + '\x1b[0m' + ' CLI Bot Now Active' + '%s\x1b[0m')
   return rl
+}
+
+const serverOK = () => {
+  return !WEBSERVER_ENABLED || (WEBSERVER_ENABLED && webserver.isReady())
+}
+
+const chatBotOK = () => {
+  return !CHATBOT_ENABLED || (CHATBOT_ENABLED && chatbot.isReady())
 }
 
 // do the things

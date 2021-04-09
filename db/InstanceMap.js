@@ -1,6 +1,7 @@
 import { log } from '../util/util.js'
 import InstanceLocation from './InstanceLocation.js'
 import { parseLocations } from './InstanceLocation.js'
+import mapRenderer from '../imgGen/map/renderer.js'
 // import db from './db.js'
 
 // const mongoose = db.mongoose
@@ -15,6 +16,8 @@ let InstanceMap = class InstanceMap {
     })
     this.name = mapName
     this.topography = topography //an array of InstanceLocations
+    this.width = topography[0].length
+    this.height = topography.length
     // this.zone // what zone it is in
     //
 
@@ -34,6 +37,10 @@ let InstanceMap = class InstanceMap {
       renderString += '\n'
     })
     return renderString
+  }
+
+  async renderImg() {
+    return await mapRenderer(this)
   }
 
   validate() {
@@ -81,24 +88,24 @@ let InstanceMap = class InstanceMap {
 
 const getTestInstanceMap = () => {
   const testLocationStrings = [
-    'NNNNNNNNNNNNNNNNNNNNNNN',
-    'NBBBBBBBBBBBBBBBBBBBBBN',
-    'NBGGBBGGGGBBBBBGGEBBBBN',
-    'NBGEGGGBBGGGGGGGBBBBBBN',
-    'NBGGGGBBGGBBBBBBBBBEGBN',
-    'NBBGGBBGGBBBEGGBBGGGGBN',
-    'NBBBGBGGBBBBGGGGGGBGGBN',
-    'NBBGGBGGGGBBBBBBBGBBGBN',
-    'NBBGOBEOOGGGGBBBGGBGGBN',
-    'NBGGOBOOOOOGGGGGGBBGBBN',
-    'NBGGGBOOOOOOOOOBBBBGBBN',
-    'NBGBGBBOOOOOOOOBGGGGGBN',
-    'NBGBGGBBBOOOOOBGGGEGGBN',
-    'NBGBBGGBBBBGGGGGGGGGGBN',
-    'NBGGBBGGBBGGGGGGBGGGGBN',
-    'NBGGEBBGGGGGGBBBBBGGBBN',
-    'NBBBBBBBBBBDBBBBBBBBBBN',
-    'NNNNNNNNNNNNNNNNNNNNNNN',
+    'nnnnnnnnnnnnnnnnnnnnnnn',
+    'nbbbbbbbbbbbbbbbbbbbbbn',
+    'nbggbbggggbbbbbggGbbbbn',
+    'nbgGgggbbgggggggbbbbbbn',
+    'nbggggbbggbbbbbbbbbGgbn',
+    'nbbggbbggbbbGggbbggggbn',
+    'nbbbgbggbbbbggggggbggbn',
+    'nbbggbggggbbbbbbbgbbgbn',
+    'nbbgobGooggggbbbggbggbn',
+    'nbggoboooooggggggbbgbbn',
+    'nbgggbooooooooobbbbgbbn',
+    'nbgbgbboooOoooobgggggbn',
+    'nbgbggbbbooooobgggGggbn',
+    'nbgbbggbbbbggggggggggbn',
+    'nbggbbggbbggggggbggggbn',
+    'nbggGbbggggggbbbbbggbbn',
+    'nbbbbbbbbbbdbbbbbbbbbbn',
+    'nnnnnnnnnnnnnnnnnnnnnnn',
   ]
   let testLocations = parseLocations(testLocationStrings)
   let testInstance = new InstanceMap('Test Instance 0', testLocations)
