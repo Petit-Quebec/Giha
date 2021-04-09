@@ -8,7 +8,7 @@ export default class Instance {
     log('a new Instance was made!')
     this.map = getTestInstanceMap()
     this.floors = { floor1: this.map }
-    this.partyCoordinates = this.map.spawnLocationFrom()
+    this.partyCoordinates = this.map.spawnLocationFrom('town')
     this.party = []
   }
 
@@ -30,8 +30,10 @@ export default class Instance {
   }
 
   move(direction) {
+    // console.log(this.map.topography)
     let x = this.partyCoordinates.x
     let y = this.partyCoordinates.y
+    console.log(`x:${x} y:${y}`)
     switch (direction) {
       case 'up':
         if (this.map.topography[x + 1][y].walkable) {

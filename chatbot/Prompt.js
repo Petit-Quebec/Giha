@@ -100,12 +100,18 @@ let Prompt = class Prompt {
 
               let userCache = reaction.users.cache.array()
               let user = userCache.pop()
-              let reactionId = reaction._emoji.id
+              let reactionIdentifier
+              if (reaction._emoji.id == null)
+                reactionIdentifier = reaction._emoji.name
+              else reactionIdentifier = reaction._emoji.id
               //do our own, more reliable filtering
-              if (this.reactFilter(reactionId, user)) {
-                // console.log('reaction valid')
-                this.reactHistory.push({ user: user, reactionId: reactionId })
-                this.trigger(user, reactionId)
+              if (this.reactFilter(reactionIdentifier, user)) {
+                console.log('reaction valid')
+                this.reactHistory.push({
+                  user: user,
+                  reactionIdentifier: reactionIdentifier,
+                })
+                this.trigger(user, reactionIdentifier)
               } else {
                 // console.log('reaction invalid')
               }
@@ -151,6 +157,8 @@ let Prompt = class Prompt {
     for (let responseAction of this.responseActions) {
       if (responseAction.triggerType == 'emoji') {
         reactions.push(this.message.react(responseAction.trigger))
+      } else if (responseAction.triggerType == 'unicodeEmoji') {
+        reactions.push(this.message.react(responseAction.trigger))
       }
     }
     return reactions
@@ -163,12 +171,18 @@ let Prompt = class Prompt {
    * returns true if there was a match,
    * otherwise returns false
    */
-  trigger(userId, emojiId) {
+  trigger(userId, emoji) {
     // check to see if this trigger matches any that we expect
     for (let responseAction of this.responseActions) {
       if (
         responseAction.triggerType == 'emoji' &&
-        responseAction.trigger == emojiId
+        responseAction.trigger == emoji
+      ) {
+        responseAction.act(userId)
+        return true
+      } else if (
+        responseAction.triggerType == 'unicodeEmoji' &&
+        responseAction.trigger == emoji
       ) {
         responseAction.act(userId)
         return true
@@ -233,10 +247,17 @@ let Prompt = class Prompt {
             })
           break
         case 'noLimit':
+          behaviorCheck = true
+          break
         default:
+          console.log(`${this.behavior} is not a valid behavior setting`)
           break
       }
 
+      // console.log(emojiCheck)
+      // console.log(behaviorCheck)
+      // console.log(userCheck)
+      // console.log(botCheck)
       return emojiCheck && behaviorCheck && userCheck && botCheck
     }
     return filter

@@ -69,8 +69,50 @@ export const run = async (bot, message, args) => {
       // do something like saying the dungeon has timed out idk
     }
 
-    let responseActions = initializeControls(instance, bot)
-    newPrompt(
+    let prompt
+
+    const moveUp = () => {
+      console.log('move up!')
+      instance.move('up')
+      let coords = instance.partyCoordinates
+      prompt.message.edit(`x:${coords.x} y:${coords.y}`)
+      prompt.refreshReactions()
+    }
+    const moveDown = () => {
+      console.log('move down!')
+      instance.move('down')
+      let coords = instance.partyCoordinates
+      prompt.message.edit(`x:${coords.x} y:${coords.y}`)
+      prompt.refreshReactions()
+    }
+    const moveRight = () => {
+      console.log('move right!')
+      instance.move('right')
+      let coords = instance.partyCoordinates
+      prompt.message.edit(`x:${coords.x} y:${coords.y}`)
+      prompt.refreshReactions()
+    }
+    const moveLeft = () => {
+      console.log('move left!')
+      instance.move('left')
+      let coords = instance.partyCoordinates
+      prompt.message.edit(`x:${coords.x} y:${coords.y}`)
+      prompt.refreshReactions()
+    }
+
+    let up = new ResponseAction('unicodeEmoji', '⬆️', moveUp)
+    let down = new ResponseAction('unicodeEmoji', '⬇️', moveDown)
+    let right = new ResponseAction('unicodeEmoji', '⬅️', moveRight)
+    let left = new ResponseAction('unicodeEmoji', '➡️', moveLeft)
+
+    let responseActions = []
+
+    responseActions.push(up)
+    responseActions.push(down)
+    responseActions.push(right)
+    responseActions.push(left)
+
+    prompt = newPrompt(
       message.channel,
       'noLimit',
       responseActions,
@@ -84,7 +126,6 @@ export const run = async (bot, message, args) => {
     // update reply and log it
     let txt = `created new instance with <@${message.author.id}> as the party leader`
     msg.edit(txt)
-    log(txt, true)
   } catch (err) {
     // if there is a problem, log it and inform the user
     log(err, true)
@@ -93,31 +134,6 @@ export const run = async (bot, message, args) => {
   }
 }
 
-const initializeControls = (instance, bot) => {
-  const moveUp = () => {
-    instance.move('up')
-  }
-  const moveDown = () => {
-    instance.move('down')
-  }
-  const moveRight = () => {
-    instance.move('right')
-  }
-  const moveLeft = () => {
-    instance.move('left')
-  }
-
-  let controlResponseActions = []
-
-  let up = new ResponseAction('emoji', '⬆️', moveUp)
-  let down = new ResponseAction('emoji', '⬇️', moveDown)
-  let right = new ResponseAction('emoji', '⬅️', moveRight)
-  let left = new ResponseAction('emoji', '➡️', moveLeft)
-
-  controlResponseActions.push(up)
-  controlResponseActions.push(down)
-  controlResponseActions.push(right)
-  controlResponseActions.push(left)
-
+const initializeControls = (instance, prompt) => {
   return controlResponseActions
 }

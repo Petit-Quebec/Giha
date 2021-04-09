@@ -19,11 +19,10 @@ let ResponseAction = class ResponseAction {
       throw `ResponseAction Constructor Error: triggerType can be either 'emoji' or 'message', not '${triggerType}'`
     if (triggerType == 'emoji' && !(trigger instanceof Emoji))
       throw `ResponseAction Constructor Error: emoji trigger must be an instance of a custom Discord Emoji, not '${typeof trigger}'`
-    else if (triggerType == 'unicodeEmoji' && !(typeof trigger != 'string'))
+    else if (triggerType == 'unicodeEmoji' && typeof trigger != 'string')
       throw `ResponseAction Constructor Error: unicode emoji triggers must be a string, not '${typeof trigger}'`
-    else if (triggerType == 'unicodeEmoji' && !(typeof trigger != 'string'))
-      if (typeof action != 'function')
-        throw `ResponseAction Constructor Error: action must be a callback function, not ${typeof action}`
+    if (typeof action != 'function')
+      throw `ResponseAction Constructor Error: action must be a callback function, not ${typeof action}`
 
     this.triggerType = triggerType
     this.trigger = trigger
