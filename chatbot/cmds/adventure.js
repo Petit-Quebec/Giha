@@ -3,6 +3,7 @@ import { getUserByDiscordId } from '../../Giha/userManager.js'
 import { getHeroById } from '../../Giha/heroManager.js'
 import { newInstance } from '../../Giha/instanceManager.js'
 import { newPrompt } from '../../Giha/promptManager.js'
+import ResponseAction from '../ResponseAction.js'
 
 let name = 'adventure'
 
@@ -64,13 +65,20 @@ export const run = async (bot, message, args) => {
       instance.addPartyMember(hero)
     })
 
-    let prompt = newPrompt(
+    let callback = () => {
+      // do something like saying the dungeon has timed out idk
+    }
+
+    let responseActions = initializeControls(instance, bot)
+    newPrompt(
       message.channel,
-      true,
+      'noLimit',
       responseActions,
       bot,
-      'walk around',
-      {}.
+      "here's a prompt okay?",
+      {},
+      { time: 60000 },
+      callback
     )
 
     // update reply and log it
@@ -83,4 +91,33 @@ export const run = async (bot, message, args) => {
     let txt = `use the format ${help.format}\n` + err
     msg.edit(txt)
   }
+}
+
+const initializeControls = (instance, bot) => {
+  const moveUp = () => {
+    instance.move('up')
+  }
+  const moveDown = () => {
+    instance.move('down')
+  }
+  const moveRight = () => {
+    instance.move('right')
+  }
+  const moveLeft = () => {
+    instance.move('left')
+  }
+
+  let controlResponseActions = []
+
+  let up = new ResponseAction('emoji', '⬆️', moveUp)
+  let down = new ResponseAction('emoji', '⬇️', moveDown)
+  let right = new ResponseAction('emoji', '⬅️', moveRight)
+  let left = new ResponseAction('emoji', '➡️', moveLeft)
+
+  controlResponseActions.push(up)
+  controlResponseActions.push(down)
+  controlResponseActions.push(right)
+  controlResponseActions.push(left)
+
+  return controlResponseActions
 }

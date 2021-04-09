@@ -8,7 +8,7 @@ const ENV = process.env.ENV
 // ie. send a message, react to itself, deal with responses
 // ie. send a message, wait for a list of specific replies
 
-let promptBehaviors = {
+const promptBehaviors = {
   oneClick: 'oneClick', // first user that clicks  activates callback, can be cleared by refreshReactions
   oneClickPerUser: 'oneClickPerUser', // first time a user clicks, callback activates, can be cleared by refreshReactions
   noLimit: 'noLimit', // not recommended, buggy and results in callback being called multiple times and idk why

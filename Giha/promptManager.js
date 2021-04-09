@@ -1,4 +1,5 @@
-import Prompt from '../db/Prompt.js'
+import Prompt from '../chatbot/Prompt.js'
+
 let activePrompts = []
 
 const newPrompt = (
