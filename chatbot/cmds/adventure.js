@@ -1,5 +1,4 @@
-import { log, isUser } from '../../util/util.js'
-import { getUserByDiscordId } from '../../Giha/userManager.js'
+import { log } from '../../util/util.js'
 import { getHeroById } from '../../Giha/heroManager.js'
 import { newInstance } from '../../Giha/instanceManager.js'
 import { newPrompt } from '../../Giha/promptManager.js'
@@ -58,7 +57,7 @@ export const run = async (bot, message, args) => {
         throw `<@${discordId}> does not have a valid hero, please make a hero with !rise <name>`
       else party.push(hero)
     })
-    for (let usersTagged = 0; usersTagged < args.length; usersTagged++) {}
+    // for (let usersTagged = 0; usersTagged < args.length; usersTagged++) {}
 
     let instance = newInstance()
     party.forEach((hero) => {
@@ -76,28 +75,28 @@ export const run = async (bot, message, args) => {
       instance.move('up')
       let coords = instance.partyCoordinates
       prompt.message.edit(`x:${coords.x} y:${coords.y}`)
-      prompt.refreshReactions()
+      // prompt.refreshReactions()
     }
     const moveDown = () => {
       console.log('move down!')
       instance.move('down')
       let coords = instance.partyCoordinates
       prompt.message.edit(`x:${coords.x} y:${coords.y}`)
-      prompt.refreshReactions()
+      // prompt.refreshReactions()
     }
     const moveRight = () => {
       console.log('move right!')
       instance.move('right')
       let coords = instance.partyCoordinates
       prompt.message.edit(`x:${coords.x} y:${coords.y}`)
-      prompt.refreshReactions()
+      // prompt.refreshReactions()
     }
     const moveLeft = () => {
       console.log('move left!')
       instance.move('left')
       let coords = instance.partyCoordinates
       prompt.message.edit(`x:${coords.x} y:${coords.y}`)
-      prompt.refreshReactions()
+      // prompt.refreshReactions()
     }
 
     let up = new ResponseAction('unicodeEmoji', '⬆️', moveUp)
@@ -132,8 +131,4 @@ export const run = async (bot, message, args) => {
     let txt = `use the format ${help.format}\n` + err
     msg.edit(txt)
   }
-}
-
-const initializeControls = (instance, prompt) => {
-  return controlResponseActions
 }
