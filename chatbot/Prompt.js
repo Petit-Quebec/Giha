@@ -27,7 +27,7 @@ let Prompt = class Prompt {
    * @param {Object} client - which (Discord) client to use for messaging
    * @param {string} msgContent - what content the prompt message should display
    * @param {Object} [msgOptions] - what message options (if any) the prompt should have (includes embeds)
-   * @param {Object} [reactCollectorOptions] - what reactCollector options (if any) the prompt should have (includes things like expiry time for watching reactions)
+   * @param {Object} [reactCollectorOptions] - what reactCollector options (if any) the prompt should have (includes things like expiry time for watching reactions[defaults to 60 seconds)
    * @param {Object} [reactCollectorTimeoutCallback] - function to call when the react collector expires - will clear reactions by default
    * Information on building messages is available here https://discord.js.org/#/docs/main/stable/class/TextChannel?scrollTo=send
    */

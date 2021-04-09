@@ -1,7 +1,8 @@
 import { log, isUser } from '../../util/util.js'
 import { getUserByDiscordId } from '../../Giha/userManager.js'
 import { getHeroById } from '../../Giha/heroManager.js'
-import Instance from '../../db/Instance.js'
+import { newInstance } from '../../Giha/instanceManager.js'
+import { newPrompt } from '../../Giha/promptManager.js'
 
 let name = 'adventure'
 
@@ -57,6 +58,20 @@ export const run = async (bot, message, args) => {
       else party.push(hero)
     })
     for (let usersTagged = 0; usersTagged < args.length; usersTagged++) {}
+
+    let instance = newInstance()
+    party.forEach((hero) => {
+      instance.addPartyMember(hero)
+    })
+
+    let prompt = newPrompt(
+      message.channel,
+      true,
+      responseActions,
+      bot,
+      'walk around',
+      {}.
+    )
 
     // update reply and log it
     let txt = `created new instance with <@${message.author.id}> as the party leader`
