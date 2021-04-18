@@ -101,15 +101,15 @@ export const run = async (bot, message, args) => {
 
     let up = new ResponseAction('unicodeEmoji', '⬆️', moveUp)
     let down = new ResponseAction('unicodeEmoji', '⬇️', moveDown)
-    let right = new ResponseAction('unicodeEmoji', '⬅️', moveRight)
-    let left = new ResponseAction('unicodeEmoji', '➡️', moveLeft)
+    let right = new ResponseAction('unicodeEmoji', '➡️', moveRight)
+    let left = new ResponseAction('unicodeEmoji', '⬅️', moveLeft)
 
     let responseActions = []
 
+    responseActions.push(left)
     responseActions.push(up)
     responseActions.push(down)
     responseActions.push(right)
-    responseActions.push(left)
 
     prompt = newPrompt(
       message.channel,
