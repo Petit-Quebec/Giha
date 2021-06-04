@@ -28,7 +28,7 @@ describe('Giha class - Instance', () => {
     let testInstance = new Instance()
 
     expect(testInstance.setMap(getTestInstanceMap())).toBe(true)
-    expect(testInstance).toHaveProperty('partyCoordinates', { x: 16, y: 11 })
+    expect(testInstance).toHaveProperty('partyCoordinates', { x: 11, y: 16 })
   })
   it("should throw an error if you try to set the map to something that isn't a map", () => {
     let testInstance = new Instance()
