@@ -7,8 +7,8 @@ let TILE_DIM = { WIDTH: 32, HEIGHT: 32 }
 
 //Renderer takes in an InstanceMap object as input
 export default async (map) => {
-  if(!(map instanceof InstanceMap)){
-    throw `Map should be of type InstanceMap, not ${typeof(map)}`
+  if (!(map instanceof InstanceMap)) {
+    throw `Map should be of type InstanceMap, not ${typeof map}`
   }
   let imgArray = []
 

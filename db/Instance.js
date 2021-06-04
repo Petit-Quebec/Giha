@@ -8,7 +8,7 @@ export default class Instance {
     log('a new Instance was made!')
     this.map = getTestInstanceMap()
     this.floors = { floor1: this.map }
-    this.partyCoordinates = this.map.spawnLocationFrom()
+    this.partyCoordinates = this.map.spawnLocationFrom('town')
     this.party = []
   }
 
@@ -27,5 +27,36 @@ export default class Instance {
     this.map = map
     this.partyCoordinates = map.spawnLocationFrom('town')
     return true
+  }
+
+  move(direction) {
+    // console.log(this.map.topography)
+    let x = this.partyCoordinates.x
+    let y = this.partyCoordinates.y
+    console.log(`x:${x} y:${y}`)
+    switch (direction) {
+      case 'up':
+        if (this.map.topography[x][y - 1].walkable) {
+          this.partyCoordinates.y--
+          return this.partyCoordinates
+        } else return false
+      case 'down':
+        if (this.map.topography[x][y + 1].walkable) {
+          this.partyCoordinates.y++
+          return this.partyCoordinates
+        } else return false
+      case 'left':
+        if (this.map.topography[x - 1][y].walkable) {
+          this.partyCoordinates.x--
+          return this.partyCoordinates
+        } else return false
+      case 'right':
+        if (this.map.topography[x + 1][y].walkable) {
+          this.partyCoordinates.x++
+          return this.partyCoordinates
+        } else return false
+      default:
+        throw 'you fucked up thats not a valid direction'
+    }
   }
 }
