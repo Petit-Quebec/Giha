@@ -1,8 +1,7 @@
 import { log } from '../../util/util.js'
 import { getTestInstanceMap } from '../../db/InstanceMap.js'
-import fs from 'fs'
 import Discord from 'discord.js'
-import mapRenderer from '../../imgGen/map/renderer.js'
+import { newInstance } from '../../Giha/instanceManager.js'
 
 export const help = {
   name: 'map',
@@ -27,16 +26,13 @@ export const permissions = {
 
 export const run = async (_bot, message) => {
   let msg = await message.channel.send('generating map...')
-
+  
   try {
-    const testMap = getTestInstanceMap()
-    const imgData = await mapRenderer(testMap)
-    fs.writeFile('./map.png', imgData, 'base64', (err) => {
-      console.log(err)
-    })
+    let instance = newInstance()
+    const imgData = await instance.renderMap()
     const embed = new Discord.MessageEmbed()
-      .attachFiles(['map.png'])
-      .setImage('attachment://map.png')
+    .attachFiles([{name: "map.png", attachment:imgData}])
+    .setImage('attachment://map.png')
     msg.delete()
     message.channel.send(embed)
   } catch (err) {

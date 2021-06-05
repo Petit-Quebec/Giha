@@ -3,10 +3,7 @@ import { getHeroById } from '../../Giha/heroManager.js'
 import { newInstance } from '../../Giha/instanceManager.js'
 import { newPrompt } from '../../Giha/promptManager.js'
 import ResponseAction from '../ResponseAction.js'
-import { getTestInstanceMap } from '../../db/InstanceMap.js'
-import fs from 'fs'
 import Discord from 'discord.js'
-import Instance from '../../db/Instance.js'
 
 let name = 'adventure'
 
@@ -71,19 +68,40 @@ export const run = async (bot, message, args) => {
     let callback = () => {
       // do something like saying the dungeon has timed out idk
     }
+    
+    // render map
+    const imgData = await instance.renderMap()
+    const embed = new Discord.MessageEmbed()
+      .attachFiles([{name: "map.png", attachment:imgData}])
+      .setImage('attachment://map.png')
+    msg.delete()
+    let mapEmbed = await message.channel.send(embed)
 
     let prompt
 
     const moveUp = () => {
       console.log('move up!')
       instance.move('up')
-      let coords = instance.partyCoordinates
-      prompt.message.edit(`x:${coords.x} y:${coords.y}`)
+      instance.renderMap().then( async (imgData) =>{
+        const embed = new Discord.MessageEmbed()
+        .attachFiles([{name: "map.png", attachment:imgData}])
+        .setImage('attachment://map.png')
+        mapEmbed.delete()
+        mapEmbed = await message.channel.send(embed)
+      })
+      
       // prompt.refreshReactions()
     }
     const moveDown = () => {
       console.log('move down!')
       instance.move('down')
+      instance.renderMap().then( async (imgData) =>{
+        const embed = new Discord.MessageEmbed()
+        .attachFiles([{name: "map.png", attachment:imgData}])
+        .setImage('attachment://map.png')
+        mapEmbed.delete()
+        mapEmbed = await message.channel.send(embed)
+      })
       let coords = instance.partyCoordinates
       prompt.message.edit(`x:${coords.x} y:${coords.y}`)
       // prompt.refreshReactions()
@@ -91,6 +109,13 @@ export const run = async (bot, message, args) => {
     const moveRight = () => {
       console.log('move right!')
       instance.move('right')
+      instance.renderMap().then( async (imgData) =>{
+        const embed = new Discord.MessageEmbed()
+        .attachFiles([{name: "map.png", attachment:imgData}])
+        .setImage('attachment://map.png')
+        mapEmbed.delete()
+        mapEmbed = await message.channel.send(embed)
+      })
       let coords = instance.partyCoordinates
       prompt.message.edit(`x:${coords.x} y:${coords.y}`)
       // prompt.refreshReactions()
@@ -98,6 +123,15 @@ export const run = async (bot, message, args) => {
     const moveLeft = () => {
       console.log('move left!')
       instance.move('left')
+
+      instance.renderMap().then( async (imgData) =>{
+        const embed = new Discord.MessageEmbed()
+        .attachFiles([{name: "map.png", attachment:imgData}])
+        .setImage('attachment://map.png')
+        mapEmbed.delete()
+        mapEmbed = await message.channel.send(embed)
+      })
+
       let coords = instance.partyCoordinates
       prompt.message.edit(`x:${coords.x} y:${coords.y}`)
       // prompt.refreshReactions()
@@ -115,19 +149,6 @@ export const run = async (bot, message, args) => {
     responseActions.push(down)
     responseActions.push(right)
 
-    
-
-    // render map
-    const imgData = await instance.renderMap()
-    fs.writeFile('./map.png', imgData, 'base64', (err) => {
-      console.log(err)
-    })
-    const embed = new Discord.MessageEmbed()
-      .attachFiles(['map.png'])
-      .setImage('attachment://map.png')
-    msg.delete()
-    message.channel.send(embed)
-
     prompt = newPrompt(
       message.channel,
       'noLimit',
@@ -142,10 +163,15 @@ export const run = async (bot, message, args) => {
     // update reply and log it
     let txt = `created new instance with <@${message.author.id}> as the party leader`
     msg.edit(txt)
+
+     
+
   } catch (err) {
     // if there is a problem, log it and inform the user
     log(err, true)
     let txt = `use the format ${help.format}\n` + err
     msg.edit(txt)
+
+    
   }
 }
