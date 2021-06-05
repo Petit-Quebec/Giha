@@ -1,7 +1,6 @@
 import { log } from '../util/util.js'
 import InstanceLocation from './InstanceLocation.js'
 import { parseLocations } from './InstanceLocation.js'
-import mapRenderer from '../imgGen/map/renderer.js'
 // import db from './db.js'
 
 // const mongoose = db.mongoose
@@ -39,10 +38,6 @@ let InstanceMap = class InstanceMap {
     return renderString
   }
 
-  async renderImg() {
-    return await mapRenderer(this)
-  }
-
   validate() {
     // is it impossible to walk out of the map
     // make sure all the doors lead somewhere,
@@ -77,8 +72,8 @@ let InstanceMap = class InstanceMap {
         if (door.destination == origin) {
           return { x: rowIndex, y: doorIndex }
         } else {
-          row = row.splice(doorIndex + 1, row.length)
-        }
+          row          return { x: rowIndex, y: doorIndex }
+}
         doorIndex = row.findIndex((location) => location.type == 'door')
       }
     }

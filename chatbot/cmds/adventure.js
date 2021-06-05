@@ -3,6 +3,10 @@ import { getHeroById } from '../../Giha/heroManager.js'
 import { newInstance } from '../../Giha/instanceManager.js'
 import { newPrompt } from '../../Giha/promptManager.js'
 import ResponseAction from '../ResponseAction.js'
+import { getTestInstanceMap } from '../../db/InstanceMap.js'
+import fs from 'fs'
+import Discord from 'discord.js'
+import Instance from '../../db/Instance.js'
 
 let name = 'adventure'
 
@@ -110,6 +114,19 @@ export const run = async (bot, message, args) => {
     responseActions.push(up)
     responseActions.push(down)
     responseActions.push(right)
+
+    
+
+    // render map
+    const imgData = await instance.renderMap()
+    fs.writeFile('./map.png', imgData, 'base64', (err) => {
+      console.log(err)
+    })
+    const embed = new Discord.MessageEmbed()
+      .attachFiles(['map.png'])
+      .setImage('attachment://map.png')
+    msg.delete()
+    message.channel.send(embed)
 
     prompt = newPrompt(
       message.channel,

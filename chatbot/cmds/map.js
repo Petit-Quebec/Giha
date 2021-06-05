@@ -2,6 +2,7 @@ import { log } from '../../util/util.js'
 import { getTestInstanceMap } from '../../db/InstanceMap.js'
 import fs from 'fs'
 import Discord from 'discord.js'
+import mapRenderer from '../../imgGen/map/renderer.js'
 
 export const help = {
   name: 'map',
@@ -29,7 +30,7 @@ export const run = async (_bot, message) => {
 
   try {
     const testMap = getTestInstanceMap()
-    const imgData = await testMap.renderImg()
+    const imgData = await mapRenderer(testMap)
     fs.writeFile('./map.png', imgData, 'base64', (err) => {
       console.log(err)
     })
