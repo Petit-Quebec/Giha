@@ -30,8 +30,8 @@ export default class Instance {
     return true
   }
 
-  renderMap() {
-    return await mapRenderer(this.map) 
+  async renderMap() {
+    return await mapRenderer(this) 
   }
 
   move(direction) {

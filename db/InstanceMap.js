@@ -72,8 +72,8 @@ let InstanceMap = class InstanceMap {
         if (door.destination == origin) {
           return { x: rowIndex, y: doorIndex }
         } else {
-          row          return { x: rowIndex, y: doorIndex }
-}
+          row = row.splice(doorIndex + 1, row.length)
+        }
         doorIndex = row.findIndex((location) => location.type == 'door')
       }
     }
