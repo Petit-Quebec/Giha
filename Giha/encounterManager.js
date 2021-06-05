@@ -28,3 +28,7 @@ export const getEncountersByHero = (hero) => {
   })
   return heroEncounters
 }
+
+export const randomEncounter = (locationType) => {
+  return `mushroom picking in the + ${locationType}`
+}

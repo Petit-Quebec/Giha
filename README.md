@@ -1,3 +1,5 @@
+![2 - Copy](https://user-images.githubusercontent.com/25495643/113677862-e2c60b00-9672-11eb-9a50-a2332a10a72c.png)
+
 # Giha
 
 This is the source code for the Giha discord bot
@@ -7,6 +9,7 @@ This is the source code for the Giha discord bot
 - discordjs
 - mongodb
 - jest
+
 - eslint
 - prettier
 
