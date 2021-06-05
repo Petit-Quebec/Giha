@@ -1,5 +1,5 @@
 import { log } from '../util/util.js'
-import cmds from './cmds/index.js'
+import * as cmds from './cmds'
 
 export default async (bot) => {
   if (bot.constructor.name != 'Client')
