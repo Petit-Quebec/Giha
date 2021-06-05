@@ -70,7 +70,7 @@ let InstanceMap = class InstanceMap {
       while (doorIndex != -1) {
         let door = row[doorIndex]
         if (door.destination == origin) {
-          return { x: rowIndex, y: doorIndex }
+          return { x: doorIndex, y: rowIndex }
         } else {
           row = row.splice(doorIndex + 1, row.length)
         }

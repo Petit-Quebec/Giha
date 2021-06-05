@@ -41,22 +41,22 @@ export default class Instance {
     console.log(`x:${x} y:${y}`)
     switch (direction) {
       case 'up':
-        if (this.map.topography[x][y - 1].walkable) {
+        if (this.map.topography[y - 1][x].walkable) {
           this.partyCoordinates.y--
           return this.partyCoordinates
         } else return false
       case 'down':
-        if (this.map.topography[x][y + 1].walkable) {
+        if (this.map.topography[y + 1][x].walkable) {
           this.partyCoordinates.y++
           return this.partyCoordinates
         } else return false
       case 'left':
-        if (this.map.topography[x - 1][y].walkable) {
+        if (this.map.topography[y][x - 1].walkable) {
           this.partyCoordinates.x--
           return this.partyCoordinates
         } else return false
       case 'right':
-        if (this.map.topography[x + 1][y].walkable) {
+        if (this.map.topography[y][x + 1].walkable) {
           this.partyCoordinates.x++
           return this.partyCoordinates
         } else return false
