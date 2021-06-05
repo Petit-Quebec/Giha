@@ -2,7 +2,6 @@ import render from '../../imgGen/map/renderer.js'
 import InstanceLocation, { LOCATION_TYPES } from '../InstanceLocation.js'
 import InstanceMap from '../InstanceMap.js'
 import { newInstance } from '../../Giha/instanceManager.js'
-import Instance from '../Instance.js'
 
 describe('Render test', () => {
   const locTypes = Object.keys(LOCATION_TYPES)
