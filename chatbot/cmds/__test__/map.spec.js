@@ -1,4 +1,4 @@
-import { run } from '../map.js'
+import map from '../map.js'
 
 describe('Bot cmds - map', () => {
   let mockMessage
@@ -21,7 +21,7 @@ describe('Bot cmds - map', () => {
   })
 
   it('should send a message and call render', async () => {
-    await run(null, mockMessage)
+    await map.run(null, mockMessage)
     expect(mockMessage.channel.send).toHaveBeenCalledWith('generating map...')
     expect(mockMessage.channel.send).toHaveBeenCalledTimes(2)
     expect(mockDelete).toHaveBeenCalled()
