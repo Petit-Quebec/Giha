@@ -1,6 +1,6 @@
-import render from '../../imgGen/map/renderer.js'
-import InstanceLocation, { LOCATION_TYPES } from '../InstanceLocation.js'
-import InstanceMap from '../InstanceMap.js'
+import render from '../map/renderer.js'
+import InstanceLocation, { LOCATION_TYPES } from '../../db/InstanceLocation.js'
+import InstanceMap from '../../db/InstanceMap.js'
 import { newInstance } from '../../Giha/instanceManager.js'
 
 describe('Render test', () => {
