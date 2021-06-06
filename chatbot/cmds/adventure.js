@@ -65,6 +65,16 @@ export const run = async (bot, message, args) => {
       instance.addPartyMember(hero)
     })
 
+    let renderAndSend = async () => {
+      instance.renderMap().then(async (imgData) => {
+        const embed = new Discord.MessageEmbed()
+          .attachFiles([{ name: 'map.png', attachment: imgData }])
+          .setImage('attachment://map.png')
+        mapEmbed.delete()
+        mapEmbed = await message.channel.send(embed)
+      })
+    }
+
     let callback = () => {
       // do something like saying the dungeon has timed out idk
     }
@@ -81,26 +91,15 @@ export const run = async (bot, message, args) => {
     const moveUp = () => {
       console.log('move up!')
       instance.move('up')
-      instance.renderMap().then(async (imgData) => {
-        const embed = new Discord.MessageEmbed()
-          .attachFiles([{ name: 'map.png', attachment: imgData }])
-          .setImage('attachment://map.png')
-        mapEmbed.delete()
-        mapEmbed = await message.channel.send(embed)
-      })
-
+      renderAndSend()
+      let coords = instance.partyCoordinates
+      prompt.message.edit(`x:${coords.x} y:${coords.y}`)
       // prompt.refreshReactions()
     }
     const moveDown = () => {
       console.log('move down!')
       instance.move('down')
-      instance.renderMap().then(async (imgData) => {
-        const embed = new Discord.MessageEmbed()
-          .attachFiles([{ name: 'map.png', attachment: imgData }])
-          .setImage('attachment://map.png')
-        mapEmbed.delete()
-        mapEmbed = await message.channel.send(embed)
-      })
+      renderAndSend()
       let coords = instance.partyCoordinates
       prompt.message.edit(`x:${coords.x} y:${coords.y}`)
       // prompt.refreshReactions()
@@ -108,13 +107,7 @@ export const run = async (bot, message, args) => {
     const moveRight = () => {
       console.log('move right!')
       instance.move('right')
-      instance.renderMap().then(async (imgData) => {
-        const embed = new Discord.MessageEmbed()
-          .attachFiles([{ name: 'map.png', attachment: imgData }])
-          .setImage('attachment://map.png')
-        mapEmbed.delete()
-        mapEmbed = await message.channel.send(embed)
-      })
+      renderAndSend()
       let coords = instance.partyCoordinates
       prompt.message.edit(`x:${coords.x} y:${coords.y}`)
       // prompt.refreshReactions()
@@ -122,15 +115,7 @@ export const run = async (bot, message, args) => {
     const moveLeft = () => {
       console.log('move left!')
       instance.move('left')
-
-      instance.renderMap().then(async (imgData) => {
-        const embed = new Discord.MessageEmbed()
-          .attachFiles([{ name: 'map.png', attachment: imgData }])
-          .setImage('attachment://map.png')
-        mapEmbed.delete()
-        mapEmbed = await message.channel.send(embed)
-      })
-
+      renderAndSend()
       let coords = instance.partyCoordinates
       prompt.message.edit(`x:${coords.x} y:${coords.y}`)
       // prompt.refreshReactions()
