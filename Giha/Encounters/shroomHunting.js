@@ -1,4 +1,4 @@
-import { log } from '../../util/util'
+import { log } from '../../util/util.js'
 
 const mushrooms = [
   {
