@@ -3,6 +3,7 @@ import { getHeroById } from '../../Giha/heroManager.js'
 import { newInstance } from '../../Giha/instanceManager.js'
 import { newPrompt } from '../../Giha/promptManager.js'
 import ResponseAction from '../ResponseAction.js'
+import Discord from 'discord.js'
 
 let name = 'adventure'
 
@@ -44,7 +45,7 @@ const run = async (bot, message, args) => {
     //
     let party = []
     let userHero = getHeroById(message.author.id)
-    console.log(userHero)
+    log(userHero, true)
     if (!userHero)
       throw `<@${message.author.id}> does not have a valid hero, please make a hero with !rise <name>`
     else party.push(userHero)
@@ -64,40 +65,53 @@ const run = async (bot, message, args) => {
       instance.addPartyMember(hero)
     })
 
+    let renderAndSend = async () => {
+      instance.renderMap().then(async (imgData) => {
+        const embed = new Discord.MessageEmbed()
+          .attachFiles([{ name: 'map.png', attachment: imgData }])
+          .setImage('attachment://map.png')
+        mapEmbed.delete()
+        mapEmbed = await message.channel.send(embed)
+      })
+    }
+
+    const move = (direction) => {
+      log(`move ${direction}!`, true)
+      instance.move(direction)
+      renderAndSend()
+      let coords = instance.partyCoordinates
+      prompt.message.edit(`x:${coords.x} y:${coords.y}`)
+      prompt.stripReactions()
+    }
+
+    let moveUp = () => {
+      move('up')
+    }
+
+    let moveDown = () => {
+      move('down')
+    }
+
+    let moveRight = () => {
+      move('right')
+    }
+
+    let moveLeft = () => {
+      move('left')
+    }
+
     let callback = () => {
       // do something like saying the dungeon has timed out idk
     }
 
-    let prompt
+    // render map
+    const imgData = await instance.renderMap()
+    const embed = new Discord.MessageEmbed()
+      .attachFiles([{ name: 'map.png', attachment: imgData }])
+      .setImage('attachment://map.png')
+    let mapEmbed = await message.channel.send(embed)
 
-    const moveUp = () => {
-      console.log('move up!')
-      instance.move('up')
-      let coords = instance.partyCoordinates
-      prompt.message.edit(`x:${coords.x} y:${coords.y}`)
-      // prompt.refreshReactions()
-    }
-    const moveDown = () => {
-      console.log('move down!')
-      instance.move('down')
-      let coords = instance.partyCoordinates
-      prompt.message.edit(`x:${coords.x} y:${coords.y}`)
-      // prompt.refreshReactions()
-    }
-    const moveRight = () => {
-      console.log('move right!')
-      instance.move('right')
-      let coords = instance.partyCoordinates
-      prompt.message.edit(`x:${coords.x} y:${coords.y}`)
-      // prompt.refreshReactions()
-    }
-    const moveLeft = () => {
-      console.log('move left!')
-      instance.move('left')
-      let coords = instance.partyCoordinates
-      prompt.message.edit(`x:${coords.x} y:${coords.y}`)
-      // prompt.refreshReactions()
-    }
+    let prompt
 
     let up = new ResponseAction('unicodeEmoji', '⬆️', moveUp)
     let down = new ResponseAction('unicodeEmoji', '⬇️', moveDown)
