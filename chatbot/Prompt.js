@@ -198,25 +198,33 @@ let Prompt = class Prompt {
     return this.message.reactions.removeAll()
   }
   /**
-   * removes all reactions and adds default reactions
-   * returns the same promise as adding reactions
+   * removes all reactions that werent from the bot
    */
-  refreshReactions() {
+  stripReactions() {
     return new Promise((resolve, reject) => {
-      this.reactHistory = []
-      this.cleanReactions()
-        .then(() => {
-          this.addReactionButtons()
-            .then((res) => {
-              resolve(res)
-            })
-            .catch((err) => {
-              reject(err)
-            })
+      const userReactions = this.message.reactions.cache.filter((reaction) =>
+        reaction.users.cache.has(this.client.user.id)
+      )
+
+      let reactionRemovePromises = []
+      for (const reaction of userReactions.values()) {
+        // log(reaction.user.cache)
+        reaction.users.cache.forEach((user) => {
+          // console.log(user)
+          if (user.id != this.client.user.id) {
+            reaction.users
+              .remove(user.id)
+              .then((res) => {
+                reactionRemovePromises.push(res)
+                resolve(res)
+              })
+              .catch((err) => {
+                reject(err)
+                console.log('failed to remove reactions', true)
+              })
+          }
         })
-        .catch((err) => {
-          reject(err)
-        })
+      }
     })
   }
 

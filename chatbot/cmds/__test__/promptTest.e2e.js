@@ -31,7 +31,7 @@ let promptBehaviorTest = async (chatBot, testBot, testEmoji) => {
     client,
     msgContent,
     msgOptions,
-    { time: 5000 }
+    { time: 15000 }
   )
   let botMessage = await testPrompt.messagePromise
   await testPrompt.reactionPromises
@@ -52,25 +52,53 @@ let promptBehaviorTest = async (chatBot, testBot, testEmoji) => {
           reactionUsers.find((element) => element == chatBot.user.id) == -1 ||
           reactionUsers.find((element) => element == testBot.user.id) == -1
         )
-          throw 'the correct reactions are missing'
+          reject('the correct reactions are missing')
         if (reactionCallBacks != 1 || callbackUser.id != testBot.user.id) {
-          throw 'first reaction failed'
+          reject('first reaction failed')
         }
         // try to react again (unreact, re-react) , expect no additional callback
         // prompt.refreshReactions
         // react again, expect one additional callback
-        await testBotMessage.reactions.removeAll()
+
+        await testPrompt.message.edit('testing reaction removal...')
+        await testBotMessage.reactions
+
+        const userReactions = testBotMessage.reactions.cache.filter(
+          (reaction) => reaction.users.cache.has(testBot.user.id)
+        )
+
+        for (const reaction of userReactions.values()) {
+          // log(reaction.user.cache)
+          reaction.users.cache.forEach((user) => {
+            // console.log(user)
+            if (user.id == testBot.user.id) {
+              reaction.users
+                .remove(user.id)
+                .then((res) => {
+                  resolve(res)
+                })
+                .catch((err) => {
+                  reject(err)
+                  console.log('failed to remove reactions', true)
+                })
+            }
+          })
+        }
+
+        // await testPrompt.addReactionButtons()
         await testBotMessage.react(testEmoji)
 
         if (reactionCallBacks != 1) {
-          throw 'second reaction failed'
+          reject('second reaction failed')
         }
 
-        await testPrompt.refreshReactions()
-        await testBotMessage.react(testEmoji)
-
+        await testPrompt.message.edit('testing the refreshing of reactions..')
+        await testPrompt.stripReactions()
+        setTimeout(() => {
+          testBotMessage.react(testEmoji)
+        }, 500)
         if (reactionCallBacks != 2) {
-          throw 'third reaction failed'
+          reject('third reaction failed')
         }
 
         resolve(true)
