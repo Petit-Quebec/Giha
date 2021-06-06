@@ -74,7 +74,6 @@ export const run = async (bot, message, args) => {
     const embed = new Discord.MessageEmbed()
       .attachFiles([{name: "map.png", attachment:imgData}])
       .setImage('attachment://map.png')
-    msg.delete()
     let mapEmbed = await message.channel.send(embed)
 
     let prompt
