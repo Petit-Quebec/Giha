@@ -75,6 +75,15 @@ export const run = async (bot, message, args) => {
       })
     }
 
+    let move = (direction) => {
+      log(`move ${direction}!`, true)
+      instance.move(direction)
+      renderAndSend()
+      let coords = instance.partyCoordinates
+      prompt.message.edit(`x:${coords.x} y:${coords.y}`)
+      prompt.stripReactions()
+    }
+
     let callback = () => {
       // do something like saying the dungeon has timed out idk
     }
@@ -88,43 +97,10 @@ export const run = async (bot, message, args) => {
 
     let prompt
 
-    const moveUp = () => {
-      log('move up!', true)
-      instance.move('up')
-      renderAndSend()
-      let coords = instance.partyCoordinates
-      prompt.message.edit(`x:${coords.x} y:${coords.y}`)
-      // prompt.refreshReactions()
-    }
-    const moveDown = () => {
-      log('move down!', true)
-      instance.move('down')
-      renderAndSend()
-      let coords = instance.partyCoordinates
-      prompt.message.edit(`x:${coords.x} y:${coords.y}`)
-      // prompt.refreshReactions()
-    }
-    const moveRight = () => {
-      log('move right!', true)
-      instance.move('right')
-      renderAndSend()
-      let coords = instance.partyCoordinates
-      prompt.message.edit(`x:${coords.x} y:${coords.y}`)
-      // prompt.refreshReactions()
-    }
-    const moveLeft = () => {
-      log('move left!', true)
-      instance.move('left')
-      renderAndSend()
-      let coords = instance.partyCoordinates
-      prompt.message.edit(`x:${coords.x} y:${coords.y}`)
-      // prompt.refreshReactions()
-    }
-
-    let up = new ResponseAction('unicodeEmoji', '⬆️', moveUp)
-    let down = new ResponseAction('unicodeEmoji', '⬇️', moveDown)
-    let right = new ResponseAction('unicodeEmoji', '➡️', moveRight)
-    let left = new ResponseAction('unicodeEmoji', '⬅️', moveLeft)
+    let up = new ResponseAction('unicodeEmoji', '⬆️', move('up'))
+    let down = new ResponseAction('unicodeEmoji', '⬇️', move('down'))
+    let right = new ResponseAction('unicodeEmoji', '➡️', move('right'))
+    let left = new ResponseAction('unicodeEmoji', '⬅️', move('left'))
 
     let responseActions = []
 
