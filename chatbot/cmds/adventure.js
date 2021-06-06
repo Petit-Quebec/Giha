@@ -75,13 +75,29 @@ export const run = async (bot, message, args) => {
       })
     }
 
-    let move = (direction) => {
+    const move = (direction) => {
       log(`move ${direction}!`, true)
       instance.move(direction)
       renderAndSend()
       let coords = instance.partyCoordinates
       prompt.message.edit(`x:${coords.x} y:${coords.y}`)
       prompt.stripReactions()
+    }
+
+    let moveUp = () => {
+      move('up')
+    }
+
+    let moveDown = () => {
+      move('down')
+    }
+
+    let moveRight = () => {
+      move('right')
+    }
+
+    let moveLeft = () => {
+      move('left')
     }
 
     let callback = () => {
@@ -97,10 +113,10 @@ export const run = async (bot, message, args) => {
 
     let prompt
 
-    let up = new ResponseAction('unicodeEmoji', '⬆️', move('up'))
-    let down = new ResponseAction('unicodeEmoji', '⬇️', move('down'))
-    let right = new ResponseAction('unicodeEmoji', '➡️', move('right'))
-    let left = new ResponseAction('unicodeEmoji', '⬅️', move('left'))
+    let up = new ResponseAction('unicodeEmoji', '⬆️', moveUp)
+    let down = new ResponseAction('unicodeEmoji', '⬇️', moveDown)
+    let right = new ResponseAction('unicodeEmoji', '➡️', moveRight)
+    let left = new ResponseAction('unicodeEmoji', '⬅️', moveLeft)
 
     let responseActions = []
 
