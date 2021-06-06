@@ -2,6 +2,7 @@ import { log } from '../util/util.js'
 import { getTestInstanceMap } from './InstanceMap.js'
 import InstanceMap from './InstanceMap.js'
 import Hero from './Hero.js'
+import mapRenderer from '../imgGen/map/renderer.js'
 
 export default class Instance {
   constructor() {
@@ -27,6 +28,10 @@ export default class Instance {
     this.map = map
     this.partyCoordinates = map.spawnLocationFrom('town')
     return true
+  }
+
+  async renderMap() {
+    return await mapRenderer(this)
   }
 
   move(direction) {
