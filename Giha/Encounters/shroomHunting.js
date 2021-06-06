@@ -1,3 +1,5 @@
+import { log } from '../../util/util'
+
 const mushrooms = [
   {
     mushroomIndex: 0,
@@ -85,7 +87,7 @@ let ShroomHunt = class ShroomHunt {
   constructor(numShrooms) {
     if (numShrooms > 20)
       throw 'Only 20 mushrooms can be in the same place at the same time!' // discord limitation
-    console.log('time for a new shroomhunt')
+    log('time for a new shroomhunt')
     // get numShrooms random mushrooms
     this.mushrooms = []
     for (

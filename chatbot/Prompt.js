@@ -220,7 +220,7 @@ let Prompt = class Prompt {
               })
               .catch((err) => {
                 reject(err)
-                log('failed to remove reactions', true)
+                console.log('failed to remove reactions', true)
               })
           }
         })
