@@ -75,6 +75,31 @@ export const run = async (bot, message, args) => {
       })
     }
 
+    const move = (direction) => {
+      log(`move ${direction}!`, true)
+      instance.move(direction)
+      renderAndSend()
+      let coords = instance.partyCoordinates
+      prompt.message.edit(`x:${coords.x} y:${coords.y}`)
+      prompt.stripReactions()
+    }
+
+    let moveUp = () => {
+      move('up')
+    }
+
+    let moveDown = () => {
+      move('down')
+    }
+
+    let moveRight = () => {
+      move('right')
+    }
+
+    let moveLeft = () => {
+      move('left')
+    }
+
     let callback = () => {
       // do something like saying the dungeon has timed out idk
     }
@@ -87,39 +112,6 @@ export const run = async (bot, message, args) => {
     let mapEmbed = await message.channel.send(embed)
 
     let prompt
-
-    const moveUp = () => {
-      log('move up!', true)
-      instance.move('up')
-      renderAndSend()
-      let coords = instance.partyCoordinates
-      prompt.message.edit(`x:${coords.x} y:${coords.y}`)
-      // prompt.refreshReactions()
-    }
-    const moveDown = () => {
-      log('move down!', true)
-      instance.move('down')
-      renderAndSend()
-      let coords = instance.partyCoordinates
-      prompt.message.edit(`x:${coords.x} y:${coords.y}`)
-      // prompt.refreshReactions()
-    }
-    const moveRight = () => {
-      log('move right!', true)
-      instance.move('right')
-      renderAndSend()
-      let coords = instance.partyCoordinates
-      prompt.message.edit(`x:${coords.x} y:${coords.y}`)
-      // prompt.refreshReactions()
-    }
-    const moveLeft = () => {
-      log('move left!', true)
-      instance.move('left')
-      renderAndSend()
-      let coords = instance.partyCoordinates
-      prompt.message.edit(`x:${coords.x} y:${coords.y}`)
-      // prompt.refreshReactions()
-    }
 
     let up = new ResponseAction('unicodeEmoji', '⬆️', moveUp)
     let down = new ResponseAction('unicodeEmoji', '⬇️', moveDown)
