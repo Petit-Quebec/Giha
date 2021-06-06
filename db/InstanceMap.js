@@ -65,15 +65,13 @@ let InstanceMap = class InstanceMap {
 
     for (let rowIndex = 0; rowIndex < topoLength; rowIndex++) {
       let row = this.topography[rowIndex]
-      let doorIndex = row.findIndex((location) => location.type == 'door')
-      while (doorIndex != -1) {
-        let door = row[doorIndex]
-        if (door.destination == origin) {
-          return { x: doorIndex, y: rowIndex }
-        } else {
-          row = row.splice(doorIndex + 1, row.length)
+      for (let locationIndex = 0; locationIndex < row.length; locationIndex++) {
+        if (row[locationIndex].type == 'door') {
+          let door = row[locationIndex]
+          if (door.destination == origin) {
+            return { x: locationIndex, y: rowIndex }
+          }
         }
-        doorIndex = row.findIndex((location) => location.type == 'door')
       }
     }
     return false
