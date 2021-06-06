@@ -8,7 +8,7 @@
   ],
   "env": {
     "test": {
-      "plugins": ["@babel/plugin-transform-runtime", "wildcard"]
+      "plugins": ["@babel/plugin-transform-runtime"]
     }
   }
 }
