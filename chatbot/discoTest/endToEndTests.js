@@ -126,6 +126,10 @@ const logResults = () => {
     : (resultBlurb += '\x1b[32m')
   resultBlurb += `${passingTests} passed,\x1b[0m ${testReport.length} total`
   console.log(resultBlurb)
+
+  if (passingTests < testReport.length) {
+    throw 'not all e2e tests passed'
+  }
 }
 
 const loadMockTestSuites = () => {
