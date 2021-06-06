@@ -4,6 +4,12 @@ import InstanceMap from './InstanceMap.js'
 import Hero from './Hero.js'
 import mapRenderer from '../imgGen/map/renderer.js'
 
+INSTANCE_STATE = {
+  EXPLORATION: 'EXPLORATION',
+  ENCOUNTER: 'ENCOUNTER',
+  PROMPT: 'PROMPT',
+}
+
 export default class Instance {
   constructor() {
     log('a new Instance was made!')
@@ -11,6 +17,9 @@ export default class Instance {
     this.floors = { floor1: this.map }
     this.partyCoordinates = this.map.spawnLocationFrom('town')
     this.party = []
+    this.state = INSTANCE_STATE.EXPLORATION
+    this.activeEncounter = null
+    this.activePrompt = null
   }
 
   addPartyMember(hero) {
@@ -39,29 +48,50 @@ export default class Instance {
     let x = this.partyCoordinates.x
     let y = this.partyCoordinates.y
     console.log(`x:${x} y:${y}`)
+    let newCoords
     switch (direction) {
       case 'up':
-        if (this.map.topography[y - 1][x].walkable) {
-          this.partyCoordinates.y--
-          return this.partyCoordinates
-        } else return false
+        newCoords = { y: y - 1, x: x }
+        break
       case 'down':
-        if (this.map.topography[y + 1][x].walkable) {
-          this.partyCoordinates.y++
-          return this.partyCoordinates
-        } else return false
+        newCoords = { y: y + 1, x: x }
+        break
       case 'left':
-        if (this.map.topography[y][x - 1].walkable) {
-          this.partyCoordinates.x--
-          return this.partyCoordinates
-        } else return false
+        newCoords = { y: y, x: x - 1 }
+        break
       case 'right':
-        if (this.map.topography[y][x + 1].walkable) {
-          this.partyCoordinates.x++
-          return this.partyCoordinates
-        } else return false
+        newCoords = { y: y, x: x + 1 }
+        break
       default:
-        throw 'you fucked up thats not a valid direction'
+        throw `you fucked up, ${direction} is not a valid direction`
     }
+    let newLoc = this.map.topography[newCoords.y][newCoords.x]
+    if (newLoc.walkable) {
+      // move successful
+      this.partyCoordinates = newLoc
+      if (
+        this.map.topography[this.partyCoordinates.y][this.partyCoordinates.x]
+          .encounter
+      ) {
+        // if the new location's encounter is not undefined then state change to encounter, figure out the encounter, and set it as the active encounter
+        this.state = INSTANCE_STATE.ENCOUNTER
+        this.activeEncounter = newLoc.encounter
+      } else if (newLoc.type == 'door') {
+        if (newLoc.destination == 'town') {
+          // ask player if they want to go through the door to town
+          this.state = INSTANCE_STATE.PROMPT
+        } else if (newLoc.destination) {
+          this.state = INSTANCE_STATE.PROMPT
+          // ask player if they want to go through the door to the unknown
+          // trigger map change
+        } else {
+          throw 'no way you should have ended up here!'
+        }
+      }
+    } else {
+      // move unsuccesssful
+    }
+
+    return this.partyCoordinates
   }
 }
