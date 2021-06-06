@@ -6,14 +6,14 @@ import ResponseAction from '../ResponseAction.js'
 
 let name = 'adventure'
 
-export const help = {
+const help = {
   name: name,
   description: 'creates a new adventure instance',
   format: `!${name} @user1 @user2 @user3 @user4`,
   note: 'tag 0-4 people to join the party (0 will be solo)',
 }
 
-export const permissions = {
+const permissions = {
   userPermissions: {
     admin: true,
     dm: true,
@@ -27,7 +27,7 @@ export const permissions = {
   },
 }
 
-export const run = async (bot, message, args) => {
+const run = async (bot, message, args) => {
   let msg = await message.channel.send('performing function...')
 
   // parse args and test them
@@ -131,4 +131,10 @@ export const run = async (bot, message, args) => {
     let txt = `use the format ${help.format}\n` + err
     msg.edit(txt)
   }
+}
+
+export default {
+  run,
+  permissions, 
+  help
 }

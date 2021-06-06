@@ -1,13 +1,13 @@
 import { initializeUser } from '../../Giha/userManager.js'
 import { log } from '../../util/util.js'
 
-export const help = {
+const help = {
   name: 'initializeUsers',
   description:
     'attempts to initialize all members of current guild with the correct role',
 }
 
-export const permissions = {
+const permissions = {
   userPermissions: {
     admin: true,
     dm: false,
@@ -21,7 +21,7 @@ export const permissions = {
   },
 }
 
-export const run = async (bot, message) => {
+const run = async (bot, message) => {
   const guilds = bot.guilds
   const guild = guilds.get(message.guild.id)
   log('guild:')
@@ -102,4 +102,10 @@ export const run = async (bot, message) => {
   log(report, true)
   log('alreadyInitialized: ' + alreadyInitialized, true)
   await message.channel.send(report)
+}
+
+export default {
+  run,
+  permissions, 
+  help
 }

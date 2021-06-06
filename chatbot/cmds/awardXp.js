@@ -2,14 +2,14 @@ import { log, isUser } from '../../util/util.js'
 import { getUserByDiscordId } from '../../Giha/userManager.js'
 import { awardXp } from '../../Giha/characterManager.js'
 
-export const help = {
+const help = {
   name: 'awardXp',
   description: 'dm command for awarding xp to characters',
   format: '!awardXp @user <xpAmount>',
   note: 'if xp is floating point, it will be rounded',
 }
 
-export const permissions = {
+const permissions = {
   userPermissions: {
     admin: true,
     dm: true,
@@ -23,7 +23,7 @@ export const permissions = {
   },
 }
 
-export const run = async (bot, message, args) => {
+const run = async (bot, message, args) => {
   let msg = await message.channel.send('awarding xp...')
   try {
     if (args.length < 1)
@@ -47,7 +47,13 @@ export const run = async (bot, message, args) => {
     log(txt, true)
   } catch (err) {
     log(err, true)
-    let txt = `use the format ${exports.help.format}\n` + err
+    let txt = `use the format ${help.format}\n` + err
     msg.edit(txt)
   }
+}
+
+export default {
+  run,
+  permissions, 
+  help
 }

@@ -1,5 +1,11 @@
 {
   "presets": ["@babel/preset-env"],
+  "plugins": [
+    ["wildcard", {
+      "nostrip": true,
+      "useCamelCase": true
+    }]
+  ],
   "env": {
     "test": {
       "plugins": ["@babel/plugin-transform-runtime", "wildcard"]

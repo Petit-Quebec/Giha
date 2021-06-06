@@ -1,12 +1,12 @@
 import { getUserByDiscordId } from '../../Giha/userManager.js'
 import { userStatsBlurb } from '../../Giha/aggregations.js'
 
-export const help = {
+const help = {
   name: 'setMain',
   description: 'command for designating a character as your main character',
 }
 
-export const permissions = {
+const permissions = {
   userPermissions: {
     admin: true,
     dm: true,
@@ -20,11 +20,17 @@ export const permissions = {
   },
 }
 
-export const run = async (_bot, message) => {
+const run = async (_bot, message) => {
   // get user object
   let user = await getUserByDiscordId(message.author.id)
   // get character from
   // let character = await characterManager.getCharacterBy
   let txt = await userStatsBlurb(user)
   await message.channel.send(txt)
+}
+
+export default {
+  run,
+  permissions, 
+  help
 }

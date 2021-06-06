@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "description": "a tool for weaving worlds 1.0",
   "main": "index.js",
-  "type": "module",
   "scripts": {
-    "babel-node": "babel-node --presets=latest",
+    "babel-node": "babel-node --presets='@babel/preset-env' --config-file='./babel.config.json'",
     "dev": "nodemon --exec npm run babel-node --inspect server.js",
     "lint": "eslint . --ext .js",
     "lint-fix": "eslint . --ext .js --fix && prettier --write .",

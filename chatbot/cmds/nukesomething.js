@@ -1,12 +1,12 @@
 import { log } from '../../util/util.js'
 import db from '../../db/db.js'
 
-export const help = {
+const help = {
   name: 'nukesomething',
   description: 'a very specific purpose',
 }
 
-export const permissions = {
+const permissions = {
   userPermissions: {
     admin: false,
     dm: false,
@@ -20,8 +20,14 @@ export const permissions = {
   },
 }
 
-export const run = async () => {
+const run = async () => {
   db.deleteEntry({}, 'fasd').then((res) => {
     log(res, true)
   })
+}
+
+export default {
+  run,
+  permissions, 
+  help
 }

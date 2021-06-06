@@ -4,14 +4,14 @@ import { getEncountersByHero } from '../../Giha/encounterManager.js'
 
 let name = 'flee'
 
-export const help = {
+const help = {
   name: name,
   description: 'lets you run away',
   format: '!flee',
   note: 'uses first hero if none are specified',
 }
 
-export const permissions = {
+const permissions = {
   userPermissions: {
     admin: true,
     dm: true,
@@ -25,7 +25,7 @@ export const permissions = {
   },
 }
 
-export const run = async (_bot, message) => {
+const run = async (_bot, message) => {
   let msg = await message.channel.send('trying to flee...')
 
   try {
@@ -53,7 +53,13 @@ export const run = async (_bot, message) => {
   } catch (err) {
     // if there is a problem, log it and inform the user
     log(err, true)
-    let txt = `use the format ${exports.help.format}\n` + err
+    let txt = `use the format ${help.format}\n` + err
     msg.edit(txt)
   }
+}
+
+export default {
+  run,
+  permissions, 
+  help
 }

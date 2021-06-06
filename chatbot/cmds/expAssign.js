@@ -3,14 +3,14 @@ import { getHeroById } from '../../Giha/heroManager.js'
 
 let name = 'expAssign'
 
-export const help = {
+const help = {
   name: name,
   description: "Assigns experience to skill of player's choosing",
   format: `!${name} <skillName> <expAmount>`,
   note: 'if xp is floating point, it will be rounded',
 }
 
-export const permissions = {
+const permissions = {
   userPermissions: {
     admin: true,
     dm: true,
@@ -24,7 +24,7 @@ export const permissions = {
   },
 }
 
-export const run = async (bot, message, args) => {
+const run = async (bot, message, args) => {
   let msg = await message.channel.send('performing function...')
 
   // parse args and test them
@@ -49,7 +49,13 @@ export const run = async (bot, message, args) => {
   } catch (err) {
     // if there is a problem, log it and inform the user
     log(err, true)
-    let txt = `use the format ${exports.help.format}\n` + err
+    let txt = `use the format ${help.format}\n` + err
     msg.edit(txt)
   }
+}
+
+export default {
+  run,
+  permissions, 
+  help
 }

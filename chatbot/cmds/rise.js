@@ -3,14 +3,14 @@ import { newHero } from '../../Giha/heroManager.js'
 
 let name = 'rise'
 
-export const help = {
+const help = {
   name: name,
   description: 'a new Hero rises from the world of Redault!',
   format: `!${name} <heroName>`,
   note: 'be brave, child',
 }
 
-export const permissions = {
+const permissions = {
   userPermissions: {
     admin: true,
     dm: true,
@@ -24,7 +24,7 @@ export const permissions = {
   },
 }
 
-export const run = async (_bot, message, args) => {
+const run = async (_bot, message, args) => {
   let msg = await message.channel.send('performing function...')
 
   // parse args and test them
@@ -51,4 +51,10 @@ export const run = async (_bot, message, args) => {
     let txt = `use the format ${help.format}\n` + err
     msg.edit(txt)
   }
+}
+
+export default {
+  run,
+  permissions, 
+  help
 }

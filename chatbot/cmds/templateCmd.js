@@ -4,14 +4,14 @@ import { awardXp } from '../../Giha/characterManager.js'
 
 let name = 'templateCmd'
 
-export const help = {
+const help = {
   name: name,
   description: 'templated command to be copied to new commands',
   format: `!${name} @user <numberAmount>`,
   note: 'if xp is floating point, it will be rounded',
 }
 
-export const permissions = {
+const permissions = {
   userPermissions: {
     admin: false,
     dm: false,
@@ -25,7 +25,7 @@ export const permissions = {
   },
 }
 
-export const run = async (bot, message, args) => {
+const run = async (bot, message, args) => {
   let msg = await message.channel.send('performing function...')
 
   // parse args and test them
@@ -58,4 +58,10 @@ export const run = async (bot, message, args) => {
     let txt = `use the format ${help.format}\n` + err
     msg.edit(txt)
   }
+}
+
+export default {
+  run,
+  permissions, 
+  help
 }
