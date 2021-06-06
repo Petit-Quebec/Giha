@@ -1,6 +1,7 @@
 import render from '../../imgGen/map/renderer.js'
 import InstanceLocation, { LOCATION_TYPES } from '../InstanceLocation.js'
 import InstanceMap from '../InstanceMap.js'
+import { newInstance } from '../../Giha/instanceManager.js'
 
 describe('Render test', () => {
   const locTypes = Object.keys(LOCATION_TYPES)
@@ -9,7 +10,9 @@ describe('Render test', () => {
     async (type) => {
       let testLocation = [[new InstanceLocation(type)]]
       let testMap = new InstanceMap('Individual Test Map', testLocation)
-      let imgData = await testMap.renderImg()
+      let testInstance = newInstance()
+      testInstance.setMap(testMap)
+      let imgData = await testInstance.renderMap()
       expect(imgData.slice(16, 20)).toStrictEqual(Buffer.from([0, 0, 0, 32]))
       expect(imgData.slice(20, 24)).toStrictEqual(Buffer.from([0, 0, 0, 32]))
       expect(imgData).toBeInstanceOf(Buffer)
@@ -22,7 +25,9 @@ describe('Render test', () => {
       testLocations.push([new InstanceLocation(loc)])
     }
     let testMap = new InstanceMap('All Test Map', testLocations)
-    let imgData = await testMap.renderImg()
+    let testInstance = newInstance()
+    testInstance.setMap(testMap)
+    let imgData = await testInstance.renderMap()
     let heightPixels = 32 * testMap.height
     let widthPixels = 32 * testMap.width
     let Hbyte1 = 0xff & heightPixels
@@ -41,12 +46,12 @@ describe('Render test', () => {
     )
   })
 
-  it('should throw when called on something other than a map', async () => {
+  it('should throw when called on something other than an instance', async () => {
     await expect(render('not a map')).rejects.toEqual(
-      'Map should be of type InstanceMap, not string'
+      'Input should be of type Instance, not string'
     )
     await expect(render(50)).rejects.toEqual(
-      'Map should be of type InstanceMap, not number'
+      'Input should be of type Instance, not number'
     )
   })
 })
