@@ -1,4 +1,5 @@
 import * as adminStats from './adminStats.js'
+import * as adventure from './adventure.js'
 import * as avatar from './avatar.js'
 import * as awardXp from './awardXp.js'
 import * as baseBattle from './baseBattle.js'
@@ -23,9 +24,12 @@ import * as smite from './smite.js'
 import * as stats from './stats.js'
 import * as templateCmd from './templateCmd.js'
 import * as testCharacter from './testCharacter.js'
+import * as map from './map.js'
+import * as shroomHunt from './huntShrooms.js'
 
 export default {
   adminStats,
+  adventure,
   avatar,
   awardXp,
   baseBattle,
@@ -50,4 +54,6 @@ export default {
   stats,
   templateCmd,
   testCharacter,
+  map,
+  shroomHunt,
 }

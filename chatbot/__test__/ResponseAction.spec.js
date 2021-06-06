@@ -18,7 +18,7 @@ describe('Giha class - ResponseAction', () => {
     expect(() => {
       new ResponseAction(testTriggerType, phonyTrigger, testCallback)
     }).toThrow(
-      `ResponseAction Constructor Error: trigger must be an instance of Discord Emoji, not '${typeof phonyTrigger}'`
+      `ResponseAction Constructor Error: emoji trigger must be an instance of a custom Discord Emoji, not '${typeof phonyTrigger}'`
     )
   })
   it('should error when passed a bad callback', () => {

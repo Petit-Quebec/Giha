@@ -23,22 +23,24 @@
   },
   "homepage": "https://github.com/Petit-Quebec/Giha#readme",
   "dependencies": {
-    "discord.js": "^12.5.1",
-    "dotenv": "^8.2.0",
+    "canvas": "^2.8.0",
+    "discord.js": "^12.5.3",
+    "dotenv": "^8.6.0",
     "express": "^4.17.1",
-    "mongodb": "^3.5.3",
-    "mongoose": "^5.11.9"
+    "merge-images": "^2.0.0",
+    "mongodb": "^3.6.9",
+    "mongoose": "^5.12.13"
   },
   "devDependencies": {
-    "@babel/node": "^7.12.10",
-    "@babel/plugin-transform-runtime": "^7.12.10",
-    "@babel/preset-env": "^7.12.11",
+    "@babel/node": "^7.14.2",
+    "@babel/plugin-transform-runtime": "^7.14.3",
+    "@babel/preset-env": "^7.14.4",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.6.3",
-    "eslint": "^7.17.0",
+    "eslint": "^7.28.0",
     "jest": "^26.6.3",
-    "nodemon": "^2.0.4",
-    "prettier": "^2.2.1"
+    "nodemon": "^2.0.7",
+    "prettier": "^2.3.1"
   },
   "nodemonConfig": {
     "comment": "chatbot/cmds/*.js",

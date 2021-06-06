@@ -10,6 +10,7 @@ export const newHero = (discordId, heroName) => {
   })
 
   let hero = new Hero(discordId, heroName)
+
   heroes.push(hero)
   return hero
 }

@@ -1,21 +1,26 @@
-import Prompt from '../db/Prompt.js'
+import Prompt from '../chatbot/Prompt.js'
+
 let activePrompts = []
 
 const newPrompt = (
   channel,
-  isReusable,
+  promptBehavior,
   responseActions,
   client,
   msgContent,
-  msgOptions
+  msgOptions,
+  reactCollectorOptions,
+  reactCollectorTimeoutCallback
 ) => {
   let prompt = new Prompt(
     channel,
-    isReusable,
+    promptBehavior,
     responseActions,
     client,
     msgContent,
-    msgOptions
+    msgOptions,
+    reactCollectorOptions,
+    reactCollectorTimeoutCallback
   )
   activePrompts.push(prompt)
   return prompt

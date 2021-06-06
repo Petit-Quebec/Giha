@@ -15,6 +15,8 @@ let InstanceMap = class InstanceMap {
     })
     this.name = mapName
     this.topography = topography //an array of InstanceLocations
+    this.width = topography[0].length
+    this.height = topography.length
     // this.zone // what zone it is in
     //
 
@@ -44,14 +46,13 @@ let InstanceMap = class InstanceMap {
     let topoLength = this.topography.length
     for (let rowIndex = 0; rowIndex < topoLength; rowIndex++) {
       let row = this.topography[rowIndex]
-      let doorIndex = row.findIndex((location) => location.type == 'door')
-      while (doorIndex != -1) {
-        let door = row[doorIndex]
-        if (!door.destination)
-          throw `INVALID MAP ERROR: every door needs a destination but the door at ${rowIndex},${doorIndex} does not have one`
-        if (door.destination == 'town') doorsToTown++
-        row = row.splice(doorIndex + 1, row.length)
-        doorIndex = row.findIndex((location) => location.type == 'door')
+      for (let locationIndex = 0; locationIndex < row.length; locationIndex++) {
+        if (row[locationIndex].type == 'door') {
+          let door = row[locationIndex]
+          if (!door.destination)
+            throw `INVALID MAP ERROR: every door needs a destination but the door at ${rowIndex},${locationIndex} does not have one`
+          if (door.destination == 'town') doorsToTown++
+        }
       }
     }
     if (doorsToTown != 1)
@@ -64,15 +65,13 @@ let InstanceMap = class InstanceMap {
 
     for (let rowIndex = 0; rowIndex < topoLength; rowIndex++) {
       let row = this.topography[rowIndex]
-      let doorIndex = row.findIndex((location) => location.type == 'door')
-      while (doorIndex != -1) {
-        let door = row[doorIndex]
-        if (door.destination == origin) {
-          return { x: rowIndex, y: doorIndex }
-        } else {
-          row = row.splice(doorIndex + 1, row.length)
+      for (let locationIndex = 0; locationIndex < row.length; locationIndex++) {
+        if (row[locationIndex].type == 'door') {
+          let door = row[locationIndex]
+          if (door.destination == origin) {
+            return { x: locationIndex, y: rowIndex }
+          }
         }
-        doorIndex = row.findIndex((location) => location.type == 'door')
       }
     }
     return false
@@ -81,26 +80,27 @@ let InstanceMap = class InstanceMap {
 
 const getTestInstanceMap = () => {
   const testLocationStrings = [
-    'NNNNNNNNNNNNNNNNNNNNNNN',
-    'NBBBBBBBBBBBBBBBBBBBBBN',
-    'NBGGBBGGGGBBBBBGGEBBBBN',
-    'NBGEGGGBBGGGGGGGBBBBBBN',
-    'NBGGGGBBGGBBBBBBBBBEGBN',
-    'NBBGGBBGGBBBEGGBBGGGGBN',
-    'NBBBGBGGBBBBGGGGGGBGGBN',
-    'NBBGGBGGGGBBBBBBBGBBGBN',
-    'NBBGOBEOOGGGGBBBGGBGGBN',
-    'NBGGOBOOOOOGGGGGGBBGBBN',
-    'NBGGGBOOOOOOOOOBBBBGBBN',
-    'NBGBGBBOOOOOOOOBGGGGGBN',
-    'NBGBGGBBBOOOOOBGGGEGGBN',
-    'NBGBBGGBBBBGGGGGGGGGGBN',
-    'NBGGBBGGBBGGGGGGBGGGGBN',
-    'NBGGEBBGGGGGGBBBBBGGBBN',
-    'NBBBBBBBBBBDBBBBBBBBBBN',
-    'NNNNNNNNNNNNNNNNNNNNNNN',
+    'nnnnnnnnnnnnnnnnnnnnnnn',
+    'nbbbbbbbbbbbbbbbbbbbbbn',
+    'nbggbbggggbbbbbggGbbbbn',
+    'nbgGgggbbgggggggbbbbbbn',
+    'nbggggbbggbbbbbbbbbGgbn',
+    'nbbggbbggbbbGggbbggggbn',
+    'nbbbgbggbbbbggggggbggbn',
+    'nbbggbggggbbbbbbbgbbgbn',
+    'nbbgobGooggggbbbggbggbn',
+    'nbggoboooooggggggbbgbbn',
+    'nbgggbooooooooobbbbgbbn',
+    'nbgbgbboooOoooobgggggbn',
+    'nbgbggbbbooooobgggGggbn',
+    'nbgbbggbbbbggggggggggbn',
+    'nbggbbggbbggggggbggggbn',
+    'nbggGbbggggggbbbbbggbbn',
+    'nbbbbbbbbbbdbbbbbbbbbbn',
+    'nnnnnnnnnnnnnnnnnnnnnnn',
   ]
   let testLocations = parseLocations(testLocationStrings)
+  // console.log(testLocations[16][11])
   let testInstance = new InstanceMap('Test Instance 0', testLocations)
   return testInstance
 }

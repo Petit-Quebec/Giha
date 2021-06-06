@@ -49,7 +49,7 @@ describe('Giha - testInstance', () => {
     expect(testInstanceMap).toBeInstanceOf(InstanceMap)
   })
   it('should correctly provide the location of the entrance', () => {
-    let expected = { x: 16, y: 11 }
+    let expected = { x: 11, y: 16 }
     expect(testInstanceMap.spawnLocationFrom('town')).toStrictEqual(expected)
   })
 })
@@ -121,7 +121,7 @@ describe('Giha - map renderASCII', () => {
       '█▓▓ ░▓¥░░    ▓▓▓  ▓  ▓█\n' +
       '█▓  ░▓░░░░░      ▓▓ ▓▓█\n' +
       '█▓   ▓░░░░░░░░░▓▓▓▓ ▓▓█\n' +
-      '█▓ ▓ ▓▓░░░░░░░░▓     ▓█\n' +
+      '█▓ ▓ ▓▓░░░¥░░░░▓     ▓█\n' +
       '█▓ ▓  ▓▓▓░░░░░▓   ¥  ▓█\n' +
       '█▓ ▓▓  ▓▓▓▓          ▓█\n' +
       '█▓  ▓▓  ▓▓      ▓    ▓█\n' +

@@ -15,16 +15,20 @@ export const getEncounters = () => {
   return encounters
 }
 
-// export const getEncountersByHero = (hero) => {
-//   if (!(hero instanceof Hero))
-//     throw `I'll find you a hero, but you are on your own if you seek a ${typeof hero}`
-//   // console.log(encounters)
-//   let heroEncounters = []
-//   encounters.forEach((encounter) => {
-//     // console.log(`heroName: ${heroName} , encounter hero:${encounter.hero}`)
-//     if (encounter.hero == hero) {
-//       heroEncounters.push(encounter)
-//     }
-//   })
-//   return heroEncounters
-// }
+export const getEncountersByHero = (hero) => {
+  if (!(hero instanceof Hero))
+    throw `I'll find you a hero, but you are on your own if you seek a ${typeof hero}`
+  // console.log(encounters)
+  let heroEncounters = []
+  encounters.forEach((encounter) => {
+    // console.log(`heroName: ${heroName} , encounter hero:${encounter.hero}`)
+    if (encounter.hero == hero) {
+      heroEncounters.push(encounter)
+    }
+  })
+  return heroEncounters
+}
+
+export const randomEncounter = (locationType) => {
+  return `mushroom picking in the + ${locationType}`
+}
