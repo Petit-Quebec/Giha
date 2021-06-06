@@ -26,4 +26,3 @@ jobs:
       - run: npm ci
       - run: npm run lint-fix
       - run: npm test
-      - run: npm run e2e
