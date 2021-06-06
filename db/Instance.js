@@ -69,10 +69,7 @@ export default class Instance {
     if (newLoc.walkable) {
       // move successful
       this.partyCoordinates = newLoc
-      if (
-        this.map.topography[this.partyCoordinates.y][this.partyCoordinates.x]
-          .encounter
-      ) {
+      if (newLoc.encounter) {
         // if the new location's encounter is not undefined then state change to encounter, figure out the encounter, and set it as the active encounter
         this.state = INSTANCE_STATE.ENCOUNTER
         this.activeEncounter = newLoc.encounter
