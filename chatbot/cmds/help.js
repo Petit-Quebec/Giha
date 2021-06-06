@@ -3,7 +3,7 @@ import { getUserByDiscordId } from '../../Giha/userManager.js'
 
 let name = 'help'
 
-export const help = {
+const help = {
   name: name,
   description:
     'help command, informs user of their role and available commands',
@@ -11,7 +11,7 @@ export const help = {
   note: 'still only works for registered players and above',
 }
 
-export const permissions = {
+const permissions = {
   userPermissions: {
     admin: true,
     dm: true,
@@ -25,7 +25,7 @@ export const permissions = {
   },
 }
 
-export const run = async (bot, message) => {
+const run = async (bot, message) => {
   let txt =
     '```ml\nHelp for GuildHall bot\n' +
     '-------------------------------\n' +
@@ -54,7 +54,13 @@ export const run = async (bot, message) => {
   } catch (err) {
     // if there is a problem, log it and inform the user
     log(err, true)
-    let txt = `use the format ${exports.help.format}\n` + err
+    let txt = `use the format ${help.format}\n` + err
     msg.edit(txt)
   }
+}
+
+export default {
+  run,
+  permissions, 
+  help
 }

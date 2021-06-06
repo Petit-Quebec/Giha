@@ -1,26 +1,7 @@
 import db from '../../db/db.js'
 import { log } from '../../util/util.js'
 
-export const help = {
-  name: 'players',
-  description: 'prints out information about all registered players',
-}
-
-export const permissions = {
-  userPermissions: {
-    admin: true,
-    dm: true,
-    player: false,
-  },
-  locationPermissions: {
-    activeGuild: true,
-    passiveGuild: false,
-    inactiveGuild: false,
-    directMessage: true,
-  },
-}
-
-export const run = async (_bot, message) => {
+const run = async (_bot, message) => {
   let msg = await message.channel.send('generating player info...')
 
   let playerArray = await db.getFullCollectionArray('players')
@@ -37,4 +18,29 @@ function playerInfo(playerArray) {
     infoString += `\n ${player.discordHandle}: \n  DiscordID: ${player.discordId}`
   })
   return infoString
+}
+
+const help = {
+  name: 'players',
+  description: 'prints out information about all registered players',
+}
+
+const permissions = {
+  userPermissions: {
+    admin: true,
+    dm: true,
+    player: false,
+  },
+  locationPermissions: {
+    activeGuild: true,
+    passiveGuild: false,
+    inactiveGuild: false,
+    directMessage: true,
+  },
+}
+
+export default {
+  run,
+  permissions, 
+  help
 }

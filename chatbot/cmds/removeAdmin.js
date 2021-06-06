@@ -3,14 +3,14 @@ import { getUserByDiscordId } from '../../Giha/userManager.js'
 
 const name = 'removeAdmin'
 
-export const help = {
+const help = {
   name: name,
   description: 'Removes a target user admin powers',
   format: `!${name} @user`,
   note: 'can only be ran by server lord',
 }
 
-export const permissions = {
+const permissions = {
   userPermissions: {
     admin: false,
     dm: false,
@@ -24,7 +24,7 @@ export const permissions = {
   },
 }
 
-export const run = async (bot, message, args) => {
+const run = async (bot, message, args) => {
   let msg = await message.channel.send('removing admin...')
 
   // parse args and test them
@@ -45,7 +45,7 @@ export const run = async (bot, message, args) => {
   } catch (err) {
     // if there is a problem, log it and inform the user
     log(err, true)
-    let txt = `use the format ${exports.help.format}\n` + err
+    let txt = `use the format ${help.format}\n` + err
     msg.edit(txt)
   }
 }
@@ -84,3 +84,10 @@ export const run = async(bot, message, args) => {
   else throw 'Cannot assign role, player not initialized.'
 }
 */
+
+
+export default {
+  run,
+  permissions, 
+  help
+}

@@ -1,4 +1,4 @@
-import { run } from '../avatar.js'
+import avatar from '../avatar.js'
 describe('Bot cmds - avatar', () => {
   const mockUrl = 'HTTPS://gromlet.org/TEE_HEE_SEKRIT_STRING.jif'
   let mockDelete, mockMessage
@@ -19,12 +19,12 @@ describe('Bot cmds - avatar', () => {
   })
 
   it('should delete the message when it is done.', async () => {
-    await run(undefined, mockMessage)
+    await avatar.run(undefined, mockMessage)
     expect(mockDelete).toHaveBeenCalled()
   })
 
   it('should send a message with a file to the channel', async () => {
-    await run(undefined, mockMessage)
+    await avatar.run(undefined, mockMessage)
     expect(mockMessage.channel.send).toHaveBeenCalledTimes(2)
 
     expect(mockMessage.channel.send).toHaveBeenNthCalledWith(

@@ -100,4 +100,8 @@ const run = async (bot, message, args) => {
   }
 }
 
-export { help, permissions, run }
+export default {
+  run,
+  permissions, 
+  help
+}

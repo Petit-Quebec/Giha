@@ -1,4 +1,4 @@
-import { run } from '../stats.js'
+import stats from '../stats.js'
 import { getHeroById } from '../../../Giha/heroManager.js'
 jest.mock('../../../Giha/heroManager.js')
 
@@ -23,7 +23,7 @@ describe('Bot cmds - stats', () => {
   })
 
   it('should tell you if there is no matching hero', async () => {
-    await run(null, mockMessage, ['Dilbert'])
+    await stats.run(null, mockMessage, ['Dilbert'])
     expect(mockMessage.channel.send).toHaveBeenCalledWith(
       'performing function...'
     )
@@ -33,7 +33,7 @@ describe('Bot cmds - stats', () => {
   })
 
   it('should tell you if you have no hero', async () => {
-    await run(null, mockMessage, [])
+    await stats.run(null, mockMessage, [])
     expect(mockMessage.channel.send).toHaveBeenCalledWith(
       'performing function...'
     )
@@ -47,7 +47,7 @@ describe('Bot cmds - stats', () => {
       statsBlob: jest.fn(() => 'Mock Hero Stats Blob'),
     })
 
-    await run(null, mockMessage, [])
+    await stats.run(null, mockMessage, [])
     expect(mockMessage.channel.send).toHaveBeenCalledWith(
       'performing function...'
     )
@@ -56,7 +56,7 @@ describe('Bot cmds - stats', () => {
 
   it('should catch if there is an issue', async () => {
     getHeroById.mockReturnValue('String')
-    await run(null, mockMessage, [])
+    await stats.run(null, mockMessage, [])
     expect(mockMessage.channel.send).toHaveBeenCalledWith(
       'performing function...'
     )

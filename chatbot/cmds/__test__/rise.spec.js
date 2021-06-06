@@ -1,4 +1,4 @@
-import { run, help } from '../rise.js'
+import rise from '../rise.js'
 
 describe('Bot cmds - rise', () => {
   let mockEdit
@@ -21,7 +21,7 @@ describe('Bot cmds - rise', () => {
   })
 
   it('should create a new hero', async () => {
-    await run(null, mockMessage, ['dilbert'])
+    await rise.run(null, mockMessage, ['dilbert'])
     expect(mockMessage.channel.send).toHaveBeenCalledWith(
       'performing function...'
     )
@@ -31,13 +31,13 @@ describe('Bot cmds - rise', () => {
   })
 
   it('should throw if no args', async () => {
-    await run(null, mockMessage, [])
+    await rise.run(null, mockMessage, [])
 
     expect(mockMessage.channel.send).toHaveBeenCalledWith(
       'performing function...'
     )
     expect(mockEdit).toHaveBeenCalledWith(
-      `use the format ${help.format}\nrise requires a hero name (you provided 0)`
+      `use the format ${rise.help.format}\nrise requires a hero name (you provided 0)`
     )
   })
 })
