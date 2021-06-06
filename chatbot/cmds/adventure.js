@@ -45,7 +45,7 @@ export const run = async (bot, message, args) => {
     //
     let party = []
     let userHero = getHeroById(message.author.id)
-    console.log(userHero)
+    log(userHero, true)
     if (!userHero)
       throw `<@${message.author.id}> does not have a valid hero, please make a hero with !rise <name>`
     else party.push(userHero)
@@ -89,7 +89,7 @@ export const run = async (bot, message, args) => {
     let prompt
 
     const moveUp = () => {
-      console.log('move up!')
+      log('move up!', true)
       instance.move('up')
       renderAndSend()
       let coords = instance.partyCoordinates
@@ -97,7 +97,7 @@ export const run = async (bot, message, args) => {
       // prompt.refreshReactions()
     }
     const moveDown = () => {
-      console.log('move down!')
+      log('move down!', true)
       instance.move('down')
       renderAndSend()
       let coords = instance.partyCoordinates
@@ -105,7 +105,7 @@ export const run = async (bot, message, args) => {
       // prompt.refreshReactions()
     }
     const moveRight = () => {
-      console.log('move right!')
+      log('move right!', true)
       instance.move('right')
       renderAndSend()
       let coords = instance.partyCoordinates
@@ -113,7 +113,7 @@ export const run = async (bot, message, args) => {
       // prompt.refreshReactions()
     }
     const moveLeft = () => {
-      console.log('move left!')
+      log('move left!', true)
       instance.move('left')
       renderAndSend()
       let coords = instance.partyCoordinates

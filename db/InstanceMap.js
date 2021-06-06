@@ -103,6 +103,7 @@ const getTestInstanceMap = () => {
     'nnnnnnnnnnnnnnnnnnnnnnn',
   ]
   let testLocations = parseLocations(testLocationStrings)
+  // console.log(testLocations[16][11])
   let testInstance = new InstanceMap('Test Instance 0', testLocations)
   return testInstance
 }
