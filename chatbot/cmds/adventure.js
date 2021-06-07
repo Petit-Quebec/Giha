@@ -74,7 +74,7 @@ const run = async (bot, message, args) => {
         const embed = new Discord.MessageEmbed()
           .attachFiles([{ name: 'map.png', attachment: imgData }])
           .setImage('attachment://map.png')
-        mapEmbed.delete()
+        await mapEmbed.delete()
         mapEmbed = await message.channel.send(embed)
       })
       const coords = instance.partyCoordinates
@@ -82,21 +82,22 @@ const run = async (bot, message, args) => {
       prompt.stripReactions()
     }
 
-    // render map
-    const imgData = await instance.renderMap()
-    const embed = new Discord.MessageEmbed()
-      .attachFiles([{ name: 'map.png', attachment: imgData }])
-      .setImage('attachment://map.png')
-    let mapEmbed = await message.channel.send(embed)
-
     let prompt
 
-    const up = new ResponseAction('unicodeEmoji', '⬆️', () => { move('up') })
-    const down = new ResponseAction('unicodeEmoji', '⬇️', () => { move('down') })
-    const right = new ResponseAction('unicodeEmoji', '➡️', () => { move('right') })
-    const left = new ResponseAction('unicodeEmoji', '⬅️', () => { move('left') })
+    const up = new ResponseAction('unicodeEmoji', '⬆️', () => {
+      move('up')
+    })
+    const down = new ResponseAction('unicodeEmoji', '⬇️', () => {
+      move('down')
+    })
+    const right = new ResponseAction('unicodeEmoji', '➡️', () => {
+      move('right')
+    })
+    const left = new ResponseAction('unicodeEmoji', '⬅️', () => {
+      move('left')
+    })
 
-    const responseActions = [left,up,down,right]
+    const responseActions = [left, up, down, right]
 
     prompt = newPrompt(
       message.channel,
@@ -110,10 +111,19 @@ const run = async (bot, message, args) => {
         // do something like saying the dungeon has timed out idk
       }
     )
+    
 
     // update reply and log it
     const txt = `created new instance with <@${message.author.id}> as the party leader`
     msg.edit(txt)
+
+    // render map
+    const imgData = await instance.renderMap()
+    const embed = new Discord.MessageEmbed()
+      .attachFiles([{ name: 'map.png', attachment: imgData }])
+      .setImage('attachment://map.png')
+    let mapEmbed = await message.channel.send(embed)
+
   } catch (err) {
     // if there is a problem, log it and inform the user
     log(err, true)

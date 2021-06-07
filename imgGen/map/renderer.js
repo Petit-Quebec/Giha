@@ -39,5 +39,5 @@ export default async (instance) => {
     format: 'image/png',
   })
   const data = b64.replace(/^data:image\/png;base64,/, '')
-  return new Buffer(data, 'base64')
+  return new Buffer.from(data, 'base64')
 }
