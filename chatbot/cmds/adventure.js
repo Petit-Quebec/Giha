@@ -30,7 +30,7 @@ const permissions = {
 
 const run = async (bot, message, args) => {
   let msg = await message.channel.send('performing function...')
-  
+
   // parse args and test them
   try {
     //look at all arguments
@@ -70,40 +70,53 @@ const run = async (bot, message, args) => {
     const move = (direction) => {
       log(`move ${direction}!`, true)
       instance.move(direction)
-      instance.renderMap().then(async (imgData) => {
-        const embed = new Discord.MessageEmbed()
-          .attachFiles([{ name: 'map.png', attachment: imgData }])
-          .setImage('attachment://map.png')
-        mapEmbed.delete()
-        mapEmbed = await message.channel.send(embed)
-      })
-      const coords = instance.partyCoordinates
-      prompt.message.edit(`x:${coords.x} y:${coords.y}`)
+      prompt.message.edit(asciiMap())
       prompt.stripReactions()
     }
 
+    const mapEmbed = () => {
+      const coords = instance.partyCoordinates
+      let asciiMap = instance.renderASCII()
+      let embed = new Discord.MessageEmbed()
+        .setColor('#000000')
+        .setTitle('Instance')
+        .addField({ name: 'Map', value: asciiMap })
+        .addField({ name: 'coords', value: `x:${coords.x} y:${coords.y}` })
+    }
+
+    const asciiMap = () => {
+      return '```' + instance.renderASCII() + '```'
+    }
     // render map
-    const imgData = await instance.renderMap()
-    const embed = new Discord.MessageEmbed()
-      .attachFiles([{ name: 'map.png', attachment: imgData }])
-      .setImage('attachment://map.png')
-    let mapEmbed = await message.channel.send(embed)
+    // const imgData = await instance.renderMap()
+    // const embed = new Discord.MessageEmbed()
+    //   .attachFiles([{ name: 'map.png', attachment: imgData }])
+    //   .setImage('attachment://map.png')
+    // let mapEmbed = await message.channel.send(embed)
 
     let prompt
 
-    const up = new ResponseAction('unicodeEmoji', '⬆️', () => { move('up') })
-    const down = new ResponseAction('unicodeEmoji', '⬇️', () => { move('down') })
-    const right = new ResponseAction('unicodeEmoji', '➡️', () => { move('right') })
-    const left = new ResponseAction('unicodeEmoji', '⬅️', () => { move('left') })
+    const up = new ResponseAction('unicodeEmoji', '⬆️', () => {
+      move('up')
+    })
+    const down = new ResponseAction('unicodeEmoji', '⬇️', () => {
+      move('down')
+    })
+    const right = new ResponseAction('unicodeEmoji', '➡️', () => {
+      move('right')
+    })
+    const left = new ResponseAction('unicodeEmoji', '⬅️', () => {
+      move('left')
+    })
 
-    const responseActions = [left,up,down,right]
+    const responseActions = [left, up, down, right]
 
     prompt = newPrompt(
       message.channel,
       'noLimit',
       responseActions,
       bot,
-      "here's a prompt okay?",
+      asciiMap(),
       {},
       { time: 60000 },
       () => {
@@ -113,7 +126,7 @@ const run = async (bot, message, args) => {
 
     // update reply and log it
     const txt = `created new instance with <@${message.author.id}> as the party leader`
-    msg.edit(txt)
+    msg.edit({ embed: mapEmbed() })
   } catch (err) {
     // if there is a problem, log it and inform the user
     log(err, true)
@@ -124,6 +137,6 @@ const run = async (bot, message, args) => {
 
 export default {
   run,
-  permissions, 
-  help
+  permissions,
+  help,
 }
