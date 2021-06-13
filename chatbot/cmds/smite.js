@@ -4,12 +4,12 @@ import {
 } from '../../Giha/userManager.js'
 import { log } from '../../util/util.js'
 
-export const help = {
+const help = {
   name: 'smite',
   description: 'revokes admin and dm powers from a player',
 }
 
-export const permissions = {
+const permissions = {
   userPermissions: {
     admin: true,
     dm: false,
@@ -23,7 +23,7 @@ export const permissions = {
   },
 }
 
-export const run = async (bot, message, args) => {
+const run = async (bot, message, args) => {
   // let user = message.author
 
   log('args:')
@@ -60,4 +60,10 @@ export const run = async (bot, message, args) => {
     message.channel.send("you can't smite an uninitialized player")
     log('Cannot assign role, player not initialized.')
   }
+}
+
+export default {
+  run,
+  permissions,
+  help,
 }

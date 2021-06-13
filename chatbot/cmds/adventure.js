@@ -7,14 +7,14 @@ import Discord from 'discord.js'
 
 let name = 'adventure'
 
-export const help = {
+const help = {
   name: name,
   description: 'creates a new adventure instance',
   format: `!${name} @user1 @user2 @user3 @user4`,
   note: 'tag 0-4 people to join the party (0 will be solo)',
 }
 
-export const permissions = {
+const permissions = {
   userPermissions: {
     admin: true,
     dm: true,
@@ -28,7 +28,7 @@ export const permissions = {
   },
 }
 
-export const run = async (bot, message, args) => {
+const run = async (bot, message, args) => {
   let msg = await message.channel.send('performing function...')
 
   // parse args and test them
@@ -46,9 +46,11 @@ export const run = async (bot, message, args) => {
     let party = []
     let userHero = getHeroById(message.author.id)
     log(userHero, true)
-    if (!userHero)
+    if (!userHero) {
       throw `<@${message.author.id}> does not have a valid hero, please make a hero with !rise <name>`
-    else party.push(userHero)
+    } else {
+      party.push(userHero)
+    }
 
     if (args.length > 4) throw 'too many users tagged'
     args.forEach((tag) => {
@@ -65,92 +67,71 @@ export const run = async (bot, message, args) => {
       instance.addPartyMember(hero)
     })
 
-    let renderAndSend = async () => {
-      instance.renderMap().then(async (imgData) => {
-        const embed = new Discord.MessageEmbed()
-          .attachFiles([{ name: 'map.png', attachment: imgData }])
-          .setImage('attachment://map.png')
-        mapEmbed.delete()
-        mapEmbed = await message.channel.send(embed)
-      })
+    const move = (direction) => {
+      log(`move ${direction}!`, true)
+      instance.move(direction)
+      prompt.message.edit(asciiMap())
+      prompt.stripReactions()
     }
 
-    let callback = () => {
-      // do something like saying the dungeon has timed out idk
+    const mapEmbed = () => {
+      const coords = instance.partyCoordinates
+      let asciiMap = instance.renderASCII()
+      let embed = new Discord.MessageEmbed()
+        .setColor('#000000')
+        .setTitle('Instance')
+        .addField({ name: 'Map', value: asciiMap })
+        .addField({ name: 'coords', value: `x:${coords.x} y:${coords.y}` })
+      return embed
     }
 
-    // render map
-    const imgData = await instance.renderMap()
-    const embed = new Discord.MessageEmbed()
-      .attachFiles([{ name: 'map.png', attachment: imgData }])
-      .setImage('attachment://map.png')
-    let mapEmbed = await message.channel.send(embed)
+    const asciiMap = () => {
+      return '```' + instance.renderASCII() + '```'
+    }
 
     let prompt
 
-    const moveUp = () => {
-      log('move up!', true)
-      instance.move('up')
-      renderAndSend()
-      let coords = instance.partyCoordinates
-      prompt.message.edit(`x:${coords.x} y:${coords.y}`)
-      // prompt.refreshReactions()
-    }
-    const moveDown = () => {
-      log('move down!', true)
-      instance.move('down')
-      renderAndSend()
-      let coords = instance.partyCoordinates
-      prompt.message.edit(`x:${coords.x} y:${coords.y}`)
-      // prompt.refreshReactions()
-    }
-    const moveRight = () => {
-      log('move right!', true)
-      instance.move('right')
-      renderAndSend()
-      let coords = instance.partyCoordinates
-      prompt.message.edit(`x:${coords.x} y:${coords.y}`)
-      // prompt.refreshReactions()
-    }
-    const moveLeft = () => {
-      log('move left!', true)
-      instance.move('left')
-      renderAndSend()
-      let coords = instance.partyCoordinates
-      prompt.message.edit(`x:${coords.x} y:${coords.y}`)
-      // prompt.refreshReactions()
-    }
+    const up = new ResponseAction('unicodeEmoji', '⬆️', () => {
+      move('up')
+    })
+    const down = new ResponseAction('unicodeEmoji', '⬇️', () => {
+      move('down')
+    })
+    const right = new ResponseAction('unicodeEmoji', '➡️', () => {
+      move('right')
+    })
+    const left = new ResponseAction('unicodeEmoji', '⬅️', () => {
+      move('left')
+    })
 
-    let up = new ResponseAction('unicodeEmoji', '⬆️', moveUp)
-    let down = new ResponseAction('unicodeEmoji', '⬇️', moveDown)
-    let right = new ResponseAction('unicodeEmoji', '➡️', moveRight)
-    let left = new ResponseAction('unicodeEmoji', '⬅️', moveLeft)
-
-    let responseActions = []
-
-    responseActions.push(left)
-    responseActions.push(up)
-    responseActions.push(down)
-    responseActions.push(right)
+    const responseActions = [left, up, down, right]
 
     prompt = newPrompt(
       message.channel,
       'noLimit',
       responseActions,
       bot,
-      "here's a prompt okay?",
+      asciiMap(),
       {},
       { time: 60000 },
-      callback
+      () => {
+        // do something like saying the dungeon has timed out idk
+      }
     )
 
     // update reply and log it
-    let txt = `created new instance with <@${message.author.id}> as the party leader`
-    msg.edit(txt)
+    // const txt = `created new instance with <@${message.author.id}> as the party leader`
+    msg.edit({ embed: mapEmbed() })
   } catch (err) {
     // if there is a problem, log it and inform the user
     log(err, true)
-    let txt = `use the format ${help.format}\n` + err
+    const txt = `use the format ${help.format}\n` + err
     msg.edit(txt)
   }
+}
+
+export default {
+  run,
+  permissions,
+  help,
 }

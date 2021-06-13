@@ -1,4 +1,23 @@
-export const run = async (_bot, message) => {
+const help = {
+  name: 'icon',
+  description: 'generates a the server icon and sends it to the user',
+}
+
+const permissions = {
+  userPermissions: {
+    admin: true,
+    dm: true,
+    player: true,
+  },
+  locationPermissions: {
+    activeGuild: true,
+    passiveGuild: false,
+    inactiveGuild: false,
+    directMessage: false,
+  },
+}
+
+const run = async (_bot, message) => {
   let msg = await message.channel.send('generating server icon...')
 
   if (!message.guild.iconURL) return msg.edit('This server has no icon')
@@ -15,21 +34,8 @@ export const run = async (_bot, message) => {
   msg.delete()
 }
 
-export const help = {
-  name: 'icon',
-  description: 'generates a the server icon and sends it to the user',
-}
-
-export const permissions = {
-  userPermissions: {
-    admin: true,
-    dm: true,
-    player: true,
-  },
-  locationPermissions: {
-    activeGuild: true,
-    passiveGuild: false,
-    inactiveGuild: false,
-    directMessage: false,
-  },
+export default {
+  run,
+  permissions,
+  help,
 }

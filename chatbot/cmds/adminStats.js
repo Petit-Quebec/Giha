@@ -2,12 +2,12 @@ import { log } from '../../util/util.js'
 import { getUserByDiscordId } from '../../Giha/userManager.js'
 import { userStatsBlurb } from '../../Giha/aggregations.js'
 
-export const help = {
+const help = {
   name: 'adminStats',
   description: 'admin command for checking all Characters',
 }
 
-export const permissions = {
+const permissions = {
   userPermissions: {
     admin: true,
     dm: true,
@@ -21,7 +21,7 @@ export const permissions = {
   },
 }
 
-export const run = async (_bot, message) => {
+const run = async (_bot, message) => {
   let msg = await message.channel.send('generating stats...')
   try {
     let user = await getUserByDiscordId(message.author.id)
@@ -33,4 +33,10 @@ export const run = async (_bot, message) => {
     log(err, true)
     msg.edit(err)
   }
+}
+
+export default {
+  run,
+  permissions,
+  help,
 }

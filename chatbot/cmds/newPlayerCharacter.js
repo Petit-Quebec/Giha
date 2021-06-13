@@ -3,7 +3,27 @@ import { log } from '../../util/util.js'
 import { newPlayerCharacter } from '../../Giha/characterManager.js'
 import User from '../../db/User.js'
 
-export const run = async (bot, message, args) => {
+const help = {
+  name: 'newPlayerCharacter',
+  description:
+    'initializes new character\nsyntax:\n!newCharacter @<user> <fullName>',
+}
+
+const permissions = {
+  userPermissions: {
+    admin: true,
+    dm: true,
+    player: false,
+  },
+  locationPermissions: {
+    activeGuild: true,
+    passiveGuild: false,
+    inactiveGuild: false,
+    directMessage: true,
+  },
+}
+
+const run = async (bot, message, args) => {
   let msg = await message.channel.send('generating character...')
 
   log('args:')
@@ -58,22 +78,8 @@ export const run = async (bot, message, args) => {
   // msg.delete();
 }
 
-export const help = {
-  name: 'newPlayerCharacter',
-  description:
-    'initializes new character\nsyntax:\n!newCharacter @<user> <fullName>',
-}
-
-export const permissions = {
-  userPermissions: {
-    admin: true,
-    dm: true,
-    player: false,
-  },
-  locationPermissions: {
-    activeGuild: true,
-    passiveGuild: false,
-    inactiveGuild: false,
-    directMessage: true,
-  },
+export default {
+  run,
+  permissions,
+  help,
 }

@@ -2,14 +2,14 @@ import { log } from '../../util/util.js'
 import Discord from 'discord.js'
 import { newInstance } from '../../Giha/instanceManager.js'
 
-export const help = {
+const help = {
   name: 'map',
   description: 'generate map image',
   format: '!map',
   note: 'this is for testing only right now',
 }
 
-export const permissions = {
+const permissions = {
   userPermissions: {
     admin: true,
     dm: true,
@@ -23,7 +23,7 @@ export const permissions = {
   },
 }
 
-export const run = async (_bot, message) => {
+const run = async (_bot, message) => {
   let msg = await message.channel.send('generating map...')
 
   try {
@@ -36,7 +36,13 @@ export const run = async (_bot, message) => {
     message.channel.send(embed)
   } catch (err) {
     log(err, true)
-    let txt = `use the format ${exports.help.format}\n` + err
+    let txt = `use the format ${help.format}\n` + err
     msg.edit(txt)
   }
+}
+
+export default {
+  run,
+  permissions,
+  help,
 }

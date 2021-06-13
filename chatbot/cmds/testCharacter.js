@@ -1,12 +1,12 @@
 import Character from '../../db/Character.js'
 import { log } from '../../util/util.js'
 
-export const help = {
+const help = {
   name: 'testCharacter',
   description: 'tests the character class',
 }
 
-export const permissions = {
+const permissions = {
   userPermissions: {
     admin: true,
     dm: true,
@@ -20,7 +20,7 @@ export const permissions = {
   },
 }
 
-export const run = async (_bot, message) => {
+const run = async (_bot, message) => {
   log(' | testing character initialization...', true)
   log(' | deleting old Sansbar Illyn..')
 
@@ -59,4 +59,10 @@ const createSansBar = async (message) => {
   }
 
   message.channel.send('Successfully created Sansbar\n' + res)
+}
+
+export default {
+  run,
+  permissions,
+  help,
 }

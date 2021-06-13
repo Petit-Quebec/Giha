@@ -43,6 +43,28 @@ export default class Instance {
     return await mapRenderer(this)
   }
 
+  renderASCII() {
+    let renderString = ''
+    this.map.topography.forEach((row) => {
+      row.forEach((location) => {
+        renderString += location.ascii
+      })
+      renderString += '\n'
+    })
+    let rowLength = this.map.topography[0].length
+    let index =
+      this.partyCoordinates.y * (rowLength + 1) + this.partyCoordinates.x
+    console.log(index)
+    console.log(renderString[index])
+
+    renderString =
+      renderString.substring(0, index) +
+      '@' +
+      renderString.substring(index + 1, renderString.length)
+
+    return renderString
+  }
+
   move(direction) {
     // console.log(this.map.topography)
     let x = this.partyCoordinates.x

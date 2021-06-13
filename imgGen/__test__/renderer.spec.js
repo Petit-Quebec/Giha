@@ -47,10 +47,10 @@ describe('Render test', () => {
   })
 
   it('should throw when called on something other than an instance', async () => {
-    expect(render('not a map')).rejects.toBe(
+    await expect(render('not a map')).rejects.toBe(
       'Input should be of type Instance, not string'
     )
-    expect(render(50)).rejects.toBe(
+    await expect(render(50)).rejects.toBe(
       'Input should be of type Instance, not number'
     )
   })

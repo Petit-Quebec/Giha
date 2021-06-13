@@ -8,14 +8,14 @@ import encounterAscii from '../../imgGen/ascii/encounterAscii.js'
 
 let name = 'battle'
 
-export const help = {
+const help = {
   name: name,
   description: 'glorious field of battle',
   format: '!battle',
   note: 'blahblah',
 }
 
-export const permissions = {
+const permissions = {
   userPermissions: {
     admin: true,
     dm: true,
@@ -29,7 +29,7 @@ export const permissions = {
   },
 }
 
-export const run = async (_bot, message) => {
+const run = async (_bot, message) => {
   let msg = await message.channel.send('preparing for battle...')
 
   // parse args and test them
@@ -81,7 +81,13 @@ export const run = async (_bot, message) => {
   } catch (err) {
     // if there is a problem, log it and inform the user
     log(err, true)
-    let txt = `use the format ${exports.help.format}\n` + err
+    let txt = `use the format ${help.format}\n` + err
     msg.edit(txt)
   }
+}
+
+export default {
+  run,
+  permissions,
+  help,
 }

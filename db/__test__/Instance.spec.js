@@ -38,3 +38,30 @@ describe('Giha class - Instance', () => {
     }).toThrow('INSTANCE_ERROR: can only set a map to an InstanceMap')
   })
 })
+
+describe('Giha - instance renderASCII', () => {
+  let testInstanceMap = getTestInstanceMap()
+  let testInstance = new Instance()
+  testInstance.setMap(testInstanceMap)
+  let mapRender = testInstance.renderASCII()
+  expect(mapRender).toBe(
+    '███████████████████████\n' +
+      '█▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓█\n' +
+      '█▓  ▓▓    ▓▓▓▓▓  ¥▓▓▓▓█\n' +
+      '█▓ ¥   ▓▓       ▓▓▓▓▓▓█\n' +
+      '█▓    ▓▓  ▓▓▓▓▓▓▓▓▓¥ ▓█\n' +
+      '█▓▓  ▓▓  ▓▓▓¥  ▓▓    ▓█\n' +
+      '█▓▓▓ ▓  ▓▓▓▓      ▓  ▓█\n' +
+      '█▓▓  ▓    ▓▓▓▓▓▓▓ ▓▓ ▓█\n' +
+      '█▓▓ ░▓¥░░    ▓▓▓  ▓  ▓█\n' +
+      '█▓  ░▓░░░░░      ▓▓ ▓▓█\n' +
+      '█▓   ▓░░░░░░░░░▓▓▓▓ ▓▓█\n' +
+      '█▓ ▓ ▓▓░░░¥░░░░▓     ▓█\n' +
+      '█▓ ▓  ▓▓▓░░░░░▓   ¥  ▓█\n' +
+      '█▓ ▓▓  ▓▓▓▓          ▓█\n' +
+      '█▓  ▓▓  ▓▓      ▓    ▓█\n' +
+      '█▓  ¥▓▓      ▓▓▓▓▓  ▓▓█\n' +
+      '█▓▓▓▓▓▓▓▓▓▓@▓▓▓▓▓▓▓▓▓▓█\n' +
+      '███████████████████████\n'
+  )
+})
