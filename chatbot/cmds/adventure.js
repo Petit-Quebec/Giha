@@ -82,17 +82,12 @@ const run = async (bot, message, args) => {
         .setTitle('Instance')
         .addField({ name: 'Map', value: asciiMap })
         .addField({ name: 'coords', value: `x:${coords.x} y:${coords.y}` })
+      return embed
     }
 
     const asciiMap = () => {
       return '```' + instance.renderASCII() + '```'
     }
-    // render map
-    // const imgData = await instance.renderMap()
-    // const embed = new Discord.MessageEmbed()
-    //   .attachFiles([{ name: 'map.png', attachment: imgData }])
-    //   .setImage('attachment://map.png')
-    // let mapEmbed = await message.channel.send(embed)
 
     let prompt
 
@@ -118,14 +113,14 @@ const run = async (bot, message, args) => {
       bot,
       asciiMap(),
       {},
-      { time: 600000 },
+      { time: 60000 },
       () => {
         // do something like saying the dungeon has timed out idk
       }
     )
 
     // update reply and log it
-    const txt = `created new instance with <@${message.author.id}> as the party leader`
+    // const txt = `created new instance with <@${message.author.id}> as the party leader`
     msg.edit({ embed: mapEmbed() })
   } catch (err) {
     // if there is a problem, log it and inform the user
