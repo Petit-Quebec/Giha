@@ -118,7 +118,7 @@ const run = async (bot, message, args) => {
       bot,
       asciiMap(),
       {},
-      { time: 60000 },
+      { time: 600000 },
       () => {
         // do something like saying the dungeon has timed out idk
       }
