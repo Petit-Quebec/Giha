@@ -44,6 +44,6 @@ const permissions = {
 
 export default {
   run,
-  permissions, 
-  help
+  permissions,
+  help,
 }

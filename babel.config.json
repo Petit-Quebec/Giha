@@ -1,10 +1,13 @@
 {
   "presets": ["@babel/preset-env"],
   "plugins": [
-    ["wildcard", {
-      "nostrip": true,
-      "useCamelCase": true
-    }]
+    [
+      "wildcard",
+      {
+        "nostrip": true,
+        "useCamelCase": true
+      }
+    ]
   ],
   "env": {
     "test": {
