@@ -1,24 +1,29 @@
 import Discord from 'discord.js'
 import ResponseAction from '../ResponseAction'
 
-export default explorationScene = (prompt, sceneOptions) => {
+const explorationScene = (refreshCallback, sceneOptions) => {
   let instance = sceneOptions.instance
   const sceneInformation = {
     promptBehavior: 'noLimit', // behavior of the prompt, as specified in Prompt.js
-    generateResponseAction: explorationResponseActions(prompt, instance), // a function that returns an array of ResponseActions and takes no arguments
+    generateResponseAction: explorationResponseActions(
+      refreshCallback,
+      instance
+    ), // a function that returns an array of ResponseActions and takes no arguments
     renderMsgContent: explorationEmbed(instance), // a function that renders the msg content and takes no arguments
     reactCollectorOptions: { time: 60000 }, // reaction collector options
-    reactCollectorTimeoutCallback: () => {}, //what do you do when it all times out
+    // reactCollectorTimeoutCallback: () => {}, //what do you do when it all times out
   }
   return sceneInformation
 }
 
-const explorationResponseActions = (prompt, instance) => {
+const explorationResponseActions = (refreshCallback, instance) => {
   return () => {
     const move = (direction) => {
       instance.move(direction)
-      prompt.refresh()
-      prompt.stripReactions()
+      refreshCallback({
+        render: true,
+        reactions: true,
+      })
     }
 
     const up = new ResponseAction('unicodeEmoji', '⬆️', () => {
@@ -51,3 +56,5 @@ const explorationEmbed = (instance) => {
     return embed
   }
 }
+
+export default explorationScene

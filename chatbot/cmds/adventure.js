@@ -68,12 +68,9 @@ const run = async (bot, message, args) => {
       instance.addPartyMember(hero)
     })
 
-    adventurePrompt = new DynamicPrompt(
-      message.channel,
-      bot,
-      'exploration',
-      sceneOptions
-    )
+    const sceneOptions = { instance: instance }
+
+    new DynamicPrompt(message.channel, bot, 'exploration', sceneOptions)
 
     // update reply and log it
     // const txt = `created new instance with <@${message.author.id}> as the party leader`
