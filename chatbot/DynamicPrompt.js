@@ -14,8 +14,10 @@ const DynamicPrompt = class DynamicPrompt extends Prompt {
       throw `if you want to pass scene Options in, they must be in an object, not ${typeof sceneOptions}`
 
     let refreshCallback = (refreshOptions) => {
-      if (refreshOptions.render) this.setMessageContent(this.renderMsgContent())
-      if (refreshOptions.reactions) this.stripReactions()
+      if (refreshOptions.rerender)
+        this.setMessageContent(this.renderMsgContent())
+      if (refreshOptions.reactions == 'strip') this.stripReactions()
+      else if (refreshOptions.reactions == 'clear') this.cleanReactions()
     }
 
     const sceneInfo = getSceneInfo(scene, sceneOptions, refreshCallback)

@@ -21,8 +21,8 @@ const explorationResponseActions = (refreshCallback, instance) => {
     const move = (direction) => {
       instance.move(direction)
       refreshCallback({
-        render: true,
-        reactions: true,
+        rerender: true,
+        reactions: 'strip',
       })
     }
 

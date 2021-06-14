@@ -98,6 +98,11 @@ let ShroomHunt = class ShroomHunt {
       this.mushrooms.push(randShroom())
     }
     this.score = 0
+    this.complete = false
+  }
+
+  burrow() {
+    this.complete = true
   }
 
   pick(mushroom) {
