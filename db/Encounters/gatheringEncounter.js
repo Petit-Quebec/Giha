@@ -1,9 +1,13 @@
+/*
+ *  VERY UNFINISHED
+ */
+
 import Resource, { gatherSkills } from '../GatheringResource.js'
 import Encounter from './Encounter.js'
 import encounterTypes from './Encounter.js'
 import encounterStatuses from './Encounter.js'
 /**
- * class representing a mining encounter
+ * class representing a gathering encounter
  * @class
  * @requires ./Encounter
  */

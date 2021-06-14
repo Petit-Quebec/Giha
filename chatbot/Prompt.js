@@ -54,21 +54,7 @@ let Prompt = class Prompt {
     // check and set client
     if (!(client instanceof Discord.Client))
       throw 'Client must be a discord bot'
-    if (Array.isArray(responseActions)) {
-      // check and set responseActions
-      // check every element to make sure it is a ResponseAction or Error
-      responseActions.forEach((element) => {
-        if (!(element instanceof ResponseAction))
-          throw 'Prompt Constructor Error: All responseActions must be instances of ResponseAction'
-      })
-      this.responseActions = responseActions
-    } else {
-      // check the one thing to make sure it is a responseAction
-      if (responseActions instanceof ResponseAction)
-        this.responseActions = [responseActions]
-      else
-        throw 'Prompt Constructor Error: responseActions must be an instance of ResponseAction'
-    }
+    this.setResponseActions(responseActions)
     // set everything
     this.isDM = channel instanceof Discord.DMChannel
     this.channel = channel
@@ -146,6 +132,39 @@ let Prompt = class Prompt {
     //   responseAction = null
     // })
     return this.message.delete()
+  }
+
+  /**
+   * sets responseActions
+   * @returns nothing
+   */
+  setResponseActions(responseActions) {
+    if (Array.isArray(responseActions)) {
+      // check and set responseActions
+      // check every element to make sure it is a ResponseAction or Error
+      responseActions.forEach((element) => {
+        if (!(element instanceof ResponseAction))
+          throw 'Prompt Constructor Error: All responseActions must be instances of ResponseAction'
+      })
+      this.responseActions = responseActions
+    } else {
+      // check the one thing to make sure it is a responseAction
+      if (responseActions instanceof ResponseAction)
+        this.responseActions = [responseActions]
+      else
+        throw 'Prompt Constructor Error: responseActions must be an instance of ResponseAction'
+    }
+    return
+  }
+
+  /**
+   * Resets all reactions to only those in response actions
+   * @returns nothing
+   */
+  resetReactions() {
+    this.cleanReactions()
+    this.addReactionButtons()
+    return
   }
 
   /**
