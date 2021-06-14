@@ -13,16 +13,7 @@ const DynamicPrompt = class DynamicPrompt extends Prompt {
     if (sceneOptions && typeof sceneOptions != 'object')
       throw `DynamicPromptError: if you want to pass scene Options in, they must be in an object, not ${typeof sceneOptions}`
 
-    let promptCallback = (promptOptions) => {
-      if (promptOptions.rerender)
-        this.setMessageContent(this.renderMsgContent())
-      if (promptOptions.reactions == 'strip') this.stripReactions()
-      else if (promptOptions.reactions == 'clear') this.cleanReactions()
-      if (promptOptions.targetScene)
-        this.changeScene(promptOptions.targetScene, promptOptions.sceneOptions)
-    }
-
-    const sceneInfo = getSceneInfo(scene, sceneOptions, promptCallback)
+    const sceneInfo = getSceneInfo(scene, sceneOptions, this.promptCallback)
 
     console.log(sceneInfo)
     // make the actual prompt
@@ -40,6 +31,14 @@ const DynamicPrompt = class DynamicPrompt extends Prompt {
     this.scene = scene
   }
 
+  promptCallback = (promptOptions) => {
+    if (promptOptions.rerender) this.setMessageContent(this.renderMsgContent())
+    if (promptOptions.reactions == 'strip') this.stripReactions()
+    else if (promptOptions.reactions == 'clear') this.cleanReactions()
+    if (promptOptions.targetScene)
+      this.changeScene(promptOptions.targetScene, promptOptions.sceneOptions)
+  }
+
   /**
    * changes scene, figures out response action
    * resets response actions
@@ -49,15 +48,8 @@ const DynamicPrompt = class DynamicPrompt extends Prompt {
     this.setMessageContent('loading...')
     if (typeof scene != 'string')
       throw `DynamicPromptError: scene needs to be a string - the name of the scene, not ${typeof scene}`
-    let promptCallback = (promptOptions) => {
-      if (promptOptions.rerender)
-        this.setMessageContent(this.renderMsgContent())
-      if (promptOptions.reactions == 'strip') this.stripReactions()
-      else if (promptOptions.reactions == 'clear') this.cleanReactions()
-      if (promptOptions.targetScene) this.changeScene(promptOptions.targetScene)
-    }
 
-    const sceneInfo = getSceneInfo(scene, sceneOptions, promptCallback)
+    const sceneInfo = getSceneInfo(scene, sceneOptions, this.promptCallback)
     this.scene = scene
     // update the prompt to behave properly
     this.renderMsgContent = sceneInfo.renderMsgContent

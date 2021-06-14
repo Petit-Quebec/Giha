@@ -1,10 +1,12 @@
 import Discord from 'discord.js'
-import { INSTANCE_STATE } from '../../db/Instance'
+import Instance, { INSTANCE_STATE } from '../../db/Instance'
 import { log } from '../../util/util'
 import ResponseAction from '../ResponseAction'
 
 const explorationScene = (promptCallback, sceneOptions) => {
   let instance = sceneOptions.instance
+  if (!instance || !(instance instanceof Instance))
+    throw `SceneError: exploration scene needs an instance to connect to, not a ${typeof instance}`
   const sceneInformation = {
     promptBehavior: 'noLimit', // behavior of the prompt, as specified in Prompt.js
     generateResponseAction: explorationResponseActions(

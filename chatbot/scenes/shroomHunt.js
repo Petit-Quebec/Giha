@@ -1,8 +1,11 @@
 import Discord from 'discord.js'
+import ShroomHunt from '../../Giha/Encounters/shroomHunting'
 import emojiManager from '../emojiManager'
 import ResponseAction from '../ResponseAction'
 const shroomHuntScene = (promptCallback, sceneOptions) => {
   let shroomHunt = sceneOptions.shroomHunt
+  if (!shroomHunt || !(shroomHunt instanceof ShroomHunt))
+    throw `shroomHunt Scene Error: shroom hunting scenes need a shroom hunt to connect to, not a ${typeof shroomHunt}!`
   const sceneInformation = {
     promptBehavior: 'oneClickPerUser', // behavior of the prompt, as specified in Prompt.js
     generateResponseAction: shroomHuntResponseActions(
