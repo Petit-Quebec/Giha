@@ -26,7 +26,6 @@ let Prompt = class Prompt {
    * @param {ResponseAction|[ResponseAction]} responseActions - what actions can happen as responses to this prompt
    * @param {Object} client - which (Discord) client to use for messaging
    * @param {string} msgContent - what content the prompt message should display
-   * @param {Object} [msgOptions] - what message options (if any) the prompt should have (includes embeds)
    * @param {Object} [reactCollectorOptions] - what reactCollector options (if any) the prompt should have (includes things like expiry time for watching reactions[defaults to 60 seconds)
    * @param {Object} [reactCollectorTimeoutCallback] - function to call when the react collector expires - will clear reactions by default
    * Information on building messages is available here https://discord.js.org/#/docs/main/stable/class/TextChannel?scrollTo=send
@@ -37,7 +36,6 @@ let Prompt = class Prompt {
     responseActions,
     client,
     msgContent,
-    msgOptions,
     reactCollectorOptions,
     reactCollectorTimeoutCallback
   ) {
@@ -69,7 +67,7 @@ let Prompt = class Prompt {
       // everything is set up, now send the message
       try {
         channel
-          .send(msgContent, msgOptions)
+          .send(msgContent)
           .then((res) => {
             //save the message as part of the prompt
             this.message = res
@@ -155,6 +153,14 @@ let Prompt = class Prompt {
         throw 'Prompt Constructor Error: responseActions must be an instance of ResponseAction'
     }
     return
+  }
+
+  /**
+   * update Message, embeds, etc
+   * @returns a promise from Discord
+   */
+  setMessageContent(newContent) {
+    return this.message.edit(newContent)
   }
 
   /**

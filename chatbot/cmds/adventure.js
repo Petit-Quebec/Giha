@@ -1,6 +1,7 @@
 import { log } from '../../util/util.js'
 import { getHeroById } from '../../Giha/heroManager.js'
 import { newInstance } from '../../Giha/instanceManager.js'
+import DynamicPrompt from '../DynamicPrompt.js'
 import { newPrompt } from '../../Giha/promptManager.js'
 import ResponseAction from '../ResponseAction.js'
 import Discord from 'discord.js'
@@ -67,25 +68,53 @@ const run = async (bot, message, args) => {
       instance.addPartyMember(hero)
     })
 
-    const move = (direction) => {
-      instance.move(direction)
-      prompt.message.edit(asciiMap())
-      prompt.stripReactions()
-    }
+    adventurePrompt = new DynamicPrompt(
+      message.channel,
+      bot,
+      'exploration',
+      sceneOptions
+    )
+
+    // update reply and log it
+    // const txt = `created new instance with <@${message.author.id}> as the party leader`
+  } catch (err) {
+    // if there is a problem, log it and inform the user
+    log(err, true)
+    const txt = `use the format ${help.format}\n` + err
+    msg.edit(txt)
+  }
+}
+
+export default {
+  run,
+  permissions,
+  help,
+}
+
+/*
+
 
     const mapEmbed = () => {
       const coords = instance.partyCoordinates
-      let asciiMap = instance.renderASCII()
       let embed = new Discord.MessageEmbed()
         .setColor('#000000')
         .setTitle('Instance')
-        .addField({ name: 'Map', value: asciiMap })
-        .addField({ name: 'coords', value: `x:${coords.x} y:${coords.y}` })
+        .addFields(
+          { name: 'Map', value: asciiMap() },
+          { name: 'coords', value: `x:${coords.x} y:${coords.y}` }
+        )
       return embed
     }
 
     const asciiMap = () => {
       return '```' + instance.renderASCII() + '```'
+    }
+
+    const move = (direction) => {
+      instance.move(direction)
+      prompt.setMessageContent({ embed: mapEmbed() })
+      // prompt.setMessageContent(asciiMap())
+      prompt.stripReactions()
     }
 
     let prompt
@@ -110,27 +139,10 @@ const run = async (bot, message, args) => {
       'noLimit',
       responseActions,
       bot,
-      asciiMap(),
-      {},
+      { embed: mapEmbed() },
       { time: 60000 },
       () => {
         // do something like saying the dungeon has timed out idk
       }
     )
-
-    // update reply and log it
-    // const txt = `created new instance with <@${message.author.id}> as the party leader`
-    // msg.edit({ embed: mapEmbed() })
-  } catch (err) {
-    // if there is a problem, log it and inform the user
-    log(err, true)
-    const txt = `use the format ${help.format}\n` + err
-    msg.edit(txt)
-  }
-}
-
-export default {
-  run,
-  permissions,
-  help,
-}
+*/
