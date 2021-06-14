@@ -4,7 +4,7 @@ import InstanceMap from './InstanceMap.js'
 import Hero from './Hero.js'
 import mapRenderer from '../imgGen/map/renderer.js'
 
-INSTANCE_STATE = {
+export const INSTANCE_STATE = {
   EXPLORATION: 'EXPLORATION',
   ENCOUNTER: 'ENCOUNTER',
   PROMPT: 'PROMPT',
@@ -54,8 +54,6 @@ export default class Instance {
     let rowLength = this.map.topography[0].length
     let index =
       this.partyCoordinates.y * (rowLength + 1) + this.partyCoordinates.x
-    console.log(index)
-    console.log(renderString[index])
 
     renderString =
       renderString.substring(0, index) +
@@ -90,7 +88,7 @@ export default class Instance {
     let newLoc = this.map.topography[newCoords.y][newCoords.x]
     if (newLoc.walkable) {
       // move successful
-      this.partyCoordinates = newLoc
+      this.partyCoordinates = newCoords
       if (newLoc.encounter) {
         // if the new location's encounter is not undefined then state change to encounter, figure out the encounter, and set it as the active encounter
         this.state = INSTANCE_STATE.ENCOUNTER

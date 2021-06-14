@@ -68,7 +68,6 @@ const run = async (bot, message, args) => {
     })
 
     const move = (direction) => {
-      log(`move ${direction}!`, true)
       instance.move(direction)
       prompt.message.edit(asciiMap())
       prompt.stripReactions()
@@ -121,7 +120,7 @@ const run = async (bot, message, args) => {
 
     // update reply and log it
     // const txt = `created new instance with <@${message.author.id}> as the party leader`
-    msg.edit({ embed: mapEmbed() })
+    // msg.edit({ embed: mapEmbed() })
   } catch (err) {
     // if there is a problem, log it and inform the user
     log(err, true)
