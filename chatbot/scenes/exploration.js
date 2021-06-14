@@ -1,29 +1,43 @@
 import Discord from 'discord.js'
+import { INSTANCE_STATE } from '../../db/Instance'
+import { log } from '../../util/util'
 import ResponseAction from '../ResponseAction'
 
-const explorationScene = (refreshCallback, sceneOptions) => {
+const explorationScene = (promptCallback, sceneOptions) => {
   let instance = sceneOptions.instance
   const sceneInformation = {
     promptBehavior: 'noLimit', // behavior of the prompt, as specified in Prompt.js
     generateResponseAction: explorationResponseActions(
-      refreshCallback,
+      promptCallback,
       instance
     ), // a function that returns an array of ResponseActions and takes no arguments
     renderMsgContent: explorationEmbed(instance), // a function that renders the msg content and takes no arguments
     reactCollectorOptions: { time: 60000 }, // reaction collector options
-    // reactCollectorTimeoutCallback: () => {}, //what do you do when it all times out
+    reactCollectorTimeoutCallback: () => {
+      promptCallback({ reactions: 'clean' })
+    }, //what do you do when it all times out
   }
   return sceneInformation
 }
 
-const explorationResponseActions = (refreshCallback, instance) => {
+const explorationResponseActions = (promptCallback, instance) => {
   return () => {
     const move = (direction) => {
-      instance.move(direction)
-      refreshCallback({
-        rerender: true,
-        reactions: 'strip',
-      })
+      let explorationEvent = instance.move(direction)
+      if (explorationEvent && instance.state != INSTANCE_STATE.EXPLORATION) {
+        log(`event: ${explorationEvent}`, true)
+        promptCallback({
+          targetScene: explorationEvent,
+          sceneOptions: {
+            shroomHunt: instance.activeEncounter,
+          },
+        })
+      } else {
+        promptCallback({
+          rerender: true,
+          reactions: 'strip',
+        })
+      }
     }
 
     const up = new ResponseAction('unicodeEmoji', '⬆️', () => {

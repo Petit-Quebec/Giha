@@ -3,6 +3,7 @@ import { getTestInstanceMap } from './InstanceMap.js'
 import InstanceMap from './InstanceMap.js'
 import Hero from './Hero.js'
 import mapRenderer from '../imgGen/map/renderer.js'
+import ShroomHunt from '../Giha/Encounters/shroomHunting.js'
 
 export const INSTANCE_STATE = {
   EXPLORATION: 'EXPLORATION',
@@ -92,11 +93,13 @@ export default class Instance {
       if (newLoc.encounter) {
         // if the new location's encounter is not undefined then state change to encounter, figure out the encounter, and set it as the active encounter
         this.state = INSTANCE_STATE.ENCOUNTER
-        this.activeEncounter = newLoc.encounter
+        this.activeEncounter = new ShroomHunt(7)
+        return 'shroomHunt'
       } else if (newLoc.type == 'door') {
         if (newLoc.destination == 'town') {
           // ask player if they want to go through the door to town
           this.state = INSTANCE_STATE.PROMPT
+          return 'door'
         } else if (newLoc.destination) {
           this.state = INSTANCE_STATE.PROMPT
           // ask player if they want to go through the door to the unknown
@@ -108,7 +111,6 @@ export default class Instance {
     } else {
       // move unsuccesssful
     }
-
     return this.partyCoordinates
   }
 }

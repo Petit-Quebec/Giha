@@ -9,18 +9,20 @@ import * as scenes from './scenes'
 const DynamicPrompt = class DynamicPrompt extends Prompt {
   constructor(channel, client, scene, sceneOptions) {
     if (typeof scene != 'string')
-      throw `scene needs to be a string - the name of the scene, not ${typeof scene}`
+      throw `DynamicPromptError: scene needs to be a string - the name of the scene, not ${typeof scene}`
     if (sceneOptions && typeof sceneOptions != 'object')
-      throw `if you want to pass scene Options in, they must be in an object, not ${typeof sceneOptions}`
+      throw `DynamicPromptError: if you want to pass scene Options in, they must be in an object, not ${typeof sceneOptions}`
 
-    let refreshCallback = (refreshOptions) => {
-      if (refreshOptions.rerender)
+    let promptCallback = (promptOptions) => {
+      if (promptOptions.rerender)
         this.setMessageContent(this.renderMsgContent())
-      if (refreshOptions.reactions == 'strip') this.stripReactions()
-      else if (refreshOptions.reactions == 'clear') this.cleanReactions()
+      if (promptOptions.reactions == 'strip') this.stripReactions()
+      else if (promptOptions.reactions == 'clear') this.cleanReactions()
+      if (promptOptions.targetScene)
+        this.changeScene(promptOptions.targetScene, promptOptions.sceneOptions)
     }
 
-    const sceneInfo = getSceneInfo(scene, sceneOptions, refreshCallback)
+    const sceneInfo = getSceneInfo(scene, sceneOptions, promptCallback)
 
     console.log(sceneInfo)
     // make the actual prompt
@@ -43,25 +45,44 @@ const DynamicPrompt = class DynamicPrompt extends Prompt {
    * resets response actions
    * re-renders
    */
-  changeScene(scene) {
+  changeScene(scene, sceneOptions) {
+    this.setMessageContent('loading...')
     if (typeof scene != 'string')
-      throw `scene needs to be a string - the name of the scene, not ${typeof scene}`
-    // getSceneInfo(scene, sceneOptions) of the new scene
-    // this.scene = scene
+      throw `DynamicPromptError: scene needs to be a string - the name of the scene, not ${typeof scene}`
+    let promptCallback = (promptOptions) => {
+      if (promptOptions.rerender)
+        this.setMessageContent(this.renderMsgContent())
+      if (promptOptions.reactions == 'strip') this.stripReactions()
+      else if (promptOptions.reactions == 'clear') this.cleanReactions()
+      if (promptOptions.targetScene) this.changeScene(promptOptions.targetScene)
+    }
+
+    const sceneInfo = getSceneInfo(scene, sceneOptions, promptCallback)
+    this.scene = scene
     // update the prompt to behave properly
+    this.renderMsgContent = sceneInfo.renderMsgContent
+    this.setMessageContent(this.renderMsgContent())
+
+    // this.setpromptBehavior(sceneInfo.promptBehavior) // To Do
+    this.setResponseActions(sceneInfo.generateResponseAction())
+    // this.setRactCollectorOptions(sceneInfo.reactCollectorOptions) // To Do
+    // this.setReactCollectorTimeoutCallback(
+    //   sceneInfo.reactCollectorTimeoutCallback
+    // )                                                  // To Do
+    this.resetReactions()
   }
 }
 
-const getSceneInfo = (scene, sceneOptions, refreshCallback) => {
+const getSceneInfo = (scene, sceneOptions, promptCallback) => {
   const sceneNames = Object.keys(scenes)
   // validate that the scene exists
   const sceneResult = sceneNames.find((element) => element == scene)
   if (sceneResult == -1)
-    throw `${scene} was not found in the list of ${sceneNames.length} scenes`
+    throw `DynamicPromptError: ${scene} was not found in the list of ${sceneNames.length} scenes`
   // see what it needs, make sure we got that
 
   // call it and get all the info from it
-  return scenes[sceneResult](refreshCallback, sceneOptions)
+  return scenes[sceneResult](promptCallback, sceneOptions)
 }
 
 export default DynamicPrompt
