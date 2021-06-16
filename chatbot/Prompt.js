@@ -173,6 +173,8 @@ let Prompt = class Prompt {
     return
   }
 
+  updateReactionCollector() {}
+
   /**
    * adds any reactions that are used by responseActions
    * returns an array of promises to add the reactions

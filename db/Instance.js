@@ -94,6 +94,7 @@ export default class Instance {
         // if the new location's encounter is not undefined then state change to encounter, figure out the encounter, and set it as the active encounter
         this.state = INSTANCE_STATE.ENCOUNTER
         this.activeEncounter = new ShroomHunt(7)
+        this.activeEncounter.setParentInstance(this)
         return 'shroomHunt'
       } else if (newLoc.type == 'door') {
         if (newLoc.destination == 'town') {

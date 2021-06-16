@@ -1,3 +1,4 @@
+import Instance from '../../db/Instance.js'
 import { log } from '../../util/util.js'
 
 const mushrooms = [
@@ -99,6 +100,7 @@ let ShroomHunt = class ShroomHunt {
     }
     this.score = 0
     this.complete = false
+    this.parentInstance
   }
 
   burrow() {
@@ -107,6 +109,12 @@ let ShroomHunt = class ShroomHunt {
 
   pick(mushroom) {
     this.score += mushroom.quality
+  }
+
+  setParentInstance(instance) {
+    if (!(instance instanceof Instance))
+      throw `shroomHunting Error: parentInstance must be set to an Instance, not ${typeof instance}`
+    this.parentInstance = instance
   }
 }
 

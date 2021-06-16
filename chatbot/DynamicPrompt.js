@@ -13,7 +13,11 @@ const DynamicPrompt = class DynamicPrompt extends Prompt {
     if (sceneOptions && typeof sceneOptions != 'object')
       throw `DynamicPromptError: if you want to pass scene Options in, they must be in an object, not ${typeof sceneOptions}`
 
-    const sceneInfo = getSceneInfo(scene, sceneOptions, this.promptCallback)
+    const callbackPassthrough = (promptOptions) => {
+      // this is a dumb way of doing it, I should split out the constructor into two parts
+      this.promptCallback(promptOptions)
+    }
+    const sceneInfo = getSceneInfo(scene, sceneOptions, callbackPassthrough)
 
     console.log(sceneInfo)
     // make the actual prompt

@@ -56,7 +56,7 @@ const shroomHuntEmbed = (shroomHunt) => {
     if (shroomHunt.complete) {
       txt = `The shrooms have all burrowed.\nYour final score is: ${shroomHunt.score}`
     } else {
-      txt = `Pick the mushrooms!\nscore: ${shroomHunt.score}`
+      txt = `Pick only the tastiest of mushrooms!\nscore: ${shroomHunt.score}`
     }
     let color
     if (shroomHunt.mushrooms[0].species == 'Mageroof') color = '#2D86F1'
@@ -72,10 +72,20 @@ const shroomHuntEmbed = (shroomHunt) => {
 const expireCallback = (shroomHunt, promptCallback) => {
   return () => {
     shroomHunt.burrow()
-    promptCallback({
-      rerender: true,
-      reactions: 'clear',
-    })
+    if (shroomHunt.parentInstance)
+      promptCallback({
+        targetScene: 'confirmation',
+        sceneOptions: {
+          targetScene: 'exploration',
+          targetSceneOptions: shroomHunt.parentInstance,
+          confirmationMessage: `your final score was ${shroomHunt.score}! Continue back to exploration?`,
+        },
+      })
+    else
+      promptCallback({
+        rerender: true,
+        reactions: 'clear',
+      })
   }
 }
 
