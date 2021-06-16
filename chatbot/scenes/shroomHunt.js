@@ -37,7 +37,7 @@ const shroomHuntResponseActions = (sceneOptions, promptCallback) => {
         console.log(
           `hero picked ${mushroom.mushroomIndex} a ${mushroom.species} of quality ${mushroom.quality}, the score is now ${shroomHunt.score}`
         )
-        promptCallback({ rerender: true })
+        promptCallback.rerender()
       }
       let responseAction = new ResponseAction(
         'emoji',
@@ -72,20 +72,19 @@ const shroomHuntEmbed = (shroomHunt) => {
 const expireCallback = (shroomHunt, promptCallback) => {
   return () => {
     shroomHunt.burrow()
-    if (shroomHunt.parentInstance)
-      promptCallback({
-        targetScene: 'confirmation',
-        sceneOptions: {
-          targetScene: 'exploration',
-          targetSceneOptions: shroomHunt.parentInstance,
-          confirmationMessage: `your final score was ${shroomHunt.score}! Continue back to exploration?`,
-        },
-      })
+    if (shroomHunt.parentInstance) {
+
+      const sceneOptions= {
+        targetScene: 'exploration',
+        targetSceneOptions: shroomHunt.parentInstance,
+        confirmationMessage: `your final score was ${shroomHunt.score}! Continue back to exploration?`,
+      }
+      promptCallback.changeScene('confirmation',sceneOptions)
+    }
+      
     else
-      promptCallback({
-        rerender: true,
-        reactions: 'clear',
-      })
+      promptCallback.rerender()
+      promptCallback.reactions.clear()
   }
 }
 

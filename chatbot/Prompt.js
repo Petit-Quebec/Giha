@@ -104,7 +104,7 @@ let Prompt = class Prompt {
               console.log(`collected ${collected.size} items`)
               if (reactCollectorTimeoutCallback) reactCollectorTimeoutCallback()
               else {
-                this.cleanReactions()
+                this.clearReactions()
               }
             })
 
@@ -168,7 +168,7 @@ let Prompt = class Prompt {
    * @returns nothing
    */
   resetReactions() {
-    this.cleanReactions()
+    this.clearReactions()
     this.addReactionButtons()
     return
   }
@@ -221,7 +221,7 @@ let Prompt = class Prompt {
   /**
    * removes all reactions from the message
    */
-  cleanReactions() {
+  clearReactions() {
     return this.message.reactions.removeAll()
   }
   /**
