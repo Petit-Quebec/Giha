@@ -48,14 +48,6 @@ const DynamicPrompt = class DynamicPrompt extends Prompt {
     this.promptControls = promptControls
   }
 
-  // promptCallback = (promptOptions) => {
-  //   if (promptOptions.rerender) this.setMessageContent(this.renderMsgContent())
-  //   if (promptOptions.reactions == 'strip') this.stripReactions()
-  //   else if (promptOptions.reactions == 'clear') this.clearReactions()
-  //   if (promptOptions.targetScene)
-  //     this.changeScene(promptOptions.targetScene, promptOptions.sceneOptions)
-  // }
-
   /**
    * changes scene, figures out response action
    * resets response actions
