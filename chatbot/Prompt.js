@@ -65,51 +65,18 @@ let Prompt = class Prompt {
     this.reactHistory = []
     this.messagePromise = new Promise((resolve, reject) => {
       // everything is set up, now send the message
-      try {
+      try { // this.message = channel.send(msgContent)
         channel
           .send(msgContent)
-          .then((res) => {
+          .then((msg) => {
             //save the message as part of the prompt
-            this.message = res
+            this.message = msg
             this.reactionPromises = this.addReactionButtons()
-            this.reactCollector = this.message.createReactionCollector(
-              // dummy reaction filter because I don't trust discord's filtering
-              () => {
-                return true
-              },
-              reactCollectorOptions ? reactCollectorOptions : { time: 60000 }
-            )
-            this.reactCollector.on('collect', (reaction) => {
-              // console.log(`collected ${reaction.emoji.name}`)
-
-              let userCache = reaction.users.cache.array()
-              let user = userCache.pop()
-              let reactionIdentifier
-              if (reaction._emoji.id == null)
-                reactionIdentifier = reaction._emoji.name
-              else reactionIdentifier = reaction._emoji.id
-              //do our own, more reliable filtering
-              if (this.reactFilter(reactionIdentifier, user)) {
-                console.log('reaction valid')
-                this.reactHistory.push({
-                  user: user,
-                  reactionIdentifier: reactionIdentifier,
-                })
-                this.trigger(user, reactionIdentifier)
-              } else {
-                // console.log('reaction invalid')
-              }
-            })
-            this.reactCollector.on('end', (collected) => {
-              console.log(`collected ${collected.size} items`)
-              if (reactCollectorTimeoutCallback) reactCollectorTimeoutCallback()
-              else {
-                this.clearReactions()
-              }
-            })
+            this.updateReactionCollector(reactCollectorOptions,reactCollectorTimeoutCallback)
+            
 
             // if this prompt has emoji responseActions, add those options for the user
-            resolve(res)
+            resolve(msg)
           })
           .catch((err) => {
             throw err
@@ -173,7 +140,44 @@ let Prompt = class Prompt {
     return
   }
 
-  updateReactionCollector() {}
+  updateReactionCollector(reactCollectorOptions,reactCollectorTimeoutCallback) {
+    // if reaction collector already exists, clean it up
+    this.reactCollector = this.message.createReactionCollector(
+      // dummy reaction filter because I don't trust discord's filtering
+      () => {
+        return true
+      },
+      reactCollectorOptions ? reactCollectorOptions : { time: 60000 }
+    )
+    this.reactCollector.on('collect', (reaction) => {
+      // console.log(`collected ${reaction.emoji.name}`)
+
+      let userCache = reaction.users.cache.array()
+      let user = userCache.pop()
+      let reactionIdentifier
+      if (reaction._emoji.id == null)
+        reactionIdentifier = reaction._emoji.name
+      else reactionIdentifier = reaction._emoji.id
+      //do our own, more reliable filtering
+      if (this.reactFilter(reactionIdentifier, user)) {
+        console.log('reaction valid')
+        this.reactHistory.push({
+          user: user,
+          reactionIdentifier: reactionIdentifier,
+        })
+        this.trigger(user, reactionIdentifier)
+      } else {
+        // console.log('reaction invalid')
+      }
+    })
+    this.reactCollector.on('end', (collected) => {
+      console.log(`collected ${collected.size} items`)
+      if (reactCollectorTimeoutCallback) reactCollectorTimeoutCallback()
+      else {
+        this.clearReactions()
+      }
+    })
+  }
 
   /**
    * adds any reactions that are used by responseActions

@@ -14,7 +14,7 @@ const shroomHuntScene = (promptCallback, sceneOptions) => {
     ), // a function that returns an array of ResponseActions and takes no arguments
     renderMsgContent: shroomHuntEmbed(shroomHunt), // a function that renders the msg content and takes no arguments
     reactCollectorOptions: { time: 15000 }, // reaction collector options
-    reactCollectorTimeoutCallback: expireCallback(shroomHunt, promptCallback), //what do you do when it all times out
+    reactCollectorTimeoutCallback: expireCallback(shroomHunt, promptCallback) //what do you do when it all times out
   }
   return sceneInformation
 }
@@ -50,7 +50,7 @@ const shroomHuntResponseActions = (sceneOptions, promptCallback) => {
   }
 }
 
-const shroomHuntEmbed = (shroomHunt) => {
+const shroomHuntEmbed = shroomHunt => {
   return () => {
     let txt
     if (shroomHunt.complete) {
@@ -73,18 +73,18 @@ const expireCallback = (shroomHunt, promptCallback) => {
   return () => {
     shroomHunt.burrow()
     if (shroomHunt.parentInstance) {
-
-      const sceneOptions= {
+      const sceneOptions = {
         targetScene: 'exploration',
-        targetSceneOptions: shroomHunt.parentInstance,
-        confirmationMessage: `your final score was ${shroomHunt.score}! Continue back to exploration?`,
+        targetSceneOptions: { instance: shroomHunt.parentInstance },
+        confirmationMessage: `your final score was ${shroomHunt.score}! Continue back to exploration?`
       }
-      promptCallback.changeScene('confirmation',sceneOptions)
-    }
-      
-    else
+      promptCallback.changeScene('confirmation', sceneOptions)
+    } else {
       promptCallback.rerender()
+
+      console.log('chaos agent')
       promptCallback.reactions.clear()
+    }
   }
 }
 

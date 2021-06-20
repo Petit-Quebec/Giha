@@ -67,6 +67,8 @@ const DynamicPrompt = class DynamicPrompt extends Prompt {
       throw `DynamicPromptError: scene needs to be a string - the name of the scene, not ${typeof scene}`
 
     const sceneInfo = getSceneInfo(scene, sceneOptions, this.promptControls)
+    const reactCollectorOptions = sceneInfo.reactCollectorOptions
+    const reactCollectorTimeoutCallback = sceneInfo.reactCollectorTimeoutCallback
     this.scene = scene
     // update the prompt to behave properly
     this.renderMsgContent = sceneInfo.renderMsgContent
@@ -74,10 +76,7 @@ const DynamicPrompt = class DynamicPrompt extends Prompt {
 
     // this.setpromptBehavior(sceneInfo.promptBehavior) // To Do
     this.setResponseActions(sceneInfo.generateResponseAction())
-    // this.setRactCollectorOptions(sceneInfo.reactCollectorOptions) // To Do
-    // this.setReactCollectorTimeoutCallback(
-    //   sceneInfo.reactCollectorTimeoutCallback
-    // )                                                  // To Do
+    this.updateReactionCollector(reactCollectorOptions,reactCollectorTimeoutCallback)
     this.resetReactions()
   }
 }

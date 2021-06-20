@@ -6,36 +6,41 @@
 //  4. the timeoutCallback function, which builds the timeout logic - ie what happens when the scene times out
 // the four of these together allow you to create dynamic templates for scenes
 
+import Discord from 'discord.js'
+import { log } from '../../util/util'
 import ResponseAction from '../ResponseAction'
 
 const confirmationScene = (promptCallback, sceneOptions) => {
   let targetScene = sceneOptions.targetScene
   let targetSceneOptions = sceneOptions.targetSceneOptions
+  console.log(targetSceneOptions)
   let confirmationMessage = sceneOptions.confirmationMessage
 
   const sceneInformation = {
     promptBehavior: 'noLimit', // behavior of the prompt, as specified in Prompt.js
     generateResponseAction: confirmationResponseActions(
       targetScene,
-      targetSceneOptions
+      targetSceneOptions,
+      promptCallback
     ), // a function that returns an array of ResponseActions and takes no arguments
     renderMsgContent: confirmationEmbed(confirmationMessage), // a function that renders the msg content and takes no arguments
     reactCollectorOptions: { time: 6000000 }, // reaction collector options
     reactCollectorTimeoutCallback: () => {
-      promptCallback({ reactions: 'clean' })
-    }, //what do you do when it all times out
+      promptCallback.reactions.clear()
+    } //what do you do when it all times out
   }
   return sceneInformation
 }
 
-const confirmationResponseActions = (targetScene, targetSceneOptions) => {
+const confirmationResponseActions = (
+  targetScene,
+  targetSceneOptions,
+  promptCallback
+) => {
   return () => {
     // response action with a check box that changes scene to instance
     let confirmationCallback = () => {
-      promptCallback({
-        targetScene: targetScene,
-        sceneOptions: targetSceneOptions,
-      })
+      promptCallback.changeScene(targetScene, targetSceneOptions)
     }
     let responseAction = new ResponseAction(
       'unicodeEmoji',
@@ -46,7 +51,7 @@ const confirmationResponseActions = (targetScene, targetSceneOptions) => {
   }
 }
 
-const confirmationEmbed = (confirmationMessage) => {
+const confirmationEmbed = confirmationMessage => {
   return () => {
     let embed = new Discord.MessageEmbed()
       .setColor('#00FF00')
