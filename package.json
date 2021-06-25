@@ -4,7 +4,8 @@
   "description": "a tool for weaving worlds 1.0",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec babel-node --inspect server.js",
+    "dev": "nodemon --exec 'npm run babel-node'",
+    "babel-node": "babel-node --inspect server.js",
     "lint": "eslint . --ext .js",
     "lint-fix": "eslint . --ext .js --fix && prettier --write .",
     "test": "jest --coverage",
