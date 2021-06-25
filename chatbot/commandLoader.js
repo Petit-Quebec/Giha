@@ -29,7 +29,7 @@ export default async (bot) => {
 
 export const deleteAllCommands = (bot) => {
   bot.commands.forEach((cmd) => {
-    delete require.cache[require.resolve(RELATIVE_CMD_PATH + `${cmd.help.name}.js`)];
+    delete require.cache[require.resolve(RELATIVE_CMD_PATH + `${cmd.help.name}.js`)]
     bot.commands.delete(cmd.help.name)
   })
 }
