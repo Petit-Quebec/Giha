@@ -9,8 +9,7 @@
     "lint": "eslint . --ext .js",
     "lint-fix": "eslint . --ext .js --fix && prettier --write .",
     "test": "jest --coverage",
-    "e2e": "babel-node ./chatbot/discotest/endToEndTests.js",
-    "prepare": "husky install"
+    "e2e": "babel-node ./chatbot/discotest/endToEndTests.js"
   },
   "repository": {
     "type": "git",
