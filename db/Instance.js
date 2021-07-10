@@ -4,12 +4,8 @@ import InstanceMap from './InstanceMap.js'
 import Hero from './Hero.js'
 import mapRenderer from '../imgGen/map/renderer.js'
 import ShroomHunt from '../Giha/Encounters/shroomHunting.js'
+import { INSTANCE_STATE } from '../Giha/instanceManager.js'
 
-export const INSTANCE_STATE = {
-  EXPLORATION: 'EXPLORATION',
-  ENCOUNTER: 'ENCOUNTER',
-  PROMPT: 'PROMPT',
-}
 
 export default class Instance {
   constructor() {
@@ -18,7 +14,7 @@ export default class Instance {
     this.floors = { floor1: this.map }
     this.partyCoordinates = this.map.spawnLocationFrom('town')
     this.party = []
-    this.changeState(INSTANCE_STATE.EXPLORATION)
+    this.state = INSTANCE_STATE.EXPLORATION
     this.activeEncounter = null
     this.activePrompt = null
   }
@@ -64,12 +60,7 @@ export default class Instance {
     return renderString
   }
 
-  /*export const INSTANCE_STATE = {
-  EXPLORATION: 'EXPLORATION',
-  ENCOUNTER: 'ENCOUNTER',
-  PROMPT: 'PROMPT',
-}*/
-  ychangeState(state) {
+  changeState(state) {
     if(state == 'EXPLORATION' || state == 'ENCOUNTER' || state =='PROMPT'){
       this.state = state
       return true
@@ -109,12 +100,10 @@ export default class Instance {
         this.changeState(INSTANCE_STATE.ENCOUNTER)
         this.activeEncounter = new ShroomHunt(7)
         this.activeEncounter.setParentInstance(this)
-        return 'shroomHunt'
       } else if (newLoc.type == 'door') {
         if (newLoc.destination == 'town') {
           // ask player if they want to go through the door to town
           this.changeState(INSTANCE_STATE.PROMPT)
-          return 'door'
         } else if (newLoc.destination) {
           this.changeState(INSTANCE_STATE.PROMPT)
           // ask player if they want to go through the door to the unknown
@@ -127,5 +116,9 @@ export default class Instance {
       // move unsuccesssful
     }
     return this.partyCoordinates
+  }
+  
+  getLocation() {
+    return this.map.topography[this.partyCoordinates.y][this.partyCoordinates.x]
   }
 }

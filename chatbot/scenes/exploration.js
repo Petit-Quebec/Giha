@@ -1,8 +1,13 @@
 import Discord from 'discord.js'
 import Instance from '../../db/Instance'
-import { INSTANCE_STATE } from '../../db/Instance'
 import { log } from '../../util/util'
 import ResponseAction from '../ResponseAction'
+
+const INSTANCE_STATE = {
+  EXPLORATION: 'EXPLORATION',
+  ENCOUNTER: 'ENCOUNTER',
+  PROMPT: 'PROMPT',
+}
 
 const explorationScene = (promptControls, sceneOptions) => {
   let instance = sceneOptions.instance
@@ -26,14 +31,20 @@ const explorationScene = (promptControls, sceneOptions) => {
 const explorationResponseActions = (promptControls, instance) => {
   return () => {
     const move = (direction) => {
-      let explorationEvent = instance.move(direction)
-      if (explorationEvent && instance.state != INSTANCE_STATE.INSTANCE_STATE.EXPLORATION) {
-        log(`event: ${explorationEvent}`, true)
-        promptControls.changeScene(explorationEvent, {shroomHunt: instance.activeEncounter}
-        )
-      } else {
+      // let explorationEvent = 
+      instance.move(direction)
+
+      if (instance.state == INSTANCE_STATE.EXPLORATION) {
         promptControls.rerender()
         promptControls.reactions.strip()
+      }
+      else if(instance.state == INSTANCE_STATE.ENCOUNTER){
+        let encounter = instance.getLocation().encounter
+        log(`event: ${encounter}`, true)
+        promptControls.changeScene(encounter, {shroomHunt: instance.activeEncounter})
+      }
+      else if (instance.state == INSTANCE_STATE.PROMPT){
+        console.log('listen man idk')
       }
     }
 
