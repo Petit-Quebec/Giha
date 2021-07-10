@@ -24,7 +24,7 @@
     }
   },
   "lint-staged": {
-    "*.{js}": "npm run lint-fix"
+    "*.js": "npm run lint-fix"
   },
   "bugs": {
     "url": "https://github.com/Petit-Quebec/Giha/issues"
