@@ -6,12 +6,12 @@ import * as scenes from './scenes'
  * @requires ./ResponseAction
  * @requires ./Prompt
  */
-const DynamicPrompt = class DynamicPrompt extends Prompt {
+const Scene = class Scene extends Prompt {
   constructor(channel, client, scene, sceneOptions) {
     if (typeof scene != 'string')
-      throw `DynamicPromptError: scene needs to be a string - the name of the scene, not ${typeof scene}`
+      throw `SceneError: scene needs to be a string - the name of the scene, not ${typeof scene}`
     if (sceneOptions && typeof sceneOptions != 'object')
-      throw `DynamicPromptError: if you want to pass scene Options in, they must be in an object, not ${typeof sceneOptions}`
+      throw `SceneError: if you want to pass scene Options in, they must be in an object, not ${typeof sceneOptions}`
 
       const promptControls = {
         rerender:() => {
@@ -64,7 +64,7 @@ const DynamicPrompt = class DynamicPrompt extends Prompt {
   changeScene(scene, sceneOptions) {
     this.setMessageContent('loading...')
     if (typeof scene != 'string')
-      throw `DynamicPromptError: scene needs to be a string - the name of the scene, not ${typeof scene}`
+      throw `SceneError: scene needs to be a string - the name of the scene, not ${typeof scene}`
 
     const sceneInfo = getSceneInfo(scene, sceneOptions, this.promptControls)
     const reactCollectorOptions = sceneInfo.reactCollectorOptions
@@ -86,11 +86,11 @@ const getSceneInfo = (scene, sceneOptions, promptControls) => {
   // validate that the scene exists
   const sceneResult = sceneNames.find((element) => element == scene)
   if (sceneResult == -1)
-    throw `DynamicPromptError: ${scene} was not found in the list of ${sceneNames.length} scenes`
+    throw `SceneError: ${scene} was not found in the list of ${sceneNames.length} scenes`
   // see what it needs, make sure we got that
 
   // call it and get all the info from it
   return scenes[sceneResult](promptControls, sceneOptions)
 }
 
-export default DynamicPrompt
+export default Scene

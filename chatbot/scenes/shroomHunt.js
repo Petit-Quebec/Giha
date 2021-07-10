@@ -1,4 +1,5 @@
 import Discord from 'discord.js'
+import { INSTANCE_STATE } from '../../db/Instance'
 import ShroomHunt from '../../Giha/Encounters/shroomHunting'
 import emojiManager from '../emojiManager'
 import ResponseAction from '../ResponseAction'
@@ -73,6 +74,8 @@ const expireCallback = (shroomHunt, promptCallback) => {
   return () => {
     shroomHunt.burrow()
     if (shroomHunt.parentInstance) {
+      shroomHunt.parentInstance.changeState(INSTANCE_STATE.ENCOUNTER)
+
       const sceneOptions = {
         targetScene: 'exploration',
         targetSceneOptions: { instance: shroomHunt.parentInstance },
@@ -82,7 +85,6 @@ const expireCallback = (shroomHunt, promptCallback) => {
     } else {
       promptCallback.rerender()
 
-      console.log('chaos agent')
       promptCallback.reactions.clear()
     }
   }

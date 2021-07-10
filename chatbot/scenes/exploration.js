@@ -1,5 +1,6 @@
 import Discord from 'discord.js'
-import Instance, { INSTANCE_STATE } from '../../db/Instance'
+import Instance from '../../db/Instance'
+import { INSTANCE_STATE } from '../../db/Instance'
 import { log } from '../../util/util'
 import ResponseAction from '../ResponseAction'
 
@@ -26,7 +27,7 @@ const explorationResponseActions = (promptControls, instance) => {
   return () => {
     const move = (direction) => {
       let explorationEvent = instance.move(direction)
-      if (explorationEvent && instance.state != INSTANCE_STATE.EXPLORATION) {
+      if (explorationEvent && instance.state != INSTANCE_STATE.INSTANCE_STATE.EXPLORATION) {
         log(`event: ${explorationEvent}`, true)
         promptControls.changeScene(explorationEvent, {shroomHunt: instance.activeEncounter}
         )

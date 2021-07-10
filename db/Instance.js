@@ -18,7 +18,7 @@ export default class Instance {
     this.floors = { floor1: this.map }
     this.partyCoordinates = this.map.spawnLocationFrom('town')
     this.party = []
-    this.state = INSTANCE_STATE.EXPLORATION
+    this.changeState(INSTANCE_STATE.EXPLORATION)
     this.activeEncounter = null
     this.activePrompt = null
   }
@@ -64,6 +64,20 @@ export default class Instance {
     return renderString
   }
 
+  /*export const INSTANCE_STATE = {
+  EXPLORATION: 'EXPLORATION',
+  ENCOUNTER: 'ENCOUNTER',
+  PROMPT: 'PROMPT',
+}*/
+  changeState(state) {
+    if(state == 'EXPLORATION' || state == 'ENCOUNTER' || state =='PROMPT'){
+      this.state = state
+      return true
+    }
+    else throw "InstanceError: state must be a valid INSTANCE_STATE"
+
+  }
+
   move(direction) {
     // console.log(this.map.topography)
     let x = this.partyCoordinates.x
@@ -92,17 +106,17 @@ export default class Instance {
       this.partyCoordinates = newCoords
       if (newLoc.encounter) {
         // if the new location's encounter is not undefined then state change to encounter, figure out the encounter, and set it as the active encounter
-        this.state = INSTANCE_STATE.ENCOUNTER
+        this.changeState(INSTANCE_STATE.ENCOUNTER)
         this.activeEncounter = new ShroomHunt(7)
         this.activeEncounter.setParentInstance(this)
         return 'shroomHunt'
       } else if (newLoc.type == 'door') {
         if (newLoc.destination == 'town') {
           // ask player if they want to go through the door to town
-          this.state = INSTANCE_STATE.PROMPT
+          this.changeState(INSTANCE_STATE.PROMPT)
           return 'door'
         } else if (newLoc.destination) {
-          this.state = INSTANCE_STATE.PROMPT
+          this.changeState(INSTANCE_STATE.PROMPT)
           // ask player if they want to go through the door to the unknown
           // trigger map change
         } else {

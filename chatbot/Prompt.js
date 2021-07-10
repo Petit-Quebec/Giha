@@ -141,6 +141,10 @@ let Prompt = class Prompt {
   }
 
   updateReactionCollector(reactCollectorOptions,reactCollectorTimeoutCallback) {
+    if(this.reactCollector){
+      // this.reactCollector.endReason('SceneChange')
+      this.reactCollector.stop(['SceneChange'])
+    }
     // if reaction collector already exists, clean it up
     this.reactCollector = this.message.createReactionCollector(
       // dummy reaction filter because I don't trust discord's filtering

@@ -1,7 +1,7 @@
 import { log } from '../../util/util.js'
 import { getHeroById } from '../../Giha/heroManager.js'
 import { newInstance } from '../../Giha/instanceManager.js'
-import DynamicPrompt from '../DynamicPrompt.js'
+import Scene from '../Scene.js'
 import { newPrompt } from '../../Giha/promptManager.js'
 import ResponseAction from '../ResponseAction.js'
 import Discord from 'discord.js'
@@ -70,7 +70,7 @@ const run = async (bot, message, args) => {
 
     const sceneOptions = { instance: instance }
 
-    new DynamicPrompt(message.channel, bot, 'exploration', sceneOptions)
+    new Scene(message.channel, bot, 'exploration', sceneOptions)
 
     // update reply and log it
     // const txt = `created new instance with <@${message.author.id}> as the party leader`

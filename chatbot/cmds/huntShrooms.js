@@ -1,7 +1,7 @@
 import { log } from '../../util/util.js'
 import ShroomHunt from '../../Giha/Encounters/shroomHunting.js'
 import ResponseAction from '../ResponseAction.js'
-import DynamicPrompt from '../DynamicPrompt.js'
+import Scene from '../Scene.js'
 
 let name = 'huntShrooms'
 
@@ -35,7 +35,7 @@ const run = async (bot, message, args) => {
     // make new mushroom hunt
     let shroomHunt = new ShroomHunt(7)
 
-    let shroomPrompt = new DynamicPrompt(message.channel, bot, 'shroomHunt', {
+    let shroomPrompt = new Scene(message.channel, bot, 'shroomHunt', {
       shroomHunt: shroomHunt,
     })
   } catch (err) {
