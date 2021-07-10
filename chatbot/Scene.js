@@ -13,22 +13,25 @@ const Scene = class Scene extends Prompt {
     if (sceneOptions && typeof sceneOptions != 'object')
       throw `SceneError: if you want to pass scene Options in, they must be in an object, not ${typeof sceneOptions}`
 
-      const promptControls = {
-        rerender:() => {
-          this.setMessageContent(this.renderMsgContent())
+    const promptControls = {
+      rerender: () => {
+        this.setMessageContent(this.renderMsgContent())
+      },
+      reactions: {
+        strip: () => {
+          this.stripReactions()
         },
-        reactions: {
-          strip: () => {
-            this.stripReactions()
-          },
-          clear: () => {
-            this.clearReactions()
-          }
+        clear: () => {
+          this.clearReactions()
         },
-        changeScene:(scene, sceneOptions) => {
-          this.changeScene(scene, sceneOptions)
-        }
-      }
+      },
+      changeScene: (scene, sceneOptions) => {
+        this.changeScene(scene, sceneOptions)
+      },
+      refreshTimeout: () => {
+        this.resetReactCollectorTimeout()
+      },
+    }
     const sceneInfo = getSceneInfo(scene, sceneOptions, promptControls)
 
     console.log(sceneInfo)
@@ -68,7 +71,8 @@ const Scene = class Scene extends Prompt {
 
     const sceneInfo = getSceneInfo(scene, sceneOptions, this.promptControls)
     const reactCollectorOptions = sceneInfo.reactCollectorOptions
-    const reactCollectorTimeoutCallback = sceneInfo.reactCollectorTimeoutCallback
+    const reactCollectorTimeoutCallback =
+      sceneInfo.reactCollectorTimeoutCallback
     this.scene = scene
     // update the prompt to behave properly
     this.renderMsgContent = sceneInfo.renderMsgContent
@@ -76,7 +80,10 @@ const Scene = class Scene extends Prompt {
 
     // this.setpromptBehavior(sceneInfo.promptBehavior) // To Do
     this.setResponseActions(sceneInfo.generateResponseAction())
-    this.updateReactionCollector(reactCollectorOptions,reactCollectorTimeoutCallback)
+    this.updateReactionCollector(
+      reactCollectorOptions,
+      reactCollectorTimeoutCallback
+    )
     this.resetReactions()
   }
 }

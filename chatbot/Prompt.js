@@ -65,15 +65,18 @@ let Prompt = class Prompt {
     this.reactHistory = []
     this.messagePromise = new Promise((resolve, reject) => {
       // everything is set up, now send the message
-      try { // this.message = channel.send(msgContent)
+      try {
+        // this.message = channel.send(msgContent)
         channel
           .send(msgContent)
           .then((msg) => {
             //save the message as part of the prompt
             this.message = msg
             this.reactionPromises = this.addReactionButtons()
-            this.updateReactionCollector(reactCollectorOptions,reactCollectorTimeoutCallback)
-            
+            this.updateReactionCollector(
+              reactCollectorOptions,
+              reactCollectorTimeoutCallback
+            )
 
             // if this prompt has emoji responseActions, add those options for the user
             resolve(msg)
@@ -140,8 +143,15 @@ let Prompt = class Prompt {
     return
   }
 
-  updateReactionCollector(reactCollectorOptions,reactCollectorTimeoutCallback) {
-    if(this.reactCollector){
+  resetReactCollectorTimeout(options) {
+    this.reactCollector.resetTimer(options)
+  }
+
+  updateReactionCollector(
+    reactCollectorOptions,
+    reactCollectorTimeoutCallback
+  ) {
+    if (this.reactCollector) {
       // this.reactCollector.endReason('SceneChange')
       this.reactCollector.stop(['SceneChange'])
     }
@@ -159,8 +169,7 @@ let Prompt = class Prompt {
       let userCache = reaction.users.cache.array()
       let user = userCache.pop()
       let reactionIdentifier
-      if (reaction._emoji.id == null)
-        reactionIdentifier = reaction._emoji.name
+      if (reaction._emoji.id == null) reactionIdentifier = reaction._emoji.name
       else reactionIdentifier = reaction._emoji.id
       //do our own, more reliable filtering
       if (this.reactFilter(reactionIdentifier, user)) {
@@ -306,28 +315,5 @@ let Prompt = class Prompt {
     return filter
   }
 }
-/*
-const createReactFilter = (client, responseActions) => {
-  if (!client || client == undefined) throw 'client must be defined'
-  let clientId = client.id
-  let emojiList = []
-  responseActions.forEach((responseAction) => {
-    if (responseAction.triggerType == 'emoji')
-      emojiList.push(responseAction.trigger)
-  })
-  return (reaction, user) => {
-    if (env == 'DEV') {
-      // // console.log('dev enabled')
-      // console.log('user.id')
-      // console.log(user.id)
-      // console.log('user.username')
-      // console.log(user.username)
-      // console.log('client.id')
-      // console.log(clientId)
-      return user.id != clientId
-      // emojiList.includes( reaction.emoji.id )
-    } else return emojiList.includes(reaction.emoji.id) && !user.bot
-  }
-}*/
 
 export default Prompt
