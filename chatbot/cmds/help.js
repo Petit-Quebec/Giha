@@ -48,7 +48,8 @@ const run = async (bot, message) => {
     bot.commands.forEach((cmd) => {
       txt += ` !${cmd.help.name}\n`
     })
-  
+
+    msg.edit(txt + '\n```')
     log(txt, true)
   } catch (err) {
     // if there is a problem, log it and inform the user
