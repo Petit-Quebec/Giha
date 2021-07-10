@@ -69,7 +69,7 @@ export default class Instance {
   ENCOUNTER: 'ENCOUNTER',
   PROMPT: 'PROMPT',
 }*/
-  changeState(state) {
+  ychangeState(state) {
     if(state == 'EXPLORATION' || state == 'ENCOUNTER' || state =='PROMPT'){
       this.state = state
       return true
