@@ -1,5 +1,6 @@
 import { log } from '../../util/util.js'
 import reloadBotCommands from '../commandLoader.js'
+import { deleteAllCommands } from '../commandLoader.js'
 
 let name = 'reload'
 
@@ -7,6 +8,7 @@ const run = async (bot, message) => {
   let msg = await message.channel.send('reloading commands...')
   // parse args and test them
   try {
+    deleteAllCommands(bot);
     // do the actual operation
     let numCmds = await reloadBotCommands(bot)
     // update reply and log it
