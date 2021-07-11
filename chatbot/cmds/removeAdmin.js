@@ -85,9 +85,8 @@ export const run = async(bot, message, args) => {
 }
 */
 
-
 export default {
   run,
-  permissions, 
-  help
+  permissions,
+  help,
 }

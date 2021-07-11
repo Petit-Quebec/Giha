@@ -63,6 +63,6 @@ const createSansBar = async (message) => {
 
 export default {
   run,
-  permissions, 
-  help
+  permissions,
+  help,
 }

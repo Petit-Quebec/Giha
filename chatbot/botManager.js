@@ -8,6 +8,7 @@ import nameChange from './events/nameChange.js'
 import timeManager from './timeManager.js'
 
 import dotenv from 'dotenv'
+import emojiManager from './emojiManager.js'
 dotenv.config() //already configured because this is called from root anyways
 const token = process.env.DBOT_TOKEN
 
@@ -18,7 +19,7 @@ let chatbotReady = false
 const bot = new Discord.Client({ disableEveryone: true })
 bot.commands = new Discord.Collection()
 reloadBotCommands(bot)
-
+emojiManager.setClient(bot)
 // initialize commands
 
 const run = () => {

@@ -1,6 +1,7 @@
 import { log } from '../../util/util.js'
 import { getHeroById } from '../../Giha/heroManager.js'
 import { newInstance } from '../../Giha/instanceManager.js'
+import Scene from '../Scene.js'
 import { newPrompt } from '../../Giha/promptManager.js'
 import ResponseAction from '../ResponseAction.js'
 import Discord from 'discord.js'
@@ -30,7 +31,7 @@ const permissions = {
 
 const run = async (bot, message, args) => {
   let msg = await message.channel.send('performing function...')
-  
+
   // parse args and test them
   try {
     //look at all arguments
@@ -67,53 +68,12 @@ const run = async (bot, message, args) => {
       instance.addPartyMember(hero)
     })
 
-    const move = (direction) => {
-      log(`move ${direction}!`, true)
-      instance.move(direction)
-      instance.renderMap().then(async (imgData) => {
-        const embed = new Discord.MessageEmbed()
-          .attachFiles([{ name: 'map.png', attachment: imgData }])
-          .setImage('attachment://map.png')
-        mapEmbed.delete()
-        mapEmbed = await message.channel.send(embed)
-      })
-      const coords = instance.partyCoordinates
-      prompt.message.edit(`x:${coords.x} y:${coords.y}`)
-      prompt.stripReactions()
-    }
+    const sceneOptions = { instance: instance }
 
-    // render map
-    const imgData = await instance.renderMap()
-    const embed = new Discord.MessageEmbed()
-      .attachFiles([{ name: 'map.png', attachment: imgData }])
-      .setImage('attachment://map.png')
-    let mapEmbed = await message.channel.send(embed)
-
-    let prompt
-
-    const up = new ResponseAction('unicodeEmoji', '⬆️', () => { move('up') })
-    const down = new ResponseAction('unicodeEmoji', '⬇️', () => { move('down') })
-    const right = new ResponseAction('unicodeEmoji', '➡️', () => { move('right') })
-    const left = new ResponseAction('unicodeEmoji', '⬅️', () => { move('left') })
-
-    const responseActions = [left,up,down,right]
-
-    prompt = newPrompt(
-      message.channel,
-      'noLimit',
-      responseActions,
-      bot,
-      "here's a prompt okay?",
-      {},
-      { time: 60000 },
-      () => {
-        // do something like saying the dungeon has timed out idk
-      }
-    )
+    new Scene(message.channel, bot, 'exploration', sceneOptions)
 
     // update reply and log it
-    const txt = `created new instance with <@${message.author.id}> as the party leader`
-    msg.edit(txt)
+    // const txt = `created new instance with <@${message.author.id}> as the party leader`
   } catch (err) {
     // if there is a problem, log it and inform the user
     log(err, true)
@@ -124,6 +84,6 @@ const run = async (bot, message, args) => {
 
 export default {
   run,
-  permissions, 
-  help
+  permissions,
+  help,
 }

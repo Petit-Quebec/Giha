@@ -1,7 +1,7 @@
 import { log } from '../../util/util.js'
 import ShroomHunt from '../../Giha/Encounters/shroomHunting.js'
 import ResponseAction from '../ResponseAction.js'
-import Prompt from '../Prompt.js'
+import Scene from '../Scene.js'
 
 let name = 'huntShrooms'
 
@@ -34,64 +34,10 @@ const run = async (bot, message, args) => {
   try {
     // make new mushroom hunt
     let shroomHunt = new ShroomHunt(7)
-    let responseActions = []
-    let shroomPrompt
-    for (
-      let mushroomIndex = 0;
-      mushroomIndex < shroomHunt.mushrooms.length;
-      mushroomIndex++
-    ) {
-      let mushroom = shroomHunt.mushrooms[mushroomIndex]
-      // make a new responseAction
-      // get the emoji
-      let shroomEmoji = bot.emojis.cache.find(
-        (emoji) => emoji.name === mushroom.emoji
-      )
-      let mushroomCallback = (user) => {
-        if (user) {
-          //this is unused
-        }
-        shroomHunt.pick(mushroom)
-        console.log(
-          `hero picked ${mushroom.mushroomIndex} a ${mushroom.species} of quality ${mushroom.quality}, the score is now ${shroomHunt.score}`
-        )
-        shroomPrompt.message.edit(
-          `Pick the mushrooms!\nscore: ${shroomHunt.score}`
-        )
-      }
 
-      let responseAction = new ResponseAction(
-        'emoji',
-        shroomEmoji,
-        mushroomCallback
-      )
-
-      responseActions.push(responseAction)
-    }
-
-    let expireCallback = () => {
-      shroomPrompt.message.edit(
-        `The shrooms have all burrowed.\nYour final score is: ${shroomHunt.score}`
-      )
-      shroomPrompt.cleanReactions()
-    }
-
-    shroomPrompt = new Prompt(
-      message.channel,
-      'oneClickPerUser',
-      responseActions,
-      bot,
-      'YOU UNCOVER MAGEROOF, PICK SOME BEFORE THEY BURROW!!!',
-      {},
-      { time: 15000 },
-      expireCallback
-    )
-
-    // make numShrooms reaction objects
-    // make prompt
-    let txt = ':D'
-    msg.edit(txt)
-    log(txt, true)
+    let shroomPrompt = new Scene(message.channel, bot, 'shroomHunt', {
+      shroomHunt: shroomHunt,
+    })
   } catch (err) {
     // if there is a problem, log it and inform the user
     log(err, true)
@@ -102,6 +48,6 @@ const run = async (bot, message, args) => {
 
 export default {
   run,
-  permissions, 
-  help
+  permissions,
+  help,
 }

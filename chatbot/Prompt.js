@@ -26,7 +26,6 @@ let Prompt = class Prompt {
    * @param {ResponseAction|[ResponseAction]} responseActions - what actions can happen as responses to this prompt
    * @param {Object} client - which (Discord) client to use for messaging
    * @param {string} msgContent - what content the prompt message should display
-   * @param {Object} [msgOptions] - what message options (if any) the prompt should have (includes embeds)
    * @param {Object} [reactCollectorOptions] - what reactCollector options (if any) the prompt should have (includes things like expiry time for watching reactions[defaults to 60 seconds)
    * @param {Object} [reactCollectorTimeoutCallback] - function to call when the react collector expires - will clear reactions by default
    * Information on building messages is available here https://discord.js.org/#/docs/main/stable/class/TextChannel?scrollTo=send
@@ -37,7 +36,6 @@ let Prompt = class Prompt {
     responseActions,
     client,
     msgContent,
-    msgOptions,
     reactCollectorOptions,
     reactCollectorTimeoutCallback
   ) {
@@ -54,21 +52,7 @@ let Prompt = class Prompt {
     // check and set client
     if (!(client instanceof Discord.Client))
       throw 'Client must be a discord bot'
-    if (Array.isArray(responseActions)) {
-      // check and set responseActions
-      // check every element to make sure it is a ResponseAction or Error
-      responseActions.forEach((element) => {
-        if (!(element instanceof ResponseAction))
-          throw 'Prompt Constructor Error: All responseActions must be instances of ResponseAction'
-      })
-      this.responseActions = responseActions
-    } else {
-      // check the one thing to make sure it is a responseAction
-      if (responseActions instanceof ResponseAction)
-        this.responseActions = [responseActions]
-      else
-        throw 'Prompt Constructor Error: responseActions must be an instance of ResponseAction'
-    }
+    this.setResponseActions(responseActions)
     // set everything
     this.isDM = channel instanceof Discord.DMChannel
     this.channel = channel
@@ -82,50 +66,20 @@ let Prompt = class Prompt {
     this.messagePromise = new Promise((resolve, reject) => {
       // everything is set up, now send the message
       try {
+        // this.message = channel.send(msgContent)
         channel
-          .send(msgContent, msgOptions)
-          .then((res) => {
+          .send(msgContent)
+          .then((msg) => {
             //save the message as part of the prompt
-            this.message = res
+            this.message = msg
             this.reactionPromises = this.addReactionButtons()
-            this.reactCollector = this.message.createReactionCollector(
-              // dummy reaction filter because I don't trust discord's filtering
-              () => {
-                return true
-              },
-              reactCollectorOptions ? reactCollectorOptions : { time: 60000 }
+            this.updateReactionCollector(
+              reactCollectorOptions,
+              reactCollectorTimeoutCallback
             )
-            this.reactCollector.on('collect', (reaction) => {
-              // console.log(`collected ${reaction.emoji.name}`)
-
-              let userCache = reaction.users.cache.array()
-              let user = userCache.pop()
-              let reactionIdentifier
-              if (reaction._emoji.id == null)
-                reactionIdentifier = reaction._emoji.name
-              else reactionIdentifier = reaction._emoji.id
-              //do our own, more reliable filtering
-              if (this.reactFilter(reactionIdentifier, user)) {
-                console.log('reaction valid')
-                this.reactHistory.push({
-                  user: user,
-                  reactionIdentifier: reactionIdentifier,
-                })
-                this.trigger(user, reactionIdentifier)
-              } else {
-                // console.log('reaction invalid')
-              }
-            })
-            this.reactCollector.on('end', (collected) => {
-              console.log(`collected ${collected.size} items`)
-              if (reactCollectorTimeoutCallback) reactCollectorTimeoutCallback()
-              else {
-                this.cleanReactions()
-              }
-            })
 
             // if this prompt has emoji responseActions, add those options for the user
-            resolve(res)
+            resolve(msg)
           })
           .catch((err) => {
             throw err
@@ -146,6 +100,96 @@ let Prompt = class Prompt {
     //   responseAction = null
     // })
     return this.message.delete()
+  }
+
+  /**
+   * sets responseActions
+   * @returns nothing
+   */
+  setResponseActions(responseActions) {
+    if (Array.isArray(responseActions)) {
+      // check and set responseActions
+      // check every element to make sure it is a ResponseAction or Error
+      responseActions.forEach((element) => {
+        if (!(element instanceof ResponseAction))
+          throw 'Prompt Constructor Error: All responseActions must be instances of ResponseAction'
+      })
+      this.responseActions = responseActions
+    } else {
+      // check the one thing to make sure it is a responseAction
+      if (responseActions instanceof ResponseAction)
+        this.responseActions = [responseActions]
+      else
+        throw 'Prompt Constructor Error: responseActions must be an instance of ResponseAction'
+    }
+    return
+  }
+
+  /**
+   * update Message, embeds, etc
+   * @returns a promise from Discord
+   */
+  setMessageContent(newContent) {
+    return this.message.edit(newContent)
+  }
+
+  /**
+   * Resets all reactions to only those in response actions
+   * @returns nothing
+   */
+  resetReactions() {
+    this.clearReactions()
+    this.addReactionButtons()
+    return
+  }
+
+  resetReactCollectorTimeout(options) {
+    this.reactCollector.resetTimer(options)
+  }
+
+  updateReactionCollector(
+    reactCollectorOptions,
+    reactCollectorTimeoutCallback
+  ) {
+    if (this.reactCollector) {
+      // this.reactCollector.endReason('SceneChange')
+      this.reactCollector.stop(['SceneChange'])
+    }
+    // if reaction collector already exists, clean it up
+    this.reactCollector = this.message.createReactionCollector(
+      // dummy reaction filter because I don't trust discord's filtering
+      () => {
+        return true
+      },
+      reactCollectorOptions ? reactCollectorOptions : { time: 60000 }
+    )
+    this.reactCollector.on('collect', (reaction) => {
+      // console.log(`collected ${reaction.emoji.name}`)
+
+      let userCache = reaction.users.cache.array()
+      let user = userCache.pop()
+      let reactionIdentifier
+      if (reaction._emoji.id == null) reactionIdentifier = reaction._emoji.name
+      else reactionIdentifier = reaction._emoji.id
+      //do our own, more reliable filtering
+      if (this.reactFilter(reactionIdentifier, user)) {
+        console.log('reaction valid')
+        this.reactHistory.push({
+          user: user,
+          reactionIdentifier: reactionIdentifier,
+        })
+        this.trigger(user, reactionIdentifier)
+      } else {
+        // console.log('reaction invalid')
+      }
+    })
+    this.reactCollector.on('end', (collected) => {
+      console.log(`collected ${collected.size} items`)
+      if (reactCollectorTimeoutCallback) reactCollectorTimeoutCallback()
+      else {
+        this.clearReactions()
+      }
+    })
   }
 
   /**
@@ -194,7 +238,7 @@ let Prompt = class Prompt {
   /**
    * removes all reactions from the message
    */
-  cleanReactions() {
+  clearReactions() {
     return this.message.reactions.removeAll()
   }
   /**
@@ -271,28 +315,5 @@ let Prompt = class Prompt {
     return filter
   }
 }
-/*
-const createReactFilter = (client, responseActions) => {
-  if (!client || client == undefined) throw 'client must be defined'
-  let clientId = client.id
-  let emojiList = []
-  responseActions.forEach((responseAction) => {
-    if (responseAction.triggerType == 'emoji')
-      emojiList.push(responseAction.trigger)
-  })
-  return (reaction, user) => {
-    if (env == 'DEV') {
-      // // console.log('dev enabled')
-      // console.log('user.id')
-      // console.log(user.id)
-      // console.log('user.username')
-      // console.log(user.username)
-      // console.log('client.id')
-      // console.log(clientId)
-      return user.id != clientId
-      // emojiList.includes( reaction.emoji.id )
-    } else return emojiList.includes(reaction.emoji.id) && !user.bot
-  }
-}*/
 
 export default Prompt
