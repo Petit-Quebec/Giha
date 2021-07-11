@@ -133,7 +133,6 @@ let promptTimeoutTest = async (chatBot, testBot, testEmoji) => {
     responseActions,
     client,
     msgContent,
-    msgOptions,
     { time: 100 },
     collectorExpiredCallback
   )

@@ -1,6 +1,12 @@
 import Instance from '../db/Instance.js'
 let instances = []
 
+export const INSTANCE_STATE = {
+  EXPLORATION: 'EXPLORATION',
+  ENCOUNTER: 'ENCOUNTER',
+  PROMPT: 'PROMPT',
+}
+
 export const newInstance = () => {
   // instances.forEach((instance) => {
   //   const collision = false

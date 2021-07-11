@@ -1,20 +1,27 @@
-let Monster = class Monster {
-  constructor(name, health, speed, damage, attackName) {
-    this.name = name
-    this.health = health
-    this.speed = speed
-    this.damage = damage
-    this.attackName = attackName
+import Encounter from './Encounter.js'
+import encounterTypes from './Encounter.js'
+/**
+ * @class
+ * @requires ./Encounter
+ */
+class FightingEncounter extends Encounter {
+  /**
+   *
+   * @param {Monster} enemy
+   */
+  constructor(enemy) {
+    super(encounterTypes.FIGHTING)
+    this.enemy = enemy
   }
 }
-let theTragus = new Monster('Tragus Ultra', 34, 5, 30, 'Spacetime Enema')
-let bun = new Monster('Diminunitive Bun', 3, 1, 2, 'Schnuzzle')
+// Fighting encounter class
+// extends encounter
 
-let Encounter = class Encounter {
+/*
   constructor(hero, id) {
     this.hero = hero
     this.id = id
-    this.enemy = Math.random() > 0.8 ? theTragus : bun
+    this.enemy = Math.random() > 0.8 ? monsters[0] : monsters[1]
     this.enemyHealth = this.enemy.health
     this.enemySpeed = this.enemy.speed
     this.enemyDamage = this.enemy.damage
@@ -72,5 +79,6 @@ let Encounter = class Encounter {
 //     this.effects = []
 //   }
 // }
+*/
 
-export default Encounter
+export default FightingEncounter

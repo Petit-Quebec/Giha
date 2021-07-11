@@ -128,7 +128,8 @@ const logResults = () => {
   console.log(resultBlurb)
 
   if (passingTests < testReport.length) {
-    throw 'not all e2e tests passed'
+    console.log('not all e2e tests passed')
+    process.exit()
   }
 }
 

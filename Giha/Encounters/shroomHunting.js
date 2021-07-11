@@ -1,3 +1,4 @@
+import Instance from '../../db/Instance.js'
 import { log } from '../../util/util.js'
 
 const mushrooms = [
@@ -98,10 +99,28 @@ let ShroomHunt = class ShroomHunt {
       this.mushrooms.push(randShroom())
     }
     this.score = 0
+    this.complete = false
+    this.parentInstance
+  }
+
+  burrow() {
+    this.complete = true
   }
 
   pick(mushroom) {
-    this.score += mushroom.quality
+    if (!mushroom.picked) {
+      this.score += mushroom.quality
+      mushroom.picked = true
+      return mushroom.quality
+    } else {
+      return
+    }
+  }
+
+  setParentInstance(instance) {
+    if (!(instance instanceof Instance))
+      throw `shroomHunting Error: parentInstance must be set to an Instance, not ${typeof instance}`
+    this.parentInstance = instance
   }
 }
 
@@ -116,6 +135,7 @@ const randShroom = () => {
     quality: mushroomTemplate.quality,
     rarity: mushroomTemplate.rarity,
     emoji: mushroomTemplate.emoji,
+    picked: false,
   }
   return mushroom
 }

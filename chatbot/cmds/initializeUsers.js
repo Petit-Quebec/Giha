@@ -106,6 +106,6 @@ const run = async (bot, message) => {
 
 export default {
   run,
-  permissions, 
-  help
+  permissions,
+  help,
 }

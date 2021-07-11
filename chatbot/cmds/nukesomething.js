@@ -28,6 +28,6 @@ const run = async () => {
 
 export default {
   run,
-  permissions, 
-  help
+  permissions,
+  help,
 }

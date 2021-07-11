@@ -1,5 +1,7 @@
 // function header with relevant information
-import Encounter from '../../db/Encounter.js'
+
+import Encounter from '../../db/Encounters/Encounter.js'
+
 const lineLength = 24
 // add previous turns to encounter object in Encounter.js
 
