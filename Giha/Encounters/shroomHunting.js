@@ -108,7 +108,13 @@ let ShroomHunt = class ShroomHunt {
   }
 
   pick(mushroom) {
-    this.score += mushroom.quality
+    if (!mushroom.picked) {
+      this.score += mushroom.quality
+      mushroom.picked = true
+      return mushroom.quality
+    } else {
+      return
+    }
   }
 
   setParentInstance(instance) {
@@ -129,6 +135,7 @@ const randShroom = () => {
     quality: mushroomTemplate.quality,
     rarity: mushroomTemplate.rarity,
     emoji: mushroomTemplate.emoji,
+    picked: false,
   }
   return mushroom
 }
